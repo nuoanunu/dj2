@@ -16,6 +16,8 @@ using ThienNga2.Models.ViewModel;
 
 namespace ThienNga2.Controllers
 {
+
+    [Authorize(Roles = "Admin,Tạo Hóa Đơn Bảo Hành")]
     public class CreateWarrantyController : EntitiesAM
     {
 

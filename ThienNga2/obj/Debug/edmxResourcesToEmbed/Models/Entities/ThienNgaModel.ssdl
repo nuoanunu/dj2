@@ -110,10 +110,24 @@
       <PropertyRef Name="id" />
     </Key>
     <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="warrantyActivitiesID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="warrantyActivitiesID" Type="int" Nullable="false" />
     <Property Name="action" Type="varchar(max)" Nullable="false" />
     <Property Name="date" Type="date" Nullable="false" />
-    <Property Name="account" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="account" Type="nvarchar" MaxLength="128" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NhanVien">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="employeeName" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="employeeAddress" Type="nvarchar" MaxLength="128" />
+    <Property Name="employeeemail" Type="nvarchar" MaxLength="128" />
+    <Property Name="employeePhone" Type="nvarchar" MaxLength="128" />
+    <Property Name="Title" Type="nvarchar" MaxLength="128" />
+    <Property Name="avatar" Type="nvarchar" MaxLength="128" />
+    <Property Name="Description" Type="nvarchar" MaxLength="128" />
+    <Property Name="accountID" Type="nvarchar" MaxLength="128" Nullable="false" />
   </EntityType>
   <EntityType Name="order">
     <Key>
@@ -411,15 +425,39 @@ warning 6035: The relationship 'FK_inventory_tb_product_detail1' has columns tha
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_log_account">
-    <End Role="account" Type="Self.account" Multiplicity="1" />
+  <Association Name="FK_log_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
     <End Role="log" Type="Self.log" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="account">
-        <PropertyRef Name="username" />
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="log">
         <PropertyRef Name="account" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_log_tb_warranty_activities">
+    <End Role="tb_warranty_activities" Type="Self.tb_warranty_activities" Multiplicity="1" />
+    <End Role="log" Type="Self.log" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_warranty_activities">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="log">
+        <PropertyRef Name="warrantyActivitiesID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_NhanVien_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+    <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NhanVien">
+        <PropertyRef Name="accountID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -635,6 +673,7 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
     <EntitySet Name="inventory" EntityType="Self.inventory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="item" EntityType="Self.item" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="log" EntityType="Self.log" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NhanVien" EntityType="Self.NhanVien" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="order" EntityType="Self.order" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="orderDetail" EntityType="Self.orderDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
@@ -692,9 +731,17 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
       <End Role="tb_product_detail" EntitySet="tb_product_detail" />
       <End Role="item" EntitySet="item" />
     </AssociationSet>
-    <AssociationSet Name="FK_log_account" Association="Self.FK_log_account">
-      <End Role="account" EntitySet="account" />
+    <AssociationSet Name="FK_log_AspNetUsers" Association="Self.FK_log_AspNetUsers">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
       <End Role="log" EntitySet="log" />
+    </AssociationSet>
+    <AssociationSet Name="FK_log_tb_warranty_activities" Association="Self.FK_log_tb_warranty_activities">
+      <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
+      <End Role="log" EntitySet="log" />
+    </AssociationSet>
+    <AssociationSet Name="FK_NhanVien_AspNetUsers" Association="Self.FK_NhanVien_AspNetUsers">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="NhanVien" EntitySet="NhanVien" />
     </AssociationSet>
     <AssociationSet Name="FK_order_tb_customer" Association="Self.FK_order_tb_customer">
       <End Role="tb_customer" EntitySet="tb_customer" />

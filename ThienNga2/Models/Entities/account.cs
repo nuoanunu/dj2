@@ -14,19 +14,11 @@ namespace ThienNga2.Models.Entities
     
     public partial class account
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public account()
-        {
-            this.logs = new HashSet<log>();
-        }
-    
         public string accountOwner { get; set; }
         public string username { get; set; }
         public string password { get; set; }
         public int roleID { get; set; }
     
         public virtual role role { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<log> logs { get; set; }
     }
 }

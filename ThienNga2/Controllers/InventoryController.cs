@@ -17,7 +17,7 @@ namespace ThienNga2.Areas.Admin.Controllers
 
         private List<String> allname = new List<String>();
 
-        [Authorize(Roles = "Admin,Quản lý kho,Admin Hà Nội")]
+        [Authorize(Roles = "Admin,Quản lý kho,Admin Hà Nội,Kiểm Kho")]
         public ActionResult Autocomplete(string term)
         {
             allname = am.ThienNga_FindProductName2("").ToList();
@@ -36,12 +36,12 @@ namespace ThienNga2.Areas.Admin.Controllers
         }
 
         // GET: Admin/Invenotry
-        [Authorize(Roles = "Admin,Quản lý kho,Admin Hà Nội")]
+        [Authorize(Roles = "Admin,Quản lý kho,Admin Hà Nội,Kiểm Kho")]
         public ActionResult AllInven() {
             ViewData["InvenLisst"] = am.inventories.ToList();
             return View("AllKho");
         }
-        [Authorize(Roles = "Admin,Quản lý kho,Admin Hà Nội")]
+        [Authorize(Roles = "Admin,Quản lý kho,Admin Hà Nội,Kiểm Kho")]
         public ActionResult Index()
         {
 
@@ -49,7 +49,7 @@ namespace ThienNga2.Areas.Admin.Controllers
             ViewData["allInvenName"] = am.tb_inventory_name.ToList();
             return View("Inventory");
         }
-        [Authorize(Roles = "Admin,Quản lý kho,Admin Hà Nội")]
+        [Authorize(Roles = "Admin,Quản lý kho,Admin Hà Nội,Kiểm Kho")]
         // GET: Admin/Search
         public ActionResult Search(string code)
         {
@@ -76,7 +76,7 @@ namespace ThienNga2.Areas.Admin.Controllers
             return View("Inventory");
         }
     
-        [Authorize(Roles = "Admin,Quản lý kho,Admin Hà Nội")]
+        [Authorize(Roles = "Admin,Quản lý kho,Admin Hà Nội,Kiểm Kho")]
         public ActionResult SearchGetAll( String idd )
         {
             ViewData["allInvenName"] = am.tb_inventory_name.ToList();
@@ -93,7 +93,7 @@ namespace ThienNga2.Areas.Admin.Controllers
             ViewData["allInven"] = lstt;
             return View("Inventory");
         }
-        [Authorize(Roles = "Admin,Quản lý kho,Admin Hà Nội")]
+        [Authorize(Roles = "Admin,Quản lý kho,Admin Hà Nội,Kiểm Kho")]
         [HttpPost]
         public ActionResult Search2(string code, string invID)
         {
@@ -115,7 +115,7 @@ namespace ThienNga2.Areas.Admin.Controllers
             //  ViewData["dsspdt"] = am.inventories.ToList();
             return View("NhapKho");
         }
-        [Authorize(Roles = "Admin,Quản lý kho,Admin Hà Nội")]
+        [Authorize(Roles = "Admin,Quản lý kho,Admin Hà Nội,Kiểm Kho")]
         [HttpPost]
         public ActionResult Search3(string code, string invID)
         {
@@ -133,14 +133,14 @@ namespace ThienNga2.Areas.Admin.Controllers
             //  ViewData["dsspdt"] = am.inventories.ToList();
             return View("XuatKho");
         }
-        [Authorize(Roles = "Admin,Quản lý kho,Admin Hà Nội")]
+        [Authorize(Roles = "Admin,Quản lý kho,Admin Hà Nội,Kiểm Kho")]
         // GET: Admin/Invenotry/Details/
         public ActionResult Details(int id)
         {
            
             return View();
         }
-        [Authorize(Roles = "Admin,Quản lý kho")]
+        [Authorize(Roles = "Admin,Quản lý kho,Thêm Kho,Xuất/Chuyển Kho")]
         public ActionResult themkho( )
         {
             List<tb_inventory_name> nameList = am.tb_inventory_name.ToList();
@@ -188,13 +188,13 @@ namespace ThienNga2.Areas.Admin.Controllers
             return RedirectToAction("Search", "Inventory", new { code = t.productStoreCode + "" });
 
         }
-        [Authorize(Roles = "Admin,Quản lý kho")]
+        [Authorize(Roles = "Admin,Quản lý kho,Xuất/Chuyển Kho")]
         public ActionResult trukho()
         {
 
             return View("XuatKho");
         }
-        [Authorize(Roles = "Admin,Quản lý kho")]
+        [Authorize(Roles = "Admin,Quản lý kho,Xuất/Chuyển Kho")]
         public ActionResult removeKho(InvenotyChangeModel fixkho)
         {
             inventory t = am.inventories.Find(fixkho.inven.id);
@@ -205,7 +205,7 @@ namespace ThienNga2.Areas.Admin.Controllers
             ViewData["inventoryDetail"] = am.ThienNga_checkkho2(fixkho.inven.productFactoryCode).ToList();
             return RedirectToAction("Search", "Inventory", new { code = t.productStoreCode + "" });
         }
-        [Authorize(Roles = "Admin,Quản lý kho")]
+        [Authorize(Roles = "Admin,Quản lý kho,Xuất/Chuyển Kho")]
         public ActionResult changeKho(InvenotyChangeModel fixkho)
         {
 

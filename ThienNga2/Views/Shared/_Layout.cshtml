@@ -8,230 +8,341 @@
     <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <title>@ViewBag.Title - Thien Nga</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-    <style>
-        .liact act {
-            background-color: #022F5A;
-        }
 
-        .sidenav {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 999;
-            top: 0;
-            left: 0;
-            background-color: #111;
-            overflow-x: hidden;
-            transition: 0.5s;
-            padding-top: 60px;
-        }
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/fonts/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styling plus plugins -->
+    <link href="~/Content/css/animate.min.css" rel="stylesheet" />
+    <link href="~/Content/css/custom.css" rel="stylesheet" />
+    <link href="~/Content/css/icheck/flat/green.css" rel="stylesheet" />
 
-            .sidenav li {
-                padding: 8px 8px 8px 32px;
-                text-decoration: none;
-                font-size: 25px;
-                color: #818181;
-                display: block;
-                transition: 0.3s;
-            }
+    <script>
+        $.getJSON("/Warranty/getTen?email=" + "@User.Identity.GetUserName()", function (result) {
+            $.each(result, function (name, value) {
+                if (name == "fullname") { $("#username").text(value); }
+            });
 
-                .sidenav li:hover, .offcanvas li:focus {
-                    color: #f1f1f1;
-                }
-
-            .sidenav .closebtn {
-                position: absolute;
-                top: 0;
-                right: 25px;
-                font-size: 36px;
-                margin-left: 50px;
-            }
-
-        #main {
-            transition: margin-left .5s;
-            padding: 16px;
-        }
-
-        .navbar-collapse {
-            background: #000000;
-        }
-
-        .navbar {
-            background: #000000;
-        }
-    </style>
-    <link href="~/Content/agency.css" rel="stylesheet">
+        });
+    </script>
 
 </head>
-<body>
+<body class="nav-md">
+    <div class="container body">
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Dji Care!</span></a>
+                    </div>
+                    <div class="clearfix"></div>
+                    <!-- menu prile quick info -->
+                    <div class="profile">
+                        <div class="profile_pic">
 
-        <div class="container">
+                            <img src="~/Content/images/picture.jpg" alt="..." class="img-circle profile_img">
+                        </div>
+                        <div class="profile_info">
+                            <span>Welcome,</span>
+                            <h2 id="username"></h2>
 
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("FLYCAM", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                        </div>
+                    </div>
+                    <!-- /menu prile quick info -->
+                    <br />
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <h3>General</h3>
+                            <ul class="nav side-menu">
+                                <li>
+                                    <a href="/ProductItem"><i class="fa fa-home"></i> Bán hàng </a>
+                                </li>
+                                <li>
+                                    <a href="/KickHoatBaoHanh"><i class="fa fa-edit"></i> Kích hoạt bảo hành <span class="fa fa-chevron-down"></span></a>
+
+                                </li>
+                                <li>
+                                    <a href="/CreateWarranty/"><i class="fa fa-desktop"></i> Tạo phiếu bảo hành<span class="fa fa-chevron-down"></span></a>
+
+                                </li>
+                                <li>
+                                    <a href="/Warranty"><i class="fa fa-table"></i> Kiểm tra bảo hành <span class="fa fa-chevron-down"></span></a>
+
+                                </li>
+                                <li>
+                                    <a href="/Inventory"><i class="fa fa-bar-chart-o"></i> Kiểm kho <span class="fa fa-chevron-down"></span></a>
+
+                                </li>
+                                <li>
+                                    <a href="/Product"><i class="fa fa-bug"></i> Tra cứu sản phẩm <span class="fa fa-chevron-down"></span></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="menu_section">
+                            <h3>Admin</h3>
+                            <ul class="nav side-menu">
+
+                                <li>
+                                    <a><i class="fa fa-windows"></i> Extras <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu" style="display: none">
+                                        <li>
+                                            <a href="page_404.html">Báo giá</a>
+                                        </li>
+                                        <li>
+                                            <a href="page_500.html">Nhóm Khách</a>
+                                        </li>
+                                        <li>
+                                            <a href="/NhanVien/">Nhân viên</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /sidebar menu -->
+                    <!-- /menu footer buttons -->
+                    <div class="sidebar-footer hidden-small">
+                        <a data-toggle="tooltip" data-placement="top" title="Settings">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                            <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="Lock">
+                            <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                        </a>
+
+                        <a id="logoutbutton" data-toggle="tooltip" data-placement="top" title="Logout">
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                        </a>
+                        <script>
+                            $("#logoutbutton").click(function () {
+                                $("#logoutForm").submit();
+                            })
+                        </script>
+                        <form style="display:none" action="/Account/LogOff" class="navbar-right" id="logoutForm" method="post">
+                            @Html.AntiForgeryToken()
+                            <a data-toggle="tooltip" data-placement="top" title="Logout" href="">
+                                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                            </a>
+                        </form>
+                    </div>
+                    <!-- /menu footer buttons -->
+                </div>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    @if (User.IsInRole("Admin"))
-                    {
-                        if (Request.RawUrl.Contains("ProductDetail"))
-                        {
-                            <li style="background-color:#555555"> @Html.ActionLink("Nhập Sản Phẩm", "", "ProductDetail")</li>
-                        }
-                        else
-                        {
-                            <li> @Html.ActionLink("Nhập Sản Phẩm", "", "ProductDetail")</li> }
-                    }
-                    @if (User.IsInRole("Admin") || User.IsInRole("Bán hàng") || User.IsInRole("Admin Hà Nội"))
-                    {
-                        if (Request.RawUrl.Contains("ProductItem"))
-                        {
-                            <li style="background-color:#555555"> @Html.ActionLink("Bán", "", "ProductItem")</li>
-                        }
-                        else
-                        {
-                            <li> @Html.ActionLink("Bán", "", "ProductItem")</li> }
-                    }
+            <!-- top navigation -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <nav class="" role="navigation">
+                        <div class="nav toggle">
+                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                        </div>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="">
+                                @Html.Partial("_LoginPartial")
+                                <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
+                                    <li>
+                                        <a href="javascript:;">  Profile</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            <span class="badge bg-red pull-right">50%</span>
+                                            <span>Settings</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">Help</a>
+                                    </li>
+                                    <li>
+                                        <a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li role="presentation" class="dropdown">
 
-                    @if (User.IsInRole("Admin") || User.IsInRole("Bán hàng") || User.IsInRole("Admin Hà Nội"))
-                    {
-                        if (Request.RawUrl.Contains("KickHoatBaoHanh"))
-                        {
-                            <li style="background-color:#555555"> @Html.ActionLink("Kích hoạt bảo hành", "", "KickHoatBaoHanh")</li>
-                        }
-                        else
-                        {
-                            <li>@Html.ActionLink("Kích hoạt bảo hành", "", "KickHoatBaoHanh")</li>
-                        }
-
-                    }
-                    @if (User.IsInRole("Admin") || User.IsInRole("Nhân Viên kỹ thuật") || User.IsInRole("Admin Hà Nội"))
-                    {
-
-                        if (Request.RawUrl.Contains("CreateWarranty"))
-                        {
-                            <li style="background-color:#555555"> @Html.ActionLink("Tạo hóa đơn bảo hành", "", "CreateWarranty")</li>
-                        }
-                        else
-                        {
-                            <li>@Html.ActionLink("Tạo hóa đơn bảo hành", "", "CreateWarranty")</li>
-                        }
-                    }
-
-                    @if (User.IsInRole("Admin") || User.IsInRole("Nhân Viên kỹ thuật") || User.IsInRole("Admin Hà Nội"))
-                    {
-
-                        if (Request.RawUrl.Contains("Warranty") && !Request.RawUrl.Contains("CreateWarranty"))
-                        {
-                            <li style="background-color:#555555"> @Html.ActionLink("Kiểm Tra Bảo Hành", "", "Warranty")</li>
-                        }
-                        else
-                        {
-                            <li>@Html.ActionLink("Kiểm Tra Bảo Hành", "", "Warranty")</li>
-                        }
-
-                    }
-
-                    @if (User.IsInRole("Admin") || User.IsInRole("Quản lý kho") || User.IsInRole("Admin Hà Nội"))
-                    {
-                        if (Request.RawUrl.Contains("Inventory") && !Request.RawUrl.Contains("themkho") && !Request.RawUrl.Contains("trukho"))
-                        {
-                            <li style="background-color:#555555"> @Html.ActionLink("Kiểm kho", "", "Inventory")</li>}
-                        else
-                        {
-                            <li> @Html.ActionLink("Kiểm kho", "", "Inventory")</li> }
-                    }
-                    @*@if (Request.RawUrl.Contains("themkho") )
-                        {
-                            <li style="background-color:#022F5A"> @Html.ActionLink("Nhập kho", "", "Inventory/themkho")</li>}
-                        else
-                        {
-                            <li> @Html.ActionLink("Nhập kho", "", "Inventory/themkho")</li> }
-                        @if (Request.RawUrl.Contains("trukho"))
-                        {
-                            <li style="background-color:#022F5A"> @Html.ActionLink("Xuất kho", "", "Inventory/trukho")</li>}
-                        else
-                        {
-                            <li> @Html.ActionLink("Xuất Kho", "", "Inventory/trukho")</li> }*@
-
-                </ul>
-                @Html.Partial("_LoginPartial")
+                                <ul id="menu1" class="dropdown-menu list-unstyled msg_list animated fadeInDown" role="menu">
+                                    <li>
+                                        <a>
+                                            <span class="image">
+                                                <img src="images/img.jpg" alt="Profile Image" />
+                                            </span>
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <span class="image">
+                                                <img src="images/img.jpg" alt="Profile Image" />
+                                            </span>
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <span class="image">
+                                                <img src="images/img.jpg" alt="Profile Image" />
+                                            </span>
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <span class="image">
+                                                <img src="images/img.jpg" alt="Profile Image" />
+                                            </span>
+                                            <span>
+                                                <span>John Smith</span>
+                                                <span class="time">3 mins ago</span>
+                                            </span>
+                                            <span class="message">
+                                                Film festivals used to be do-or-die moments for movie makers. They were where...
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="text-center">
+                                            <a>
+                                                <strong>See All Alerts</strong>
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
+            <!-- /top navigation -->
+            <!-- page content -->
+            <div class="right_col" role="main">
+                @RenderBody()
+                <!-- footer content -->
+                <footer>
+                    <div class="copyright-info">
+                        <p class="pull-right">
+                            Djcare  - Created By<a href="https://colorlib.com">Nhat</a>
+                        </p>
+                    </div>
+                    <div class="clearfix"></div>
+                </footer>
+                <!-- /footer content -->
+            </div>
+            <!-- /page content -->
         </div>
     </div>
-
-
-    @try
-    {
-        if (Request.IsAuthenticated)
-        {
-
-            if ( User.IsInRole("Admin"))
-            {
-                <div id="main">
-                    <span style="font-size:30px;cursor:pointer" id="toogleBtn" onclick="toogleNav()">&#9776; Mở menu</span>
-                </div>
-
-                <script>
-                    var current = true;
-                    function toogleNav() {
-                        if (current) { openNav(); }
-                        else { closeNav(); }
-                        current = !current;
-                    }
-                    function openNav() {
-                        document.getElementById("mySidenav").style.width = "250px";
-                        document.getElementById("main").style.marginLeft = "250px";
-                        document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
-                        $("#toogleBtn").text("Đóng menu  ");
-                    }
-
-                    function closeNav() {
-                        document.getElementById("mySidenav").style.width = "0";
-                        document.getElementById("main").style.marginLeft = "0";
-                        document.body.style.backgroundColor = "white";
-                        $("#toogleBtn").text(" Mở menu  ");
-
-                    }
-                </script>
-                <div id="mySidenav" class="sidenav">
-                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                    @*<li > @Html.ActionLink("Quản lý khách hàng", "", "Customer")</li>*@
-                    <li> @Html.ActionLink("Quản lý báo giá", "", "BaoGia")</li>
-                    <li> @Html.ActionLink("Quản lý sữa chữa", "", "Warranty/AllWarranty")</li>
-                    @*<li> @Html.ActionLink("Quản lý IMEI", "", "Warranty/IMEI")</li>*@
-                    <li> @Html.ActionLink("Quản lý Kho", "", "Inventory/AllInven")</li>
-                    <li> @Html.ActionLink("Quản lý nhóm khách", "", "Customer")</li>
-                    
-                    <li> @Html.ActionLink("Quản lý IMEI", "", "Warranty/IMEILIST")</li>
-                </div>
-            }
-        }
-    }
-    catch (Exception e)
-    {
-        System.Diagnostics.Debug.WriteLine("DAFUG ");
-    }
-
-
-
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
+    <div id="custom_notifications" class="custom-notifications dsp_none">
+        <ul class="list-unstyled notifications clearfix" data-tabbed_notifications="notif-group"></ul>
+        <div class="clearfix"></div>
+        <div id="notif-group" class="tabbed_notifications"></div>
     </div>
+    <script src="~/Content/js/bootstrap.min.js"></script>
 
-    @*@Scripts.Render("~/bundles/jquery")*@
+    <!-- bootstrap progress js -->
+    <script src="~/Content/js/progressbar/bootstrap-progressbar.min.js"></script>
+    <script src="~/Content/js/nicescroll/jquery.nicescroll.min.js"></script>
+    <!-- icheck -->
+    <script src="~/Content/js/icheck/icheck.min.js"></script>
+    <script src="~/Content/js/custom.js"></script>
+    <!-- echart -->
+    <script src="~/Content/js/echart/echarts-all.js"></script>
+    <script src="~/Content/js/echart/green.js"></script>
+    <!-- pace -->
+    <script src="~/Content/js/pace/pace.min.js"></script>
 
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    <script>
+        var myChart9 = echarts.init(document.getElementById('mainb'), theme);
+        myChart9.setOption({
+            title: {
+                x: 'center',
+                y: 'top',
+                padding: [0, 0, 20, 0],
+                text: 'Project Perfomance :: Revenue vs Input vs Time Spent',
+                textStyle: {
+                    fontSize: 15,
+                    fontWeight: 'normal'
+                }
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    dataView: {
+                        show: true,
+                        readOnly: false
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            calculable: true,
+            legend: {
+                data: ['Revenue', 'Cash Input', 'Time Spent'],
+                y: 'bottom'
+            },
+            xAxis: [{
+                type: 'category',
+                data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            }],
+            yAxis: [{
+                type: 'value',
+                name: 'Amount',
+                axisLabel: {
+                    formatter: '{value} ml'
+                }
+            }, {
+                type: 'value',
+                name: 'Hours',
+                axisLabel: {
+                    formatter: '{value} °C'
+                }
+            }],
+            series: [{
+                name: 'Revenue',
+                type: 'bar',
+                data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+            }, {
+                name: 'Cash Input',
+                type: 'bar',
+                data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+            }, {
+                name: 'Time Spent',
+                type: 'line',
+                yAxisIndex: 1,
+                data: [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2]
+            }]
+        });
+    </script>
 </body>
+    </head>
+
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", required: false)
 </html>

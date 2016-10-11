@@ -1,0 +1,92 @@
+﻿@using ThienNga2.Models.Entities
+<div class="">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>Contacts Design</h3>
+        </div>
+        <div class="title_right">
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_content">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
+                  
+                        </div>
+                        <div class="clearfix"></div>
+
+                      
+                            @foreach (AspNetUser user in (List<AspNetUser>)ViewData["SystemUser"])
+                            {
+                                String roles = "";
+                                foreach (AspNetRole role in user.AspNetRoles)
+                                {
+                                    roles = "," + role.Name + roles;
+                                }
+                                roles = roles.Replace(",", "");
+                                <div class="col-md-4 col-sm-4 col-xs-12 animated fadeInDown">
+                                    
+                                    <div class="well profile_view">
+                                        <div class="col-sm-12">
+                                            <h4 class="brief"><i>Digital Strategist</i></h4>
+                                            <div class="left col-xs-7">
+                                                <h2>@user.FullName</h2>
+                                                <p><strong>Quyền sử dụng: </strong>@roles </p>
+                                                <ul class="list-unstyled">
+                                                    <li><i class="fa fa-phone"></i> SDT:  @user.PhoneNumber </li>
+                                                </ul>
+                                            </div>
+                                            <div class="right col-xs-5 text-center">
+                                                @if (user.NhanViens.FirstOrDefault() != null)
+                                                {
+                                                    <img src="@user.NhanViens.FirstOrDefault().avatar" alt="" class="img-circle img-responsive">
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/Content/images/user.png" alt="" class="img-circle img-responsive">
+                                                }
+
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 bottom text-center">
+                                            <div class="col-xs-12 col-sm-6 emphasis">
+                                                <p class="ratings">
+                                                    <a>4.0</a>
+                                                    <a href="#"><span class="fa fa-star"></span></a>
+                                                    <a href="#"><span class="fa fa-star"></span></a>
+                                                    <a href="#"><span class="fa fa-star"></span></a>
+                                                    <a href="#"><span class="fa fa-star"></span></a>
+                                                    <a href="#"><span class="fa fa-star-o"></span></a>
+                                                </p>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 emphasis">
+
+                                                <a href="/NhanVien/Detail?id=@(user.Id)" class="btn btn-primary btn-xs">
+                                                    <i class="fa fa-user">
+                                                    </i> Chi tiết
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

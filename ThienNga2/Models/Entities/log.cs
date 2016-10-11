@@ -15,11 +15,12 @@ namespace ThienNga2.Models.Entities
     public partial class log
     {
         public int id { get; set; }
-        public string warrantyActivitiesID { get; set; }
+        public int warrantyActivitiesID { get; set; }
         public string action { get; set; }
         public System.DateTime date { get; set; }
         public string account { get; set; }
     
-        public virtual account account1 { get; set; }
+        public virtual tb_warranty_activities tb_warranty_activities { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

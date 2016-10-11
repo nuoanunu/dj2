@@ -380,6 +380,20 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="temps">
+      <EntityTypeMapping TypeName="ThienNgaDatabaseModel.temp">
+        <MappingFragment StoreEntitySet="temp">
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="series" ColumnName="series" />
+          <ScalarProperty Name="datecode" ColumnName="datecode" />
+          <ScalarProperty Name="fakename" ColumnName="fakename" />
+          <ScalarProperty Name="sdt" ColumnName="sdt" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="warrantyActivityFees">
       <EntityTypeMapping TypeName="ThienNgaDatabaseModel.warrantyActivityFee">
         <MappingFragment StoreEntitySet="warrantyActivityFee">
@@ -411,26 +425,21 @@
         <ScalarProperty Name="Id" ColumnName="RoleId" />
       </EndProperty>
     </AssociationSetMapping>
-    <FunctionImportMapping FunctionImportName="ThienNga_checkko2" FunctionName="ThienNgaDatabaseModel.Store.ThienNga_checkkho" />
-    <FunctionImportMapping FunctionImportName="ThienNga_findbyIMEI2" FunctionName="ThienNgaDatabaseModel.Store.ThienNga_findbyIMEI" />
+    <FunctionImportMapping FunctionImportName="ThienNga_checkkho2" FunctionName="ThienNgaDatabaseModel.Store.ThienNga_checkkho" />
     <FunctionImportMapping FunctionImportName="ThienNga_FindProduct2" FunctionName="ThienNgaDatabaseModel.Store.ThienNga_FindProduct" />
-    <FunctionImportMapping FunctionImportName="ThienNga_findwarranty2" FunctionName="ThienNgaDatabaseModel.Store.ThienNga_findwarranty" />
-    <FunctionImportMapping FunctionImportName="ThienNga_findwarrantyByIMEI2" FunctionName="ThienNgaDatabaseModel.Store.ThienNga_findwarrantyByIMEI" />
-    <FunctionImportMapping FunctionImportName="ThienNga_getkho3" FunctionName="ThienNgaDatabaseModel.Store.ThienNga_getkho" />
-    <FunctionImportMapping FunctionImportName="ThienNga_warrantyHistory2" FunctionName="ThienNgaDatabaseModel.Store.ThienNga_warrantyHistory" />
     <FunctionImportMapping FunctionImportName="ThienNga_FindProductName2" FunctionName="ThienNgaDatabaseModel.Store.ThienNga_FindProductName" />
     <FunctionImportMapping FunctionImportName="ThienNga_TimSDT2" FunctionName="ThienNgaDatabaseModel.Store.ThienNga_TimSDT" />
-    <FunctionImportMapping FunctionImportName="ThienNga_checkkho2" FunctionName="ThienNgaDatabaseModel.Store.ThienNga_checkkho" />
-    <EntitySetMapping Name="temps">
-      <EntityTypeMapping TypeName="ThienNgaDatabaseModel.temp">
-        <MappingFragment StoreEntitySet="temp">
-          <ScalarProperty Name="code" ColumnName="code" />
-          <ScalarProperty Name="series" ColumnName="series" />
-          <ScalarProperty Name="datecode" ColumnName="datecode" />
-          <ScalarProperty Name="fakename" ColumnName="fakename" />
-          <ScalarProperty Name="sdt" ColumnName="sdt" />
-          <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="date" ColumnName="date" />
+    <EntitySetMapping Name="NhanViens">
+      <EntityTypeMapping TypeName="ThienNgaDatabaseModel.NhanVien">
+        <MappingFragment StoreEntitySet="NhanVien">
+          <ScalarProperty Name="accountID" ColumnName="accountID" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="avatar" ColumnName="avatar" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="employeePhone" ColumnName="employeePhone" />
+          <ScalarProperty Name="employeeemail" ColumnName="employeeemail" />
+          <ScalarProperty Name="employeeAddress" ColumnName="employeeAddress" />
+          <ScalarProperty Name="employeeName" ColumnName="employeeName" />
           <ScalarProperty Name="id" ColumnName="id" />
         </MappingFragment>
       </EntityTypeMapping>

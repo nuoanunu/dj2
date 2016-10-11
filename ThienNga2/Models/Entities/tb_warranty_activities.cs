@@ -17,6 +17,7 @@ namespace ThienNga2.Models.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tb_warranty_activities()
         {
+            this.logs = new HashSet<log>();
             this.warrantyActivityFees = new HashSet<warrantyActivityFee>();
             this.warrantyActivityFixingFees = new HashSet<warrantyActivityFixingFee>();
         }
@@ -37,13 +38,15 @@ namespace ThienNga2.Models.Entities
         public int productDetailID { get; set; }
         public string Note { get; set; }
     
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual AspNetUser AspNetUser1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<log> logs { get; set; }
         public virtual tb_warranty tb_warranty { get; set; }
+        public virtual tb_warrnaty_status tb_warrnaty_status { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<warrantyActivityFee> warrantyActivityFees { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<warrantyActivityFixingFee> warrantyActivityFixingFees { get; set; }
-        public virtual AspNetUser AspNetUser { get; set; }
-        public virtual AspNetUser AspNetUser1 { get; set; }
-        public virtual tb_warrnaty_status tb_warrnaty_status { get; set; }
     }
 }

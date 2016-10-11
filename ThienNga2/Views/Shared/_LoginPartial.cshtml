@@ -5,24 +5,12 @@
     {
     @Html.AntiForgeryToken()
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-    
-            
-            <a id="empname"></a>
-            <input type="hidden" value="@User.Identity.GetUserName()" id="username" />
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-    </ul>
+        <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id="#empname">
+            <img src="images/img.jpg" alt="">
+        </a>
     }
 }
-else
-{
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
-}
+
 <script>
     $.getJSON("/Warranty/getTen?email=" + "@User.Identity.GetUserName()", function (result) {
         $.each(result, function (name, value) {

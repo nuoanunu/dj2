@@ -18,16 +18,37 @@ using System.Globalization;
 
 namespace ThienNga2.Controllers
 {
-    [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
+    
 
     public class WarrantyController : EntitiesAM
     {
 
         // GET: Warranty
+
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult Index()
         {
+            ViewData["AllWarranty"] = am.tb_warranty_activities.ToList();
+            List<SelectListItem> list = new List<SelectListItem>();
+            AspNetRole role = am.AspNetRoles.SqlQuery("SELECT * FROM AspNetRoles where  id='c58194a2-1502-4623-b549-00cea9250711'").FirstOrDefault();
+            List<AspNetUser> nhanviens = role.AspNetUsers.ToList();
+           
+            ViewData["NhanVienKyThuat"] = nhanviens;
             return View("WarrantyCheck");
         }
+        [Authorize(Roles = "Admin,Admin Hà Nội,Nhân Viên Quản Lý Sửa Chữa")]
+        public ActionResult GiaoViec(int actid, string empId)
+        {
+            tb_warranty_activities act= am.tb_warranty_activities.Find(actid);
+            AspNetUser user = am.AspNetUsers.Find(empId);
+            if (user != null && act != null) {
+                act.empFixer = user.Id;
+                am.SaveChanges();
+            }
+
+            return RedirectToAction("Search", new { code = act.id, searchType= "warrantyActID" });
+        }
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public String getTen(String email)
         {
             JavaScriptSerializer serializer = new JavaScriptSerializer();
@@ -51,7 +72,7 @@ namespace ThienNga2.Controllers
 
         }
         private List<String> allname = new List<String>();
-
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult ConfirmBaoHanh(String idwar, String iduser)
         {
             try
@@ -77,21 +98,60 @@ namespace ThienNga2.Controllers
 
 
         }
+        public JsonResult updateRole(String updateRole, String userid) {
+            AspNetRole rolee = am.AspNetRoles.Find(updateRole);
+            AspNetUser user = am.AspNetUsers.Find(userid);
+            try {
+
+                if (user != null)
+                {
+                    AspNetRole role = (AspNetRole)user.AspNetRoles.Where(u => u.Id.Equals(updateRole)).FirstOrDefault();
+             
+                    if (role != null)
+                    {
+                        user.AspNetRoles.ToList().Remove(role);
+                        am.SaveChanges();
+                        return Json(new { result = "success" }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        user.AspNetRoles.Add(rolee);
+                        am.SaveChanges();
+                        return Json(new { result = "success" }, JsonRequestBehavior.AllowGet);
+                    }
+
+             
+
+                }
+                return Json(new { result = "user null " + userid }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception e) {
+            }
+
+            return Json(new { result = "fail "  + rolee.Name + " " +user.UserName}, JsonRequestBehavior.AllowGet);
+        }
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public void getAllName()
         {
-            allname = am.ThienNga_FindProductName2("").ToList();
+            allname = (List<String>) am.tb_product_detail.Select(u => u.productName);
+   
             foreach (String e in allname)
             {
-                tb_product_detail t = am.ThienNga_FindProduct2(e).FirstOrDefault();
+                tb_product_detail t = (tb_product_detail) am.tb_product_detail.Where(u => u.productName.Equals( e ));
                 allname.Add(t.productStoreID);
             }
         }
+
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult IMEILIST() {
            //ViewData["allwar"]=am.tb_warranty.ToList();
            ViewData["allwar"] = am.tb_warranty.SqlQuery("SELECT  * from tb_warranty ").ToList();
            ViewData["dsnkh"] = am.CustomerTypes.ToList();
             return View("allIMEI");
         }
+
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public String updateWAR(String wactID, String newDate,String newIMEI, String newSKU, String newName, String newSDT, String newDuration, String newDescription, String newChinhPhu , String newNhomKhach)
         {
             System.Diagnostics.Debug.WriteLine("AAAA");
@@ -102,9 +162,9 @@ namespace ThienNga2.Controllers
                     DateTime date;
                
                     date  = DateTime.ParseExact(newDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                  
-                    
-                    tb_product_detail dt = am.ThienNga_FindProduct2(newSKU).First();
+
+
+                    tb_product_detail dt = (tb_product_detail)am.tb_product_detail.Where(u => u.productName.Equals(newSKU) || u.producFactoryID.Equals(newSKU) || u.productStoreID.Equals(newSKU));
                     tb_customer cus = null;
                     if (am.tb_customer.SqlQuery("SELECT * FROM tb_customer where phonenumber='" + newSDT + "'").ToList().Count() >= 1) {
                         cus = am.tb_customer.SqlQuery("SELECT * FROM tb_customer where phonenumber='" + newSDT + "'").First();
@@ -162,9 +222,10 @@ namespace ThienNga2.Controllers
 
             return "";
         }
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult Autocomplete(string term)
         {
-            allname = am.ThienNga_FindProductName2("").ToList();
+            allname = (List<String>)am.tb_product_detail.Select(u => u.productName);
             System.Diagnostics.Debug.WriteLine("SIZE " + allname.Count());
 
             List<String> result = new List<string>();
@@ -179,17 +240,19 @@ namespace ThienNga2.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         // GET: Warranty/Details/5
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult Details(int id)
         {
             return View();
         }
 
         // GET: Warranty/Create
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult Create()
         {
             return View();
         }
-
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult Update(String actid, String itemstatus, String day1, String month1, String year1, String day2, String month2, String year2)
         {
             try
@@ -231,7 +294,7 @@ namespace ThienNga2.Controllers
 
                             }
                             am.SaveChanges();
-                            return RedirectToAction("Search", new { code =act.id , searchType= "warrantyActID" });
+                            return RedirectToAction("ActivityDetail", new { id = act.id });
 
                         }
                     }
@@ -241,6 +304,7 @@ namespace ThienNga2.Controllers
             return View("WarrantyCheck");
 
         }
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public double loadPrice(String code, int quantity)
         {
 
@@ -250,27 +314,19 @@ namespace ThienNga2.Controllers
             {
                 code = code.Substring(code.IndexOf("StoreSKU") + 10, code.Length - code.IndexOf("StoreSKU") - 10);
             }
-            tb_product_detail t = am.ThienNga_FindProduct2(code).FirstOrDefault();
+            tb_product_detail t = (tb_product_detail)am.tb_product_detail.Where(u => u.productStoreID.Equals(code));
             if (t == null) return 0;
             else return t.price * quantity;
         }
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult UpdateWithFee(tb_warranty_activities item)
         {
-            if (User.Identity.GetUserName().Equals(item.AspNetUser1.Email))
-            {
-                tb_warranty_activities newStatusa = am.tb_warranty_activities.Find(item.id);
-
-                newStatusa.status = item.status;
-                am.SaveChanges();
-            }
-            ViewData["warrantydetail"] = (tb_warranty)am.ThienNga_findwarranty2(item.tb_warranty.warrantyID).FirstOrDefault();
-            ViewData["lsbh"] = (List<tb_warranty_activities>)am.ThienNga_warrantyHistory2(item.tb_warranty.warrantyID).ToList();
-            //  ViewData["dsspdt"] = am.inventories.ToList();
-            return View("WarrantyCheck");
+            
+            return RedirectToAction("Index");
 
         }
 
-        // POST: Warranty/Create
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]// POST: Warranty/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
@@ -285,16 +341,17 @@ namespace ThienNga2.Controllers
                 return View();
             }
         }
-
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         // GET: Warranty/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
-
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         // POST: Warranty/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]public ActionResult Edit(int id, FormCollection collection)
         {
             try
             {
@@ -317,9 +374,10 @@ namespace ThienNga2.Controllers
                 am.SaveChanges();
             }
             System.Diagnostics.Debug.WriteLine("dafug : " + activitiesID);
-            return RedirectToAction("Search", "Warranty", new { code = activitiesID, searchType = "warrantyActID" });
+            return RedirectToAction("ActivityDetail", new { id = activitiesID });
 
         }
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult XoaFixingFee(String feeID, String activitiesID)
         {
             warrantyActivityFixingFee item = am.warrantyActivityFixingFees.Find(int.Parse(feeID));
@@ -329,20 +387,21 @@ namespace ThienNga2.Controllers
                 editor.active = false;
                 am.SaveChanges();
             }
-            return RedirectToAction("Search", "Warranty", new { code = activitiesID, searchType = "warrantyActID" });
+            return RedirectToAction("ActivityDetail", new { id = activitiesID });
 
         }
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult AddFee(String activitiesID, String ksu, String quantity, String fixPrice)
         {
             if (ksu != null && ksu.Trim().Length > 0)
             {
-                tb_product_detail pd = am.ThienNga_FindProduct2(ksu).FirstOrDefault();
+                tb_product_detail pd = (tb_product_detail)am.tb_product_detail.Where(u => u.productStoreID.Equals(ksu));
                 if (pd != null)
                 {
                     tb_warranty_activities act = am.tb_warranty_activities.Find(int.Parse(activitiesID));
                     if (act != null)
                     {
-
+                        System.Diagnostics.Debug.WriteLine("aaaaaaaaaaaaa " + act.AspNetUser1.Email + " bbbbbbbb " + User.Identity.GetUserName());
                         if (act.AspNetUser1.Email.Equals(User.Identity.GetUserName()))
                         {
                             System.Diagnostics.Debug.WriteLine("dafug");
@@ -353,18 +412,27 @@ namespace ThienNga2.Controllers
                             a.quantity = int.Parse(quantity);
                             am.warrantyActivityFees.Add(a);
                             am.SaveChanges();
+                            log log = new log();
+                            log.warrantyActivitiesID = act.id;
+                            log.account = act.empFixer;
+                            log.date = DateTime.Today;
+                            log.action = "Da them linh kien moi: " + a.productSKU+  ", so luong: "+a.quantity+"  Tong cong:"+ a.fixingfee.ToString("N");
+
+                            am.logs.Add(log);
+                            am.SaveChanges();
                         }
                     }
                 }
             }
-            return RedirectToAction("Search", "Warranty", new { code = activitiesID, searchType = "warrantyActID" });
+            return RedirectToAction("ActivityDetail", new { id = activitiesID });
         }
-
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult AllWarranty()
         {
             ViewData["allact"] = am.tb_warranty_activities.ToList();
             return View("WarrantyList");
         }
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult AddFixingFee(String fixDetail, String price, String activitiesID)
         {
             tb_warranty_activities act = am.tb_warranty_activities.Find(int.Parse(activitiesID));
@@ -382,135 +450,46 @@ namespace ThienNga2.Controllers
                         a.fee = float.Parse(price);
                         am.warrantyActivityFixingFees.Add(a);
                         am.SaveChanges();
+                        log log = new log();
+                        log.warrantyActivitiesID = act.id;
+                        log.account = act.empFixer;
+                        log.date = DateTime.Today;
+                        log.action = "Them phi sua chua: " + a.fee.ToString("N");
+
+                        am.logs.Add(log);
+                        am.SaveChanges();
                     }
                 }
             }
-            return RedirectToAction("Search", "Warranty", new { code = activitiesID, searchType = "warrantyActID" });
+            return RedirectToAction("ActivityDetail", new { id = activitiesID });
         }
-        public ActionResult Search(string code, string searchType)
-        {
-            try
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
+        public ActionResult ActivityDetail(int id) {
+            tb_warranty_activities act = am.tb_warranty_activities.Find(id);
+            if (act != null)
             {
-                ViewData["FlagShowKq"] = "true";
-                System.Diagnostics.Debug.WriteLine("searchType " + searchType);
-                if (searchType == null) searchType = "warrantyActID";
-                if (searchType.Equals("item"))
-                {
-                    tb_product_detail thatitem = am.tb_product_detail.SqlQuery("select * from tb_product_detail where productStoreID='" + code+"'").FirstOrDefault();
-                    
-                    if (thatitem != null)
-                    {
-                        System.Diagnostics.Debug.WriteLine("HEO CO NUL:LLLLLLLLE " );
-
-                        List<tb_warranty> temp1 = new List<tb_warranty>();
-                        if(thatitem.items.ToList().Count() >0)
-                        foreach (item itemm in thatitem.items.ToList()) {
-                            temp1.AddRange(itemm.tb_warranty.ToList());
-                        }
-                        List<tb_warranty_activities> temp2 = new List<tb_warranty_activities>();
-                        System.Diagnostics.Debug.WriteLine("co nhieu day thang ne  " + temp1.Count());
-                        if(temp1.Count > 0)
-                        foreach (tb_warranty a in temp1)
-                        {
-                                if (a.tb_warranty_activities.ToList().Count() > 0) {
-                                    temp2.AddRange(a.tb_warranty_activities.ToList());
-                                }
-                     
-                        }
-                     
-                        ViewData["lsbh"] = temp2;                                            
-                    }
+                double money = 0;
+                foreach (warrantyActivityFee fee in act.warrantyActivityFees) {
+                    money = money + fee.fixingfee;
                 }
-                if (searchType.Equals("warrantyIMEI"))
+                foreach (warrantyActivityFixingFee fee in act.warrantyActivityFixingFees)
                 {
-                    tb_warranty wardetail = am.ThienNga_findwarranty2(code).FirstOrDefault();
-                    ViewData["warrantydetail"] = wardetail;
-                    tb_warranty tempwar = (tb_warranty)ViewData["warrantydetail"];
-                    item tempitem = am.items.SqlQuery("SELECT * FROM item where id=" + tempwar.itemID ).First();
-                    ViewData["itemDetail"] = tempitem;
-                    
-                    ViewData["lsbh"] = wardetail.tb_warranty_activities.ToList();
-                    if (am.ThienNga_warrantyHistory2(code).ToList().Count() == 1 )
-                    {
-                        if(am.ThienNga_warrantyHistory2(code).ToList().ElementAt(0).status != 4)
-                        ViewData["thisAct"] = am.ThienNga_warrantyHistory2(code).ToList().ElementAt(0);
-                    }
+                    money = money + fee.fee;
                 }
-                if (searchType.Equals("warrantyCODE"))
-                {
-                    System.Diagnostics.Debug.WriteLine("HEREEEEEEEEEEEEEEEEE " + searchType);
-                    var activity = am.tb_warranty_activities.SqlQuery("SELECT * FROM dbo.tb_warranty_activities WHERE CodeBaoHanh='" + code + "'").ToList();
-                    if (activity.Count == 1)
-                    {
-                        var activityList = am.tb_warranty_activities.SqlQuery("SELECT * FROM dbo.tb_warranty_activities WHERE warrantyID =" + activity.First().id ).ToList();
-                        tb_warranty_activities act = activity.ElementAt(0);
-                        ViewData["lsbh"] = activityList;
-                        ViewData["thisAct"] = act;
-                        ViewData["FlagShowKq"] = "false";
-                        ViewData["warrantydetail"] = act.tb_warranty;
-                        tb_warranty tempwar = (tb_warranty)ViewData["warrantydetail"];
-                        item tempitem = am.items.SqlQuery("SELECT * FROM item where id=" + tempwar.itemID ).First();
-                        ViewData["itemDetail"] = tempitem;
-                    }
-                    else
-                    {
-                        bool flag = true;
-                        int warrantyID = activity.ElementAt(0).tb_warranty.id;
-                        foreach (tb_warranty_activities actt in activity) {
-                            if (!warrantyID.Equals(actt.warrantyID)) flag = false;
-                        }
-                        if (flag) {
-                            ViewData["warrantydetail"] = am.tb_warranty.SqlQuery("SELECT * FROM tb_warranty where id=" + warrantyID + "").FirstOrDefault();
-                            tb_warranty tempwar = (tb_warranty)ViewData["warrantydetail"];
-                            item tempitem = am.items.SqlQuery("SELECT * FROM item where id=" + tempwar.itemID ).First();
-                            ViewData["itemDetail"] = tempitem;
-                        }
-                        ViewData["lsbh"] = activity;
-                    }
-                }
-                if (searchType.Equals("warrantyCODEDate"))
-                {
-                    var activity = am.tb_warranty_activities.SqlQuery("SELECT * FROM dbo.tb_warranty_activities WHERE CodeBaoHanh LIKE '%" + code + "%'").ToList();
-
-                    ViewData["lsbh"] = activity;
-
-                }
-                if (searchType.Equals("warrantyCODEPhone"))
-                {
-                    if (code.Length > 6) {
-                        code = code.Substring(code.Length - 6);
-                    }
-                    var activity = am.tb_warranty_activities.SqlQuery("SELECT * FROM dbo.tb_warranty_activities WHERE CodeBaoHanh Like '%" + code + "%'").ToList();
-                    ViewData["lsbh"] = activity;
-
-                }
-                if (searchType.Equals("warrantyActID"))
-                {
-
-
-                    var activity = am.tb_warranty_activities.SqlQuery("SELECT * FROM dbo.tb_warranty_activities WHERE id = " + code).FirstOrDefault();
-                    var activityList = am.tb_warranty_activities.SqlQuery("SELECT * FROM dbo.tb_warranty_activities WHERE warrantyID =" + activity.warrantyID ).ToList();
-                    ViewData["lsbh"] = activityList;
-                    ViewData["thisAct"] = activity;
-                    ViewData["FlagShowKq"] = "false";
-                    ViewData["warrantydetail"] = activity.tb_warranty;
-                    tb_warranty tempwar = (tb_warranty)ViewData["warrantydetail"];
-                    item tempitem = am.items.SqlQuery("SELECT * FROM item where id=" + tempwar.itemID).First();
-                    ViewData["itemDetail"] = tempitem;
-                }
+                ViewData["Total"] = money;
+                ViewData["HoaDonBaoHanh"] = act;
+                return View("ChiTietHoaDonBaoHanh");
             }
+            return RedirectToAction("Index");
 
-            catch (Exception e) { }
-
-            //  ViewData["dsspdt"] = am.inventories.ToList();
-            return View("WarrantyCheck");
         }
+   
         // GET: Warranty/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
-
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         // POST: Warranty/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
@@ -526,6 +505,7 @@ namespace ThienNga2.Controllers
                 return View();
             }
         }
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public void GenerateInvoiceBill(String actid)
         {
             float totalheight = 100;
@@ -596,7 +576,7 @@ namespace ThienNga2.Controllers
                             if (fee.active != null) {  if( !(bool)fee.active)  flag = false; }
                             if (flag)
                             {
-                                tb_product_detail detail = am.ThienNga_FindProduct2(fee.productSKU).First();
+                                tb_product_detail detail = (tb_product_detail)am.tb_product_detail.Where(u => u.productName.Equals(fee.productSKU));
                                 sb.Append("<tr>");
                                 sb.Append("<td height='1' colspan='3'><font size='2'>");
                                 sb.Append(detail.productName);

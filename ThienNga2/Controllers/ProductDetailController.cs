@@ -11,7 +11,7 @@ using ThienNga2.Models.ViewModel;
 
 namespace ThienNga2.Areas.Admin.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Nhập Sản Phẩm Mới")]
     public class ProductDetailController : EntitiesAM
     {
         

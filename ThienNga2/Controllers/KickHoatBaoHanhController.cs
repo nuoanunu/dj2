@@ -11,7 +11,7 @@ namespace ThienNga2.Controllers
 {
     public class KickHoatBaoHanhController : EntitiesAM
     {
-        [Authorize(Roles = "Admin,Bán hàng,Admin Hà Nội")]
+        [Authorize(Roles = "Admin,Bán hàng,Admin Hà Nội,Kích Hoạt bảo hành")]
         // GET: KickHoatBaoHanh
         public ActionResult Index()
         {
