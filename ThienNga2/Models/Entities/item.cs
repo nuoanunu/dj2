@@ -30,6 +30,7 @@ namespace ThienNga2.Models.Entities
         public Nullable<int> CustomerType { get; set; }
         public Nullable<bool> warrantyAvailable { get; set; }
         public string tempname { get; set; }
+        public Nullable<bool> Verified { get; set; }
     
         public virtual CustomerType CustomerType1 { get; set; }
         public virtual order order { get; set; }

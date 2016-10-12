@@ -109,6 +109,7 @@
           <Property Name="CustomerType" Type="int" />
           <Property Name="warrantyAvailable" Type="bit" />
           <Property Name="tempname" Type="nvarchar(max)" />
+          <Property Name="Verified" Type="bit" />
         </EntityType>
         <EntityType Name="log">
           <Key>
@@ -1223,6 +1224,7 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <NavigationProperty Name="tb_inventory_name" Relationship="ThienNgaDatabaseModel.FK_item_tb_inventory_name" FromRole="item" ToRole="tb_inventory_name" />
           <NavigationProperty Name="tb_product_detail" Relationship="ThienNgaDatabaseModel.FK_item_tb_product_detail" FromRole="item" ToRole="tb_product_detail" />
           <NavigationProperty Name="tb_warranty" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_item" FromRole="item" ToRole="tb_warranty" />
+          <Property Name="Verified" Type="Boolean" />
         </EntityType>
         <EntityType Name="log">
           <Key>
@@ -1945,6 +1947,7 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <EntitySetMapping Name="items">
             <EntityTypeMapping TypeName="ThienNgaDatabaseModel.item">
               <MappingFragment StoreEntitySet="item">
+                <ScalarProperty Name="Verified" ColumnName="Verified" />
                 <ScalarProperty Name="tempname" ColumnName="tempname" />
                 <ScalarProperty Name="warrantyAvailable" ColumnName="warrantyAvailable" />
                 <ScalarProperty Name="CustomerType" ColumnName="CustomerType" />

@@ -104,6 +104,7 @@
     <Property Name="CustomerType" Type="int" />
     <Property Name="warrantyAvailable" Type="bit" />
     <Property Name="tempname" Type="nvarchar(max)" />
+    <Property Name="Verified" Type="bit" />
   </EntityType>
   <EntityType Name="log">
     <Key>

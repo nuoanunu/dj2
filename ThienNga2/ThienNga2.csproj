@@ -772,6 +772,7 @@
     <Content Include="Views\NhanVien\index.cshtml" />
     <Content Include="Views\NhanVien\Profile.cshtml" />
     <Content Include="Views\Product\XemThongTin.cshtml" />
+    <Content Include="Views\Warranty\ChinhSuaIMEI.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

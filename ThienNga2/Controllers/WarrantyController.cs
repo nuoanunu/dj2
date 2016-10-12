@@ -145,19 +145,133 @@ namespace ThienNga2.Controllers
 
         [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult IMEILIST() {
-           ViewData["allwar"]=am.tb_warranty.ToList();
+           ViewData["allwar"]=am.tb_warranty.SqlQuery("SELECT TOP 10 * from tb_warranty");
           
            ViewData["dsnkh"] = am.CustomerTypes.ToList();
             return View("allIMEI");
         }
         public ActionResult DanhSachIMEI()
         {
-            ViewData["IMEICHUASUA"] = am.items.ToList();
 
+            return View("ChinhSuaIMEI");
+        }
+        public ActionResult search( String code)
+        {
+            int searchType = 1;
+            if (searchType == 1) {
+                tb_warranty war = am.tb_warranty.SqlQuery("SELECT * FROM tb_warranty where warrantyID='"+code+"'").FirstOrDefault();
+                ViewData["item"] = war.item;
+            }
+            else if (searchType ==2){
+
+            }
+            else if (searchType == 3) { }
+            else if (searchType == 4) { }
+            else if (searchType == 5) { }
             ViewData["dsnkh"] = am.CustomerTypes.ToList();
             return View("ChinhSuaIMEI");
         }
+        public ActionResult Fixitem(int itemid, String itemname, String sku, String dos, int grroup)
+        {
+            try
+            {
+                item war = am.items.Find(itemid);
+                tb_product_detail detail = am.tb_product_detail.Where(u => u.producFactoryID.Equals(sku) || u.productStoreID.Equals(sku)).FirstOrDefault(); 
+                if (war != null && detail != null)
+                {
+                    war.productDetailID = detail.id;
+                    war.Verified = true; 
+                    try {
+                        DateTime date = DateTime.ParseExact(dos, "dd/MM/yyyy", null);
+                        war.DateOfSold = date;
 
+                    }
+                    catch (Exception e) { }
+                    am.SaveChanges();
+
+                    ViewData["item"] = war;
+                    ViewData["dsnkh"] = am.CustomerTypes.ToList();
+                    return View("ChinhSuaIMEI");
+                }
+            }
+            catch (Exception e) { }
+
+            return View("ChinhSuaIMEI");
+        }
+        public ActionResult FixKhach(int itemid, int cusID, String cusname, String sdt, int nhomkhach)
+        {
+            try
+            {
+                item war = am.items.Find(itemid);
+                tb_customer cus = am.tb_customer.Find(cusID);
+                if (war != null && cus != null)
+                {
+                    cus.phonenumber = sdt;
+                    cus.customerName = cusname;
+                    cus.Type = nhomkhach;
+                    am.SaveChanges();
+
+                    ViewData["item"] = war;
+                    ViewData["dsnkh"] = am.CustomerTypes.ToList();
+                    return View("ChinhSuaIMEI");
+                }
+            }
+            catch (Exception e) { }
+
+            return View("ChinhSuaIMEI");
+        }
+        public ActionResult Autocomplete(string term)
+        {
+            allname = am.ThienNga_FindProductName2("").ToList();
+            System.Diagnostics.Debug.WriteLine("SIZE " + allname.Count());
+
+            List<String> result = new List<string>();
+            foreach (String e in allname)
+            {
+                if (e.IndexOf(term, StringComparison.InvariantCultureIgnoreCase) >= 0)
+                {
+                    result.Add(e);
+                }
+            }
+            //  return Json(result);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Autocomplete2(string term)
+        {
+            allname = am.ThienNga_FindProductName2("").ToList();
+            allname = am.tb_product_detail.Select(u => u.productStoreID).ToList();
+
+            List<String> result = new List<string>();
+            foreach (String e in allname)
+            {
+                if (e.IndexOf(term, StringComparison.InvariantCultureIgnoreCase) >= 0)
+                {
+                    result.Add(e);
+                }
+            }
+            //  return Json(result);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult EditIMEI(int warrantyID, String IMEI, String duration, String description ,bool? machinh) {
+            try
+            {
+                tb_warranty war = am.tb_warranty.Find(warrantyID);
+                if (war != null)
+                {
+                    war.warrantyID = IMEI;
+                    war.duration = int.Parse(duration);
+                    war.description = description;
+                    if (machinh != null)
+                        war.MaChinh = (bool)machinh;
+                    else war.MaChinh = false;
+                    am.SaveChanges();
+                    return RedirectToAction("search", new { code = IMEI });
+                }
+            }
+            catch (Exception e) { }
+      
+            return  View("ChinhSuaIMEI");
+        }
         [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public String updateWAR(String wactID, String newDate,String newIMEI, String newSKU, String newName, String newSDT, String newDuration, String newDescription, String newChinhPhu , String newNhomKhach)
         {
@@ -229,23 +343,7 @@ namespace ThienNga2.Controllers
 
             return "";
         }
-        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
-        public ActionResult Autocomplete(string term)
-        {
-            allname = (List<String>)am.tb_product_detail.Select(u => u.productName);
-            System.Diagnostics.Debug.WriteLine("SIZE " + allname.Count());
 
-            List<String> result = new List<string>();
-            foreach (String e in allname)
-            {
-                if (e.IndexOf(term, StringComparison.InvariantCultureIgnoreCase) >= 0)
-                {
-                    result.Add(e);
-                }
-            }
-            //  return Json(result);
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
         // GET: Warranty/Details/5
         [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult Details(int id)
