@@ -318,6 +318,22 @@
                                                     $("#edit" + id).css("display", "");
                                                 }
                                             </script>
+                                            <tr>
+                                                <form action="/Warranty/EditIMEI" method="post">
+                                                    <input type="hidden" value="@thisitem.id" name="warrantyID" />
+                                                    <td><input  id="" type="text" name="IMEI" value="" /> </td>
+                                                    <td><input  id="" type="text" name="duration" value="" /> </td>
+                                                    <td><input  id="" type="text" name="description" value="" /> </td>
+                                                    <td>
+                                                            <input style="display:none" id="" value="true" type="checkbox" name="machinh"  />
+                                                    </td>
+                                                    <td>
+                                                        <button  class="btn btn-success btn-xs" type="submit"><i class="fa fa-hand-o-right"></i> Xác nhận </button>
+                         
+                                                    </td>
+                                                </form>
+
+                                            </tr>
 
                                         </tbody>
                                     </table>
