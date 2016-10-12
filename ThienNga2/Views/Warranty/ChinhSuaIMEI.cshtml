@@ -1,0 +1,51 @@
+﻿@using ThienNga2.Models.Entities
+<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"> </script>
+<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"> </script>
+<script>
+    $("#myTable").DataTable();
+</script>
+<div class="x_panel">
+    <div class="x_title">
+        <h2>Boardered table <small>Bordered table subtitle</small></h2>
+
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+
+        <table class="table table-bordered" id="myTable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>IMEI</th>
+                    <th>Thời hạn</th>
+                    <th>Mô tả</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (item item in (List<item>)ViewData["IMEICHUASUA"])
+                {
+                    <tr>
+                        <th scope="row">Ngày kích hoạt: @item.DateOfSold</th>
+                        <td>Tên sản Phẩm: @item.tb_product_detail.productName</td>
+                        <td>SKU: @item.tb_product_detail.productStoreID</td>
+                        <td>SDT khách: @item.tb_customer.customerName Tên: @item.tb_customer.phonenumber</td>
+                    </tr>
+                    foreach (tb_warranty war in item.tb_warranty.ToList())
+                    {
+                        <tr>
+                            <th scope="row"></th>
+                            <td>@war.warrantyID</td>
+                            <td>@war.duration</td>
+                            <td>@war.description</td>
+                        </tr>
+
+                    }
+
+                }
+
+
+            </tbody>
+        </table>
+
+    </div>
+</div>

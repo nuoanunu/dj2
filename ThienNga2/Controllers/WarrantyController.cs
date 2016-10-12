@@ -145,10 +145,17 @@ namespace ThienNga2.Controllers
 
         [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult IMEILIST() {
-           //ViewData["allwar"]=am.tb_warranty.ToList();
-           ViewData["allwar"] = am.tb_warranty.SqlQuery("SELECT  * from tb_warranty ").ToList();
+           ViewData["allwar"]=am.tb_warranty.ToList();
+          
            ViewData["dsnkh"] = am.CustomerTypes.ToList();
             return View("allIMEI");
+        }
+        public ActionResult DanhSachIMEI()
+        {
+            ViewData["IMEICHUASUA"] = am.items.ToList();
+
+            ViewData["dsnkh"] = am.CustomerTypes.ToList();
+            return View("ChinhSuaIMEI");
         }
 
         [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
