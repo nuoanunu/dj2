@@ -162,20 +162,25 @@ namespace ThienNga2.Controllers
         }
         public ActionResult search(String code)
         {
-            int searchType = 1;
-            if (searchType == 1)
+            try
             {
-                tb_warranty war = am.tb_warranty.SqlQuery("SELECT * FROM tb_warranty where warrantyID='" + code + "'").FirstOrDefault();
-                ViewData["item"] = war.item;
-            }
-            else if (searchType == 2)
-            {
+                int searchType = 1;
+                if (searchType == 1)
+                {
+                    tb_warranty war = am.tb_warranty.SqlQuery("SELECT * FROM tb_warranty where warrantyID='" + code + "'").FirstOrDefault();
+                    ViewData["item"] = war.item;
+                }
+                else if (searchType == 2)
+                {
 
+                }
+                else if (searchType == 3) { }
+                else if (searchType == 4) { }
+                else if (searchType == 5) { }
+                ViewData["dsnkh"] = am.CustomerTypes.ToList();
             }
-            else if (searchType == 3) { }
-            else if (searchType == 4) { }
-            else if (searchType == 5) { }
-            ViewData["dsnkh"] = am.CustomerTypes.ToList();
+            catch (Exception e) { }
+         
             return View("ChinhSuaIMEI");
         }
         public ActionResult Fixitem(int itemid, String itemname, String sku, String dos, int grroup)
