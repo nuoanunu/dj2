@@ -10,10 +10,6 @@
     <title>Inventory</title>
     <link rel="stylesheet" type="text/css" href="~/Content/SearchBar.css">
     <link rel="stylesheet" type="text/css" href="~/Content/Table.css">
-    <script src="http://www.google.com/jsapi"></script>
-   
-    
-
 
     <script>
         $(document).ready(function () {
@@ -150,38 +146,34 @@
 <body>
 
     <div>
-        @using (Html.BeginForm("Search", "KickHoatBaoHanh"))
-        {
-
-            <div id="form" class="form-wrapper">
-                <table>
-                    <tr>
-                        <td>
-                            <input id="search" class="suggestionsinput" name="code" type="text" placeholder="Mã sản phẩm " required />
-                        </td>
-                        <td>
-                            <button type="submit" value="Search" id="submit">Tìm  </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <br />Tìm theo
-                            <input type="radio" name="searchType" checked="checked" value="masp"> Mã sản pẩm
-                            <input type="radio" name="searchType" value="date"> Ngày
-                            <input type="radio" name="searchType" value="sdt"> SĐT
-                            <input type="radio" name="searchType" value="sku"> SKU
-
-                        </td>
-                    </tr>
-                </table>
-
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Tìm theo</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <form class="form-inline" action="/KickHoatBaoHanh/FindByFilter">
+                    <div class="form-group">
+                        <label for="ex3">Mã xuất kho</label>
+                        <input name="msk" value="" type="text" id="ex3" class="form-control" placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="ex4">SKU</label>
+                        <input name="sku" value="" type="text" id="ex4" class="form-control" placeholder=" ">
+                    </div>
+                    <div class="form-group">
+                        <label for="ex4">Ngày bán</label>
+                        <input name="date" value="" type="text" id="ex4" class="form-control" placeholder=" ">
+                    </div>
+                    <div class="form-group">
+                        <label for="ex4">SDT khách</label>
+                        <input name="sdt" value="" type="text" id="ex4" class="form-control" placeholder=" ">
+                    </div>
+                    <button type="submit" class="btn btn-default">Tìm</button>
+                </form>
 
             </div>
-
-
-
-
-        }
+        </div>
         <div>
 
             @if (ViewData["dspspgd"] != null)
@@ -214,9 +206,6 @@
                                 Số lượng IMEI đã nhập
                             </th>
                             <th>Chi tiết</th>
-
-
-
                         </tr>
 
                     </thead>
@@ -270,6 +259,7 @@
                 </table>
             }
         </div>
+        
         @if (ViewData["dspsp"] != null)
         {
 

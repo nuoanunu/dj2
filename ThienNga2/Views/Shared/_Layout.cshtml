@@ -15,6 +15,7 @@
     <link href="~/Content/css/animate.min.css" rel="stylesheet" />
     <link href="~/Content/css/custom.css" rel="stylesheet" />
     <link href="~/Content/css/icheck/flat/green.css" rel="stylesheet" />
+    <script src="~/Content/js/datatables/jquery.dataTables.min.js"></script>
     <link href="~/Content/js/datatables/jquery.dataTables.min.css" rel="stylesheet" />
     <script>
         $.getJSON("/Warranty/getTen?email=" + "@User.Identity.GetUserName()", function (result) {
@@ -24,7 +25,33 @@
 
         });
     </script>
+    <script src="~/Content/js/bootstrap.min.js"></script>
 
+    <!-- bootstrap progress js -->
+    <script src="~/Content/js/progressbar/bootstrap-progressbar.min.js"></script>
+    <script src="~/Content/js/nicescroll/jquery.nicescroll.min.js"></script>
+    <!-- icheck -->
+    <script src="~/Content/js/icheck/icheck.min.js"></script>
+    <script src="~/Content/js/custom.js"></script>
+    <!-- echart -->
+    <script src="~/Content/js/echart/echarts-all.js"></script>
+    <script src="~/Content/js/echart/green.js"></script>
+    <!-- pace -->
+    <script src="~/Content/js/pace/pace.min.js"></script>
+    <script type="text/javascript" src="~/Content/js/moment/moment.min.js"></script>
+    <script type="text/javascript" src="~/Content/js/datepicker/daterangepicker.js"></script>
+    <!-- chart js -->
+    <script src="~/Content/js/chartjs/chart.min.js"></script>
+    <script src="~/Content/js/custom.js"></script>
+    <script type="text/javascript" src="~/Content/js/flot/jquery.flot.js"></script>
+    <script type="text/javascript" src="~/Content/js/flot/jquery.flot.pie.js"></script>
+    <script type="text/javascript" src="~/Content/js/flot/jquery.flot.orderBars.js"></script>
+    <script type="text/javascript" src="~/Content/js/flot/jquery.flot.time.min.js"></script>
+    <script type="text/javascript" src="~/Content/js/flot/date.js"></script>
+    <script type="text/javascript" src="~/Content/js/flot/jquery.flot.spline.js"></script>
+    <script type="text/javascript" src="~/Content/js/flot/jquery.flot.stack.js"></script>
+    <script type="text/javascript" src="~/Content/js/flot/curvedLines.js"></script>
+    <script type="text/javascript" src="~/Content/js/flot/jquery.flot.resize.js"></script>
 </head>
 <body class="nav-md">
     <div class="container body">
@@ -87,16 +114,19 @@
                                     <a><i class="fa fa-windows"></i> Extras <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
                                         <li>
-                                            <a href="page_404.html">Báo giá</a>
+                                            <a href="/Home/">Thống Kê</a>
                                         </li>
                                         <li>
-                                            <a href="page_500.html">Nhóm Khách</a>
+                                            <a href="/BaoGia/">Báo giá</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Customer/">Nhóm Khách</a>
                                         </li>
                                         <li>
                                             <a href="/NhanVien/">Nhân viên</a>
                                         </li>
                                         <li>
-                                            <a href="/Warranty/DanhSachIMEI">Thông tin IMEI</a>
+                                            <a href="/Warranty/Fixitem">Thông tin IMEI</a>
                                         </li>
 
                                     </ul>
@@ -260,20 +290,7 @@
         <div class="clearfix"></div>
         <div id="notif-group" class="tabbed_notifications"></div>
     </div>
-    <script src="~/Content/js/bootstrap.min.js"></script>
-
-    <!-- bootstrap progress js -->
-    <script src="~/Content/js/progressbar/bootstrap-progressbar.min.js"></script>
-    <script src="~/Content/js/nicescroll/jquery.nicescroll.min.js"></script>
-    <!-- icheck -->
-    <script src="~/Content/js/icheck/icheck.min.js"></script>
-    <script src="~/Content/js/custom.js"></script>
-    <!-- echart -->
-    <script src="~/Content/js/echart/echarts-all.js"></script>
-    <script src="~/Content/js/echart/green.js"></script>
-    <!-- pace -->
-    <script src="~/Content/js/pace/pace.min.js"></script>
-
+    
     <script>
         var myChart9 = echarts.init(document.getElementById('mainb'), theme);
         myChart9.setOption({

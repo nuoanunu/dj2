@@ -27,9 +27,22 @@ namespace ThienNga2.Controllers
         // GET: ProductItem
         public ActionResult Index()
         {
-
+            String namelist = "[";
+            try
+            {
+                
+              
+                foreach (tb_product_detail productdetail in am.tb_product_detail.ToList())
+                {
+                    namelist = namelist + ",'" + productdetail.productStoreID + "'" ;
+                }
+                namelist = namelist.Remove(1, 1);
+                namelist = namelist + "]";
+            }
+            catch (Exception e) { }
+          
             ViewData["dsk"] = am.tb_inventory_name.ToList();
-
+            ViewData["namelist"] = namelist;
             ViewData["sdct"] = am.CustomerTypes.ToList();
             return View("NewProductItem", new NewItemViewModel());
 
@@ -131,6 +144,20 @@ namespace ThienNga2.Controllers
                 }
             }
             return null;
+        }
+        public String getProductName() {
+            try {
+                List<productView> lst = new List<productView>();
+                foreach (tb_product_detail productdetail in am.tb_product_detail.ToList()) {
+                    productView vi = new productView();
+                    vi.name = productdetail.productStoreID;
+                    lst.Add(vi);
+                }
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                return serializer.Serialize(lst);
+            }
+            catch (Exception e) { }
+            return "tyetetetet";
         }
         public ActionResult Autocomplete(string term)
         {

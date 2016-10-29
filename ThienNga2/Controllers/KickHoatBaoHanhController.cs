@@ -19,6 +19,15 @@ namespace ThienNga2.Controllers
             ViewData["dspspgd"] = am.items.SqlQuery("SELECT TOP 100 * FROM dbo.item  where productDetailID != 481 ORDER BY DateOfSold DESC ").ToList();
             return View(model);
         }
+        public ActionResult FindByFilter(String msk, String sku,DateTime? date, String sdt) {
+            if(date != null)
+            ViewData["dspspgd"] = am.items.Where(u => u.DateOfSold.ToShortDateString().Equals( ((DateTime)date).ToShortDateString()) && u.productID.Equals(msk) && u.tb_product_detail.productStoreID.Equals(sku) && u.tb_customer.phonenumber.Equals(sdt)).ToList();
+            else
+                ViewData["dspspgd"] = am.items.Where(u =>  (u.productID.Equals(msk)|| msk.Equals("") ) && (u.tb_product_detail.productStoreID.Equals(sku)|| sku.Equals("")) && (u.tb_customer.phonenumber.Equals(sdt) || sdt.Equals(""))).ToList();
+
+            var model = new KichHoatBaoHanh();
+            return View("index",model);
+        }
 
         // GET: KickHoatBaoHanh/Details/5
         public ActionResult Details(int id)

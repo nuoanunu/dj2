@@ -56,7 +56,7 @@
             <div class="col-md-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>New Partner Contracts Consultancy</h2>
+                        <h2>Tổng quan</h2>
 
                         <div class="clearfix"></div>
                     </div>
@@ -83,20 +83,20 @@
 
                             <div class="col-md-6 col-sm-9 col-xs-12">
                                 <div class="x_title">
-                                    <h2>Linh kiện<small>Bản linh kiện cần thay thế</small></h2>
+                                    <h2>Linh kiện<small>Các linh kiện cần thay thế</small></h2>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
 
-                                    <table class="table table-striped">
+                                    <table width="90%" class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Tên Linh Kiện</th>
+                                                <th width="20%">Tên Linh Kiện</th>
 
-                                                <th>Số lượng</th>
-                                                <th>Chi phí</th>
+                                                <th width="15%">Số lượng</th>
+                                                <th width="50%">Chi phí</th>
 
-                                                <th>Action</th>
+                                                <th width="15%">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -151,16 +151,16 @@
                                                 <tr>
                                                     <td>
                                                         <input type="hidden" name="activitiesID" value="@act.id" />
-                                                        <input id="searchID" type="text" name="ksu" />
+                                                        <input style="width:100%" id="searchID" type="text" name="ksu" />
                                                     </td>
                                                     <td>
-                                                        <input id="quantitySKU" type="text" name="quantity" />
+                                                        <input style="width:100%" id="quantitySKU" type="text" name="quantity" />
                                                     </td>
                                                     <td>
-                                                        <input id="skuprice" type="text" name="fixPrice" readonly />
+                                                        <input style="width:100%" id="skuprice" type="text" name="fixPrice" readonly />
                                                     </td>
                                                     <td>
-                                                        <input type="submit" name="ThêmS" />
+                                                        <input type="submit" name="ThêmS" value="Thêm" />
                                                     </td>
                                                 </tr>
                                             }
@@ -253,8 +253,8 @@
                                     <li>
                                         <img src="~/Content/images/img.jpg" class="avatar" alt="Avatar">
                                         <div class="message_date">
-                                            <h3 class="date text-info">@log.date.Day</h3>
-                                            <p class="month">@log.date.Month</p>
+                                            <h3 class="date text-info">Ngày @log.date.Day</h3>
+                                            <p class="month">Tháng @log.date.Month.ToString()</p>
                                         </div>
                                         <div class="message_wrapper">
                                             <h4 class="heading">@log.AspNetUser.FullName  </h4>
@@ -309,8 +309,11 @@
                                     <br>
 
                                     <div class="text-center mtop20">
-                                        <a href="#" class="btn btn-sm btn-primary">CHuyển Người Sửa</a>
-                                        <a href="#" class="btn btn-sm btn-warning">Lưu thay đổi</a>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <a href="#" class="btn btn-sm btn-primary">Chuyển người sửa</a>
+                                        }
+                                        
                                     </div>
                                 </div>
 
