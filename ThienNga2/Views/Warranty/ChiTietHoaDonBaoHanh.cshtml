@@ -77,7 +77,7 @@
                                 <li class="hidden-phone">
                                     <span id="ttht" class="name"> Trạng thái hiện tại </span>
                                     <span id="statusname" class="value text-success"> @act.tb_warrnaty_status.statusName</span>
-                                    <button id="btnthaydoi" class="btn btn-warning">Thay đổi</button>
+                                    <span><button id="btnthaydoi" onclose="StartChange()" class="btn btn-warning">Thay đổi</button></span> 
                                     <form action="/Warranty/ChangeStatus" id="myWarrantyForm" style="display:none">
                                         <input type="hidden" name="actid" value="@act.id"  />
                                         <select name="newstatus" id="statuslist" >
@@ -90,7 +90,7 @@
                                             <option value="7">Đã giao thiết bị</option>
                                         </select>
                                         <button class="btn btn-success">Xác nhận</button>
-                                        <button class="btn btn-danger">Cancel</button>
+                                        <button onclick="Cancelchange()" class="btn btn-danger">Cancel</button>
                                     </form>
                                     <script>
                                         function StartChange() {
