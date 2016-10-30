@@ -308,7 +308,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach (tb_warranty_activities oldact in act.tb_warranty.tb_warranty_activities.ToList())
+                                                @foreach (tb_warranty_activities oldact in act.tb_warranty.tb_warranty_activities.Where(u=>u.status==6 || u.status==7).ToList())
                                                 {
                                                     <tr>
                                                         <td>
