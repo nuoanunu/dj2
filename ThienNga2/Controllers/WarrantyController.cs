@@ -32,13 +32,20 @@ namespace ThienNga2.Controllers
             List<SelectListItem> list = new List<SelectListItem>();
             AspNetRole role = am.AspNetRoles.SqlQuery("SELECT * FROM AspNetRoles where  id='c58194a2-1502-4623-b549-00cea9250711'").FirstOrDefault();
             List<AspNetUser> nhanviens = role.AspNetUsers.ToList();
-           
+            
             ViewData["NhanVienKyThuat"] = nhanviens;
             return View("WarrantyCheck");
         }
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult ChangeStatus(int actid, int newstatus) {
             tb_warranty_activities act = am.tb_warranty_activities.Find(actid);
+            String oldstatus = act.tb_warrnaty_status.statusName;
             act.status = newstatus;
+            log logg = new log();
+            logg.warrantyActivitiesID = actid;
+            logg.account = User.Identity.GetUserId();
+            logg.action = am.AspNetUsers.Find(logg.account).FullName + " đã thay đổi trạng thái từ " + oldstatus + " thành " + act.tb_warrnaty_status.statusName;
+            am.logs.Add(logg);
             am.SaveChanges();
             return RedirectToAction("ActivityDetail", new { id = actid});
         }
@@ -51,7 +58,12 @@ namespace ThienNga2.Controllers
                 act.empFixer = user.Id;
                 am.SaveChanges();
             }
-
+            log logg = new log();
+            logg.warrantyActivitiesID = actid;
+            logg.account = User.Identity.GetUserId();
+            logg.action = am.AspNetUsers.Find(logg.account).FullName + " đã giao nhiệm vu sửa thiết bị cho " + user.FullName;
+            am.logs.Add(logg);
+            am.SaveChanges();
             return RedirectToAction("ActivityDetail", new { id = act.id });
         }
         [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]

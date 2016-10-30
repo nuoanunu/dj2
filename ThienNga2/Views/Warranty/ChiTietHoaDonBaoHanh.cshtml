@@ -77,10 +77,10 @@
                                 <li class="hidden-phone">
                                     <span id="ttht" class="name"> Trạng thái hiện tại </span>
                                     <span id="statusname" class="value text-success"> @act.tb_warrnaty_status.statusName</span>
-                                    <span><button id="btnthaydoi" onclick="StartChange()" class="btn btn-warning">Thay đổi</button></span> 
+                                    <span><button id="btnthaydoi" onclick="StartChange()" class="btn btn-warning">Thay đổi</button></span>
                                     <form action="/Warranty/ChangeStatus" id="myWarrantyForm" style="display:none">
-                                        <input type="hidden" name="actid" value="@act.id"  />
-                                        <select name="newstatus" id="statuslist" >
+                                        <input type="hidden" name="actid" value="@act.id" />
+                                        <select name="newstatus" id="statuslist">
                                             <option value="1">Chờ tiếp nhận</option>
                                             <option value="2">Đang kiểm tra</option>
                                             <option value="3">Báo lỗi, chi phí</option>
@@ -107,7 +107,7 @@
                                         }
 
                                     </script>
-                                    
+
                                 </li>
                             </ul>
                             <br>
@@ -225,52 +225,119 @@
                                         <tbody>
                                             @foreach (warrantyActivityFixingFee fee in act.warrantyActivityFixingFees)
                                             {
-                                                <tr>
-                                                    <td>
-                                                        @fee.FixDetail
-                                                    </td>
-                                                    <td>
-                                                        @fee.fee.ToString("N")
-                                                    </td>
-                                                    @if ( (bool)fee.active)
+                                            <tr>
+                                                <td>
+                                                    @fee.FixDetail
+                                                </td>
+                                                <td>
+                                                    @fee.fee.ToString("N")
+                                                </td>
+                                                @if ( (bool)fee.active)
                                                     {
-                                                        <td>
+                                                    <td>
 
-                                                            @using (Html.BeginForm("XoaFixingFee", "Warranty"))
+                                                        @using (Html.BeginForm("XoaFixingFee", "Warranty"))
                                                             {
-                                                                <input type="hidden" name="feeID" value="@fee.id" />
-                                                                <input type="hidden" name="activitiesID" value="@fee.tb_warranty_activities.id" />
-                                                                <input type="submit" name="Xóa" value="Xóa" />
+                                                            <input type="hidden" name="feeID" value="@fee.id" />
+                                                            <input type="hidden" name="activitiesID" value="@fee.tb_warranty_activities.id" />
+                                                            <input type="submit" name="Xóa" value="Xóa" />
                                                             }
-                                                        </td>
+                                                    </td>
                                                     }
                                                     else {
-                                                           <td>
-                                                               Đã Xóa
-                                                           </td>
+                                                    <td>
+                                                        Đã Xóa
+                                                    </td>
                                                     }
-                                                </tr>
+                                            </tr>
                                             }
                                             @using (Html.BeginForm("AddFixingFee", "Warranty"))
                                             {
-                                                <tr>
-                                                    <td>
-                                                        <input type="hidden" name="activitiesID" value="@act.id" />
-                                                        <input type="text" name="fixDetail" />
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name="price" />
-                                                    </td>
-                                                    <td>
-                                                        <input type="submit" name="ThêmS" />
-                                                    </td>
-                                                </tr>
+                                            <tr>
+                                                <td>
+                                                    <input type="hidden" name="activitiesID" value="@act.id" />
+                                                    <input type="text" name="fixDetail" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="price" />
+                                                </td>
+                                                <td>
+                                                    <input type="submit" name="ThêmS" />
+                                                </td>
+                                            </tr>
                                             }
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-9 col-xs-12">
+                                    <div class="x_title">
+                                        <h2>Lịch sử bảo hành<small> </small></h2>
 
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Ngày bắt đầu
+                                                    </th>
+                                                    <th>
+                                                        Ngày trả
+                                                    </th>
+                                                    <th>
+                                                        Người sữa
+                                                    </th>
+                                                    <th>
+                                                        Phí linh kiện
+                                                    </th>
+                                                    <th>
+                                                        Phí sữa chữa
+                                                    </th>
+                                                    <th>
+                                                       Tình trạng lúc nhận
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (tb_warranty_activities oldact in act.tb_warranty.tb_warranty_activities.ToList())
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @oldact.startDate
+                                                        </td>
+                                                        <td>
+                                                            @oldact.realeaseDATE
+                                                        </td>
+                                                        @if (oldact.AspNetUser1 != null)
+                                                        {
+                                                            <td>oldact.AspNetUser1.FullName</td>
+                                                        }
+                                                        else {
+                                                            <td></td>
+                                                        }
+                                                        <td>
+                                                            @oldact.warrantyActivityFees.Sum(u => u.fixingfee)
+                                                        </td>
+                                                        <td>
+                                                            @oldact.warrantyActivityFixingFees.Sum(u => u.fee)
+                                                        </td>
+                                                        <td>
+                                                            @oldact.Description
+                                                        </td>
+                                                    </tr>
+                                                }
+                                               
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+                            </div>
                             <br />
                             <div class="row">
                                 <h4>Hoat Động gần đây</h4>
@@ -312,7 +379,7 @@
                                 <div class="panel-body">
                                     <h3 class="green"><i class="fa fa-paint-brush"></i>@act.tb_warranty.item.tb_product_detail.productStoreID</h3>
 
-                                    
+
 
                                     <div class="project_detail">
 
@@ -341,34 +408,34 @@
                                     <div class="text-center mtop20">
                                         @if (User.IsInRole("Admin") || User.IsInRole("Quản lý sữa chữa"))
                                         {<button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#MyempList@(act.id)"><i class="fa fa-pencil"></i>Giao cho</button>
-                                            <div class="modal fade" id="MyempList@(act.id)" role="dialog">
-                                                <div class="modal-dialog modal-lg">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                            <h4 class="modal-title">Modal Header</h4>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form action="/Warranty/GiaoViec" method="post">
-                                                                Chọn nhân viện
-                                                                <input type="hidden" value="@act.id" name="actid" />
-                                                                <select name="empId">
-                                                                    @foreach (AspNetUser user in (List<AspNetUser>)ViewData["NhanVienKyThuat"])
+                                        <div class="modal fade" id="MyempList@(act.id)" role="dialog">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">Modal Header</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="/Warranty/GiaoViec" method="post">
+                                                            Chọn nhân viện
+                                                            <input type="hidden" value="@act.id" name="actid" />
+                                                            <select name="empId">
+                                                                @foreach (AspNetUser user in (List<AspNetUser>)ViewData["NhanVienKyThuat"])
                                                                     {
-                                                                        <option value="@user.Id"> @user.FullName</option>
+                                                                    <option value="@user.Id"> @user.FullName</option>
                                                                     }
-                                                                </select>
-                                                                <button type="submit"> Giao </button>
-                                                            </form>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        </div>
+                                                            </select>
+                                                            <button type="submit"> Giao </button>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
                                         }
-                                        
+
                                     </div>
                                     <h5>Tình trạng lúc nhận</h5>
                                     <p>@act.Description</p>
