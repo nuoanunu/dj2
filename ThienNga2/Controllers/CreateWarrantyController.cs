@@ -13,7 +13,7 @@ using System.Web.Script.Serialization;
 using System.Web.UI;
 using ThienNga2.Models.Entities;
 using ThienNga2.Models.ViewModel;
-
+using Microsoft.AspNet.Identity;
 namespace ThienNga2.Controllers
 {
 
@@ -121,7 +121,7 @@ namespace ThienNga2.Controllers
             else
                 act = new tb_warranty_activities();
             phoneNumber = phoneNumber.Trim();
-            var emplo1 = am.AspNetUsers.SqlQuery("SELECT * FROM dbo.AspNetUsers WHERE Email='" + Emp1 + "'").ToList().First();
+            var emplo1 = am.AspNetUsers.SqlQuery("SELECT * FROM dbo.AspNetUsers WHERE Id='" + User.Identity.GetUserId() + "'").ToList().First();
             AspNetUser emplo2 =null;
             if (Emp2 != null)
                 try {
