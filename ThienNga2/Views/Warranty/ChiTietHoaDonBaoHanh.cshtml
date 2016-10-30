@@ -292,13 +292,16 @@
                                                         Người sữa
                                                     </th>
                                                     <th>
-                                                        Phí linh kiện
+                                                        Linh kiện
                                                     </th>
                                                     <th>
-                                                        Phí sữa chữa
+                                                        Sữa chữa khác
                                                     </th>
                                                     <th>
                                                        Tình trạng lúc nhận
+                                                    </th>
+                                                    <th>
+                                                        Chi tiết
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -320,13 +323,21 @@
                                                             <td></td>
                                                         }
                                                         <td>
-                                                            @oldact.warrantyActivityFees.Sum(u => u.fixingfee)
+                                                            @foreach (warrantyActivityFee fee in oldact.warrantyActivityFees) {
+                                                                @Html.Display(fee.productSKU + ",")
+                                                            }
                                                         </td>
                                                         <td>
-                                                            @oldact.warrantyActivityFixingFees.Sum(u => u.fee)
+                                                            @foreach (warrantyActivityFixingFee fee in oldact.warrantyActivityFixingFees)
+                                                            {
+                                                                @Html.Display(fee.FixDetail + ",")
+                                                            }
                                                         </td>
                                                         <td>
                                                             @oldact.Description
+                                                        </td>
+                                                        <td>
+                                                            <a href="/Warranty/ActivityDetail?id=@oldact.id">Detail</a>
                                                         </td>
                                                     </tr>
                                                 }
