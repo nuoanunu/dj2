@@ -532,6 +532,7 @@ namespace ThienNga2.Controllers
                             warrantyActivityFee a = new warrantyActivityFee();
                             a.activityID = int.Parse(activitiesID);
                             a.productSKU = ksu;
+                            a.active = true;
                             a.fixingfee = act.tb_warranty.item.tb_product_detail.price * int.Parse(quantity);
                             a.quantity = int.Parse(quantity);
                             am.warrantyActivityFees.Add(a);
@@ -572,6 +573,7 @@ namespace ThienNga2.Controllers
                         a.activityID = int.Parse(activitiesID);
                         a.FixDetail = fixDetail;
                         a.fee = float.Parse(price);
+                        a.active = true;
                         am.warrantyActivityFixingFees.Add(a);
                         am.SaveChanges();
                         log log = new log();
