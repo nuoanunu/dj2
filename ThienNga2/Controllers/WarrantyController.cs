@@ -383,7 +383,7 @@ namespace ThienNga2.Controllers
             {
                 tb_warranty_activities act = am.tb_warranty_activities.Find(int.Parse(actid));
                 if (act != null)
-                    if (User.Identity.GetUserName().Equals(act.AspNetUser1.Email) || || User.IsInRole("Admin"))
+                    if (User.Identity.GetUserName().Equals(act.AspNetUser1.Email) || User.IsInRole("Admin"))
                     {
 
                         act.status = int.Parse(itemstatus);
@@ -491,7 +491,7 @@ namespace ThienNga2.Controllers
         public ActionResult XoaFee(String feeID, String activitiesID)
         {
             warrantyActivityFee item = am.warrantyActivityFees.Find(int.Parse(feeID));
-            if (User.Identity.GetUserName().Equals(item.tb_warranty_activities.AspNetUser1.Email) |||| User.IsInRole("Admin"))
+            if (User.Identity.GetUserName().Equals(item.tb_warranty_activities.AspNetUser1.Email) || User.IsInRole("Admin"))
             {
                 warrantyActivityFee editor = am.warrantyActivityFees.Find(int.Parse(feeID));
                 editor.active = false;
