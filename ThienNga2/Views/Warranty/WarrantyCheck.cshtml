@@ -77,7 +77,11 @@
                                         @act.CodeBaoHanh
                                     </td>
                                     <td>
-                                        @act.AspNetUser1.Email
+                                        @if (act.AspNetUser1 != null)
+                                        {
+                                            @act.AspNetUser1.Email
+                                        }
+                                   
                                     </td>
                                     <td class="project_progress">
                                         <div class="progress progress_sm">
