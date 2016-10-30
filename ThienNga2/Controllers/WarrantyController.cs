@@ -46,7 +46,7 @@ namespace ThienNga2.Controllers
                 am.SaveChanges();
             }
 
-            return RedirectToAction("Search", new { code = act.id, searchType= "warrantyActID" });
+            return RedirectToAction("ActivityDetail", new { id = act.id });
         }
         [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public String getTen(String email)
