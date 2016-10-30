@@ -75,8 +75,39 @@
                                     <span class="value text-success"> @( ((DateTime.Today - act.startDate)).TotalDays) </span>
                                 </li>
                                 <li class="hidden-phone">
-                                    <span class="name"> Trạng thái hiện tại</span>
-                                    <span class="value text-success"> @act.tb_warrnaty_status.statusName</span>
+                                    <span id="ttht" class="name"> Trạng thái hiện tại </span>
+                                    <span id="statusname" class="value text-success"> @act.tb_warrnaty_status.statusName</span>
+                                    <button id="btnthaydoi" class="btn btn-warning">Thay đổi</button>
+                                    <form action="/Warranty/ChangeStatus" id="myWarrantyForm" style="display:none">
+                                        <input type="hidden" name="actid" value="@act.id"  />
+                                        <select name="newstatus" id="statuslist" >
+                                            <option value="1">Tiếp nhận &Aacute; chờ</option>
+                                            <option value="2">Đang kiểm tra</option>
+                                            <option value="3">Báo lỗi &Aacute; chi phí</option>
+                                            <option value="4">Đang sửa</option>
+                                            <option value="5">Đã sửa xong</option>
+                                            <option value="6">Đã báo khách lấy</option>
+                                            <option value="7">Đã giao thiết bị</option>
+                                        </select>
+                                        <button class="btn btn-success">Xác nhận</button>
+                                        <button class="btn btn-danger">Cancel</button>
+                                    </form>
+                                    <script>
+                                        function StartChange() {
+                                            $("#@act.id").show();
+                                            $("#btnthaydoi").hide();
+                                            $("#ttht").hide();
+                                            $("#statusname").hide();
+                                        }
+                                        function Cancelchange() {
+                                            $("#@act.id").hide();
+                                            $("#btnthaydoi").show();
+                                            $("#ttht").show();
+                                            $("#statusname").show();
+                                        }
+
+                                    </script>
+                                    
                                 </li>
                             </ul>
                             <br>
@@ -281,8 +312,7 @@
                                 <div class="panel-body">
                                     <h3 class="green"><i class="fa fa-paint-brush"></i>@act.tb_warranty.item.tb_product_detail.productStoreID</h3>
 
-                                    <p>@act.Description</p>
-                                    <br>
+                                    
 
                                     <div class="project_detail">
 
@@ -340,6 +370,9 @@
                                         }
                                         
                                     </div>
+                                    <h5>Tình trạng lúc nhận</h5>
+                                    <p>@act.Description</p>
+                                    <br>
                                 </div>
 
                             </section>

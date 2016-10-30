@@ -36,6 +36,12 @@ namespace ThienNga2.Controllers
             ViewData["NhanVienKyThuat"] = nhanviens;
             return View("WarrantyCheck");
         }
+        public ActionResult ChangeStatus(int actid, int newstatus) {
+            tb_warranty_activities act = am.tb_warranty_activities.Find(actid);
+            act.status = newstatus;
+            am.SaveChanges();
+            return RedirectToAction("ActivityDetail", new { id = actid});
+        }
         [Authorize(Roles = "Admin,Admin Hà Nội,Nhân Viên Quản Lý Sửa Chữa")]
         public ActionResult GiaoViec(int actid, string empId)
         {
