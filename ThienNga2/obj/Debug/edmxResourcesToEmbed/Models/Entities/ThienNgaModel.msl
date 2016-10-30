@@ -355,6 +355,7 @@
     <EntitySetMapping Name="tb_warranty_activities">
       <EntityTypeMapping TypeName="ThienNgaDatabaseModel.tb_warranty_activities">
         <MappingFragment StoreEntitySet="tb_warranty_activities">
+          <ScalarProperty Name="type" ColumnName="type" />
           <ScalarProperty Name="Note" ColumnName="Note" />
           <ScalarProperty Name="productDetailID" ColumnName="productDetailID" />
           <ScalarProperty Name="SDT" ColumnName="SDT" />
@@ -441,6 +442,14 @@
           <ScalarProperty Name="employeeemail" ColumnName="employeeemail" />
           <ScalarProperty Name="employeeAddress" ColumnName="employeeAddress" />
           <ScalarProperty Name="employeeName" ColumnName="employeeName" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ActivityTypes">
+      <EntityTypeMapping TypeName="ThienNgaDatabaseModel.ActivityType">
+        <MappingFragment StoreEntitySet="ActivityType">
+          <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="id" ColumnName="id" />
         </MappingFragment>
       </EntityTypeMapping>

@@ -9,6 +9,13 @@
     <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="roleID" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="ActivityType">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="128" />
+  </EntityType>
   <EntityType Name="AspNetRoles">
     <Key>
       <PropertyRef Name="Id" />
@@ -238,6 +245,7 @@
     <Property Name="SDT" Type="nvarchar" MaxLength="50" />
     <Property Name="productDetailID" Type="int" Nullable="false" />
     <Property Name="Note" Type="nvarchar(max)" />
+    <Property Name="type" Type="int" />
   </EntityType>
   <EntityType Name="tb_warrnaty_status">
     <Key>
@@ -510,6 +518,18 @@ warning 6035: The relationship 'FK_inventory_tb_product_detail1' has columns tha
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_tb_warranty_activities_ActivityType">
+    <End Role="ActivityType" Type="Self.ActivityType" Multiplicity="0..1" />
+    <End Role="tb_warranty_activities" Type="Self.tb_warranty_activities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActivityType">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tb_warranty_activities">
+        <PropertyRef Name="type" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_tb_warranty_activities_AspNetUsers">
     <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
     <End Role="tb_warranty_activities" Type="Self.tb_warranty_activities" Multiplicity="*" />
@@ -664,6 +684,7 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
   </Function>
   <EntityContainer Name="ThienNgaDatabaseModelStoreContainer">
     <EntitySet Name="account" EntityType="Self.account" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ActivityType" EntityType="Self.ActivityType" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
@@ -759,6 +780,10 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
     <AssociationSet Name="FK_tb_product_detail_tb_cate" Association="Self.FK_tb_product_detail_tb_cate">
       <End Role="tb_cate" EntitySet="tb_cate" />
       <End Role="tb_product_detail" EntitySet="tb_product_detail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tb_warranty_activities_ActivityType" Association="Self.FK_tb_warranty_activities_ActivityType">
+      <End Role="ActivityType" EntitySet="ActivityType" />
+      <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
     </AssociationSet>
     <AssociationSet Name="FK_tb_warranty_activities_AspNetUsers" Association="Self.FK_tb_warranty_activities_AspNetUsers">
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />

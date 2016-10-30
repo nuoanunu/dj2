@@ -200,6 +200,11 @@
       <End Role="AspNetUser" EntitySet="AspNetUsers" />
       <End Role="NhanVien" EntitySet="NhanViens" />
     </AssociationSet>
+    <EntitySet Name="ActivityTypes" EntityType="ThienNgaDatabaseModel.ActivityType" />
+    <AssociationSet Name="FK_tb_warranty_activities_ActivityType" Association="ThienNgaDatabaseModel.FK_tb_warranty_activities_ActivityType">
+      <End Role="ActivityType" EntitySet="ActivityTypes" />
+      <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="ThienNga_checkkho_Result">
     <Property Type="Int32" Name="id" Nullable="false" />
@@ -570,6 +575,8 @@
     <NavigationProperty Name="tb_warrnaty_status" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_tb_warrnaty_status" FromRole="tb_warranty_activities" ToRole="tb_warrnaty_status" />
     <NavigationProperty Name="warrantyActivityFees" Relationship="ThienNgaDatabaseModel.FK_warrantyActivityFee_tb_warranty_activities" FromRole="tb_warranty_activities" ToRole="warrantyActivityFee" />
     <NavigationProperty Name="warrantyActivityFixingFees" Relationship="ThienNgaDatabaseModel.FK_warrantyActivityFixingFee_tb_warranty_activities" FromRole="tb_warranty_activities" ToRole="warrantyActivityFixingFee" />
+    <Property Name="type" Type="Int32" />
+    <NavigationProperty Name="ActivityType" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_ActivityType" FromRole="tb_warranty_activities" ToRole="ActivityType" />
   </EntityType>
   <EntityType Name="tb_warrnaty_status">
     <Key>
@@ -911,6 +918,26 @@
       </Principal>
       <Dependent Role="NhanVien">
         <PropertyRef Name="accountID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ActivityType">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="tb_warranty_activities" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_ActivityType" FromRole="ActivityType" ToRole="tb_warranty_activities" />
+  </EntityType>
+  <Association Name="FK_tb_warranty_activities_ActivityType">
+    <End Type="ThienNgaDatabaseModel.ActivityType" Role="ActivityType" Multiplicity="0..1" />
+    <End Type="ThienNgaDatabaseModel.tb_warranty_activities" Role="tb_warranty_activities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ActivityType">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tb_warranty_activities">
+        <PropertyRef Name="type" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

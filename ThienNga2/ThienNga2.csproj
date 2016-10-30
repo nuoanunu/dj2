@@ -247,6 +247,9 @@
     <Compile Include="Models\Entities\account.cs">
       <DependentUpon>ThienNgaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\ActivityType.cs">
+      <DependentUpon>ThienNgaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\AspNetRole.cs">
       <DependentUpon>ThienNgaModel.tt</DependentUpon>
     </Compile>

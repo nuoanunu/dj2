@@ -122,7 +122,7 @@
                                     <table width="90%" class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th width="20%">Tên Linh Kiện</th>
+                                                <th width="20%">SKU</th>
 
                                                 <th width="15%">Số lượng</th>
                                                 <th width="50%">Chi phí</th>
@@ -232,35 +232,37 @@
                                                 <td>
                                                     @fee.fee.ToString("N")
                                                 </td>
-                                                @if ( (bool)fee.active)
-                                                    {
+                                                @if ((bool)fee.active)
+                                                {
                                                     <td>
 
                                                         @using (Html.BeginForm("XoaFixingFee", "Warranty"))
-                                                            {
+                                                        {
                                                             <input type="hidden" name="feeID" value="@fee.id" />
                                                             <input type="hidden" name="activitiesID" value="@fee.tb_warranty_activities.id" />
                                                             <input type="submit" name="Xóa" value="Xóa" />
-                                                            }
+                                                        }
                                                     </td>
-                                                    }
-                                                    else {
+                                                }
+                                                else
+                                                {
                                                     <td>
                                                         Đã Xóa
                                                     </td>
-                                                    }
+                                                }
                                             </tr>
                                             }
                                             @using (Html.BeginForm("AddFixingFee", "Warranty"))
                                             {
                                             <tr>
                                                 <td>
-                                                    <input type="hidden" name="activitiesID" value="@act.id" />
+                                                    
                                                     <input type="text" name="fixDetail" />
                                                 </td>
                                                 <td>
                                                     <input type="text" name="price" />
                                                 </td>
+                                                <input type="hidden" name="activitiesID" value="@act.id" />
                                                 <td>
                                                     <input type="submit" name="ThêmS" />
                                                 </td>
@@ -319,11 +321,13 @@
                                                         {
                                                             <td>@oldact.AspNetUser1.FullName</td>
                                                         }
-                                                        else {
+                                                        else
+                                                        {
                                                             <td></td>
                                                         }
                                                         <td>
-                                                            @foreach (warrantyActivityFee fee in oldact.warrantyActivityFees) {
+                                                            @foreach (warrantyActivityFee fee in oldact.warrantyActivityFees)
+                                                            {
                                                                 @Html.Display(fee.productSKU + ",")
                                                             }
                                                         </td>
@@ -389,14 +393,17 @@
                                 </div>
                                 <div class="panel-body">
                                     <h3 class="green"><i class="fa fa-paint-brush"></i>@act.tb_warranty.item.tb_product_detail.productStoreID</h3>
-
+                                    @if (act.tb_warranty.item.tb_customer != null) { 
+                                    if (act.tb_warranty.item.tb_customer.CustomerType != null)
+                                    {
                                     <div class="project_detail" style="background-color:@act.tb_warranty.item.tb_customer.CustomerType.Color">
 
                                         <p class="title">Nhóm khách</p>
                                         <p>@act.tb_warranty.item.tb_customer.CustomerType.GroupName</p>
                                      
                                     </div>
-
+                                            }
+                                    }
                                     <div class="project_detail">
 
                                         <p class="title">Tên Khách</p>

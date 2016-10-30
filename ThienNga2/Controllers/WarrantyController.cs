@@ -99,7 +99,7 @@ namespace ThienNga2.Controllers
                 tb_warranty_activities act = am.tb_warranty_activities.SqlQuery("SELECT * from tb_warranty_activities where CodeBaoHanh= '" + idwar + "'").First();
                 AspNetUser user = am.AspNetUsers.SqlQuery("SELECT * FROM AspNetUsers where Email='" + iduser + "'").First();
                 
-                if (act != null && user != null && User.Identity.GetUserName().Equals(iduser))
+                if (act != null && user != null && User.Identity.GetUserName().Equals(iduser) )
                 {
                     act.empFixer = user.Id;
                     act.AspNetUser1 = user;
@@ -383,7 +383,7 @@ namespace ThienNga2.Controllers
             {
                 tb_warranty_activities act = am.tb_warranty_activities.Find(int.Parse(actid));
                 if (act != null)
-                    if (User.Identity.GetUserName().Equals(act.AspNetUser1.Email))
+                    if (User.Identity.GetUserName().Equals(act.AspNetUser1.Email) || || User.IsInRole("Admin"))
                     {
 
                         act.status = int.Parse(itemstatus);
@@ -438,7 +438,7 @@ namespace ThienNga2.Controllers
             {
                 code = code.Substring(code.IndexOf("StoreSKU") + 10, code.Length - code.IndexOf("StoreSKU") - 10);
             }
-            tb_product_detail t = (tb_product_detail)am.tb_product_detail.Where(u => u.productStoreID.Equals(code));
+            tb_product_detail t = (tb_product_detail)am.tb_product_detail.Where(u => u.productStoreID.Equals(code) || u.producFactoryID.Equals(code) );
             if (t == null) return 0;
             else return t.price * quantity;
         }
@@ -491,7 +491,7 @@ namespace ThienNga2.Controllers
         public ActionResult XoaFee(String feeID, String activitiesID)
         {
             warrantyActivityFee item = am.warrantyActivityFees.Find(int.Parse(feeID));
-            if (User.Identity.GetUserName().Equals(item.tb_warranty_activities.AspNetUser1.Email))
+            if (User.Identity.GetUserName().Equals(item.tb_warranty_activities.AspNetUser1.Email) |||| User.IsInRole("Admin"))
             {
                 warrantyActivityFee editor = am.warrantyActivityFees.Find(int.Parse(feeID));
                 editor.active = false;
@@ -505,7 +505,7 @@ namespace ThienNga2.Controllers
         public ActionResult XoaFixingFee(String feeID, String activitiesID)
         {
             warrantyActivityFixingFee item = am.warrantyActivityFixingFees.Find(int.Parse(feeID));
-            if (User.Identity.GetUserName().Equals(item.tb_warranty_activities.AspNetUser1.Email))
+            if (User.Identity.GetUserName().Equals(item.tb_warranty_activities.AspNetUser1.Email) ||  User.IsInRole("Admin"))
             {
                 warrantyActivityFixingFee editor = am.warrantyActivityFixingFees.Find(int.Parse(feeID));
                 editor.active = false;
@@ -526,7 +526,7 @@ namespace ThienNga2.Controllers
                     if (act != null)
                     {
                         System.Diagnostics.Debug.WriteLine("aaaaaaaaaaaaa " + act.AspNetUser1.Email + " bbbbbbbb " + User.Identity.GetUserName());
-                        if (act.AspNetUser1.Email.Equals(User.Identity.GetUserName()))
+                        if (act.AspNetUser1.Email.Equals(User.Identity.GetUserName()) || User.IsInRole("Admin"))
                         {
                             System.Diagnostics.Debug.WriteLine("dafug");
                             warrantyActivityFee a = new warrantyActivityFee();
@@ -566,7 +566,7 @@ namespace ThienNga2.Controllers
 
                 if (act != null)
                 {
-                    if (act.AspNetUser1.Email.Equals(User.Identity.GetUserName()))
+                    if (act.AspNetUser1.Email.Equals(User.Identity.GetUserName()) || User.IsInRole("Admin"))
                     {
                         warrantyActivityFixingFee a = new warrantyActivityFixingFee();
                         a.activityID = int.Parse(activitiesID);
