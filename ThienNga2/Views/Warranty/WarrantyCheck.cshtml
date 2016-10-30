@@ -80,9 +80,9 @@
                                     </td>
                                     <td class="project_progress">
                                         <div class="progress progress_sm">
-                                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="57" aria-valuenow="54" style="width: 57%;"></div>
+                                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="57" aria-valuenow="54" style="width: @(Math.Floor((double)act.status*100/7))%;"></div>
                                         </div>
-                                        <small>57% Complete</small>
+                                        <small>@(Math.Floor((double)act.status*100/7)) Complete</small>
                                     </td>
                                     <td>
                                         <button type="button" class="btn btn-success btn-xs">@act.tb_warrnaty_status.statusName</button>
