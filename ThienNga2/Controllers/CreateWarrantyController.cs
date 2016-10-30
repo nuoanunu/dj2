@@ -104,6 +104,7 @@ namespace ThienNga2.Controllers
         [HttpPost]
         public ActionResult CreateNew(String actid, String phoneNumber, String cusname, String IMEI, String Descrip)
         {
+            bool add = true;
             tb_warranty_activities act;
             if (actid != null)
             {
@@ -112,6 +113,7 @@ namespace ThienNga2.Controllers
                     try
                     {
                         act = am.tb_warranty_activities.Find(int.Parse(actid));
+                        add = false;
                     }
                     catch { return View("CreateWarranty"); }
                 }
@@ -146,6 +148,7 @@ namespace ThienNga2.Controllers
             act.CodeBaoHanh = date + month + "." + phoneNumber.Substring(phoneNumber.Length - 6);
           
             act.productDetailID = detail.productDetailID;
+            if(add)
             am.tb_warranty_activities.Add(act);
             am.SaveChanges();
             int id = act.id;
