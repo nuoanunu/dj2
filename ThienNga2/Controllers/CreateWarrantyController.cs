@@ -102,7 +102,7 @@ namespace ThienNga2.Controllers
 
         // POST: CreateWarranty/CreateNew
         [HttpPost]
-        public ActionResult CreateNew(String actid, String phoneNumber, String cusname, String IMEI, String Descrip, String Emp1, String Emp2)
+        public ActionResult CreateNew(String actid, String phoneNumber, String cusname, String IMEI, String Descrip)
         {
             tb_warranty_activities act;
             if (actid != null)
@@ -123,12 +123,7 @@ namespace ThienNga2.Controllers
             phoneNumber = phoneNumber.Trim();
             var emplo1 = am.AspNetUsers.SqlQuery("SELECT * FROM dbo.AspNetUsers WHERE Id='" + User.Identity.GetUserId() + "'").ToList().First();
             AspNetUser emplo2 =null;
-            if (Emp2 != null)
-                try {
-                    emplo2 = am.AspNetUsers.SqlQuery("SELECT * FROM dbo.AspNetUsers WHERE Email='" + Emp2 + "'").ToList().First();
-                }
-                catch (Exception e) { emplo2 = null; }
-                
+         
             act.employee = (string)emplo1.Id;
             act.AspNetUser = emplo1;
             if (emplo2 != null)
@@ -249,7 +244,7 @@ namespace ThienNga2.Controllers
 
                         //Generate Invoice (Bill) Header.
                         sb.Append("<table width='100%' cellspacing='0' cellpadding='2'>");
-                        sb.Append("<tr><td align='center' style='background-color: #18B5F0' colspan = '2'><b>Phiếu bảo hành</b></td></tr>");
+                        sb.Append("<tr><td align='center' style='background-color: #18B5F0' colspan = '2'><b>BIÊN NHẬN SỮA CHỮA</b></td></tr>");
                         sb.Append("<tr><td colspan = '2'></td></tr>");
                         sb.Append("<tr><td><b>Mã số: </b>");
                         sb.Append(MaBill);
