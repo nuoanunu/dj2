@@ -52,7 +52,8 @@
                                 $('input[type="submit"]').prop('disabled', false);
                                 $('#IMEI').css("background-color", "green");
                                 $('#IMEI').css("color", "white");
-                                $("#divName").text("Tên sản phẩm: "+ value);
+                                $("#divName").text("Tên sản phẩm: " + value);
+                                
                             }
 
                         }
@@ -77,6 +78,12 @@
                                 }
 
                             }
+                        }
+                        if (name == "nhomkhach") {
+                            $("#divGroup").text("Nhóm khách: " + value);
+                        }
+                        if (name == "maukhach") {
+                            $("#divGroup").css("background-color", value);
                         }
                     })
                 });
@@ -103,10 +110,16 @@
                 <div class="section"><span></span>Thông tin tiếp nhận sản phẩm</div>
                 <div class="inner-wrap">
                     <input type="hidden" id="actid" name="actid" value="" />
+                    <label>Khách hàng yêu cầu <input type="text" id="Descrip" required name="Descrip" value="" /></label>
+
                     <label>SDT khách hàng <input type="tel" id="phoneNumber" name="phoneNumber" value="" required/></label>
                     <label>Tên khách hàng <input type="text" id="cusname" name="cusname" value="" required /></label>
-                    <label>IMEI sản phẩm <input required type="text" id="IMEI"  name="IMEI" value="" /> <div id="divDate"></div> <div id="divName"></div> <div id="divDescription"></div> </label>
-                    <label>Tình trạng lúc nhận <input type="text" id="Descrip"  required name="Descrip" value="" /></label>
+                    <label>IMEI sản phẩm <input required type="text" id="IMEI"  name="IMEI" value="" /> <div id="divDate"></div> 
+                    <div id="divName"></div>
+                    <div id="divDescription"></div> 
+                    <div id="divGroup"></div> 
+                    </label>
+                   <label>Phân loại <label><input type="radio" name="type" value="1">Sữa chữa</label><label><input type="radio" name="type" value="2">Bảo hành</label>  </label>
                  </div>
                 <div class="button-section">
                     <input type="submit" name="Tạo" />
@@ -127,13 +140,16 @@
                     <div class="section"><span></span>Chỉnh sữa</div>
                     <div class="inner-wrap">
                       <input type="hidden" id="actid" name="actid" value="@a.id" />
+                        <label>Khách hàng yêu cầu <input type="text" id="Descrip" name="Descrip" value="@a.Description" /></label>
+
                         <label>SDT khách hàng <input type="text" id="phoneNumber" name="phoneNumber" value="@a.SDT" /></label>
                         <label>Tên khách hàng <input type="text" id="cusname" name="cusname" value="@a.TenKhach" /></label>
                         <label>IMEI sản phẩm <input type="text" id="IMEI" name="IMEI" value="@a.tb_warranty.warrantyID" /></label>
-                        <label>Tình trạng lúc nhận <input type="text" id="Descrip" name="Descrip" value="@a.Description" /></label>
+                        <label>Phân loại <label><input type="radio" name="type" value="1">Sữa chữa</label><label><input type="radio" name="type" value="2">Bảo hành</label>  </label>
+
                      </div>
                     <div class="button-section">
-                        <input type="submit" name="Tạo" />
+                        <input type="submit" name="Sữa" />
 
                     </div>
                 </form>

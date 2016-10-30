@@ -51,6 +51,7 @@ namespace ThienNga2.Models.Entities
         public virtual DbSet<warrantyActivityFee> warrantyActivityFees { get; set; }
         public virtual DbSet<warrantyActivityFixingFee> warrantyActivityFixingFees { get; set; }
         public virtual DbSet<NhanVien> NhanViens { get; set; }
+        public virtual DbSet<ActivityType> ActivityTypes { get; set; }
     
         public virtual ObjectResult<ThienNga_checkkho_Result> ThienNga_checkkho(string productcode)
         {

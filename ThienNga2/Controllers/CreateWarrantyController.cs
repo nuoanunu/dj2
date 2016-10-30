@@ -82,6 +82,8 @@ namespace ThienNga2.Controllers
                             {
                                 vi.sepcial = 1;
                             }
+                            vi.nhomkhach = war.item.CustomerType1.GroupName;
+                            vi.maukhach = war.item.CustomerType1.Color;
                             result = serializer.Serialize(vi);
                             System.Diagnostics.Debug.WriteLine(result);
                             return result;
@@ -102,7 +104,7 @@ namespace ThienNga2.Controllers
 
         // POST: CreateWarranty/CreateNew
         [HttpPost]
-        public ActionResult CreateNew(String actid, String phoneNumber, String cusname, String IMEI, String Descrip)
+        public ActionResult CreateNew(String actid, String phoneNumber, String cusname, String IMEI, String Descrip, int type)
         {
             bool add = true;
             tb_warranty_activities act;
@@ -141,6 +143,8 @@ namespace ThienNga2.Controllers
             act.Description = Descrip;
             act.warrantyID = lst.id;
             act.startDate = DateTime.Today;
+            act.type = type;
+           
             String date = act.startDate.Day.ToString();
             if (date.Length == 1) date = "0" + date;
             String month = act.startDate.Month.ToString();

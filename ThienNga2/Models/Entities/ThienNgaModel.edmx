@@ -14,6 +14,13 @@
           <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="roleID" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="ActivityType">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="128" />
+        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -243,6 +250,7 @@
           <Property Name="SDT" Type="nvarchar" MaxLength="50" />
           <Property Name="productDetailID" Type="int" Nullable="false" />
           <Property Name="Note" Type="nvarchar(max)" />
+          <Property Name="type" Type="int" />
         </EntityType>
         <EntityType Name="tb_warrnaty_status">
           <Key>
@@ -515,6 +523,18 @@ warning 6035: The relationship 'FK_inventory_tb_product_detail1' has columns tha
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tb_warranty_activities_ActivityType">
+          <End Role="ActivityType" Type="Self.ActivityType" Multiplicity="0..1" />
+          <End Role="tb_warranty_activities" Type="Self.tb_warranty_activities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActivityType">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_warranty_activities">
+              <PropertyRef Name="type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tb_warranty_activities_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="tb_warranty_activities" Type="Self.tb_warranty_activities" Multiplicity="*" />
@@ -669,6 +689,7 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
         </Function>
         <EntityContainer Name="ThienNgaDatabaseModelStoreContainer">
           <EntitySet Name="account" EntityType="Self.account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ActivityType" EntityType="Self.ActivityType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
@@ -764,6 +785,10 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <AssociationSet Name="FK_tb_product_detail_tb_cate" Association="Self.FK_tb_product_detail_tb_cate">
             <End Role="tb_cate" EntitySet="tb_cate" />
             <End Role="tb_product_detail" EntitySet="tb_product_detail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_warranty_activities_ActivityType" Association="Self.FK_tb_warranty_activities_ActivityType">
+            <End Role="ActivityType" EntitySet="ActivityType" />
+            <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
           </AssociationSet>
           <AssociationSet Name="FK_tb_warranty_activities_AspNetUsers" Association="Self.FK_tb_warranty_activities_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -997,6 +1022,11 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <AssociationSet Name="FK_NhanVien_AspNetUsers" Association="ThienNgaDatabaseModel.FK_NhanVien_AspNetUsers">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="NhanVien" EntitySet="NhanViens" />
+          </AssociationSet>
+          <EntitySet Name="ActivityTypes" EntityType="ThienNgaDatabaseModel.ActivityType" />
+          <AssociationSet Name="FK_tb_warranty_activities_ActivityType" Association="ThienNgaDatabaseModel.FK_tb_warranty_activities_ActivityType">
+            <End Role="ActivityType" EntitySet="ActivityTypes" />
+            <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="ThienNga_checkkho_Result">
@@ -1368,6 +1398,8 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <NavigationProperty Name="tb_warrnaty_status" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_tb_warrnaty_status" FromRole="tb_warranty_activities" ToRole="tb_warrnaty_status" />
           <NavigationProperty Name="warrantyActivityFees" Relationship="ThienNgaDatabaseModel.FK_warrantyActivityFee_tb_warranty_activities" FromRole="tb_warranty_activities" ToRole="warrantyActivityFee" />
           <NavigationProperty Name="warrantyActivityFixingFees" Relationship="ThienNgaDatabaseModel.FK_warrantyActivityFixingFee_tb_warranty_activities" FromRole="tb_warranty_activities" ToRole="warrantyActivityFixingFee" />
+          <Property Name="type" Type="Int32" />
+          <NavigationProperty Name="ActivityType" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_ActivityType" FromRole="tb_warranty_activities" ToRole="ActivityType" />
         </EntityType>
         <EntityType Name="tb_warrnaty_status">
           <Key>
@@ -1709,6 +1741,26 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
             </Principal>
             <Dependent Role="NhanVien">
               <PropertyRef Name="accountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ActivityType">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tb_warranty_activities" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_ActivityType" FromRole="ActivityType" ToRole="tb_warranty_activities" />
+        </EntityType>
+        <Association Name="FK_tb_warranty_activities_ActivityType">
+          <End Type="ThienNgaDatabaseModel.ActivityType" Role="ActivityType" Multiplicity="0..1" />
+          <End Type="ThienNgaDatabaseModel.tb_warranty_activities" Role="tb_warranty_activities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ActivityType">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_warranty_activities">
+              <PropertyRef Name="type" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2072,6 +2124,7 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <EntitySetMapping Name="tb_warranty_activities">
             <EntityTypeMapping TypeName="ThienNgaDatabaseModel.tb_warranty_activities">
               <MappingFragment StoreEntitySet="tb_warranty_activities">
+                <ScalarProperty Name="type" ColumnName="type" />
                 <ScalarProperty Name="Note" ColumnName="Note" />
                 <ScalarProperty Name="productDetailID" ColumnName="productDetailID" />
                 <ScalarProperty Name="SDT" ColumnName="SDT" />
@@ -2158,6 +2211,14 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
                 <ScalarProperty Name="employeeemail" ColumnName="employeeemail" />
                 <ScalarProperty Name="employeeAddress" ColumnName="employeeAddress" />
                 <ScalarProperty Name="employeeName" ColumnName="employeeName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActivityTypes">
+            <EntityTypeMapping TypeName="ThienNgaDatabaseModel.ActivityType">
+              <MappingFragment StoreEntitySet="ActivityType">
+                <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

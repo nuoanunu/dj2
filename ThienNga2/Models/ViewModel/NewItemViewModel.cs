@@ -160,6 +160,8 @@ namespace ThienNga2.Models.ViewModel
         public String remainingTime { get; set; }
         public String mieuTa { get; set; }
         public int sepcial { get; set; }
+        public String nhomkhach { get; set; }
+        public String maukhach { get; set; }
     }
     public class emp {
         public String sdt { get; set; }

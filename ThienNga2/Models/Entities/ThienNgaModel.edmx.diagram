@@ -53,6 +53,8 @@
         <AssociationConnector Association="ThienNgaDatabaseModel.FK_log_AspNetUsers" />
         <EntityTypeShape EntityType="ThienNgaDatabaseModel.NhanVien" Width="1.5" PointX="12" PointY="0.75" />
         <AssociationConnector Association="ThienNgaDatabaseModel.FK_NhanVien_AspNetUsers" />
+        <EntityTypeShape EntityType="ThienNgaDatabaseModel.ActivityType" Width="1.5" PointX="14.375" PointY="13.75" />
+        <AssociationConnector Association="ThienNgaDatabaseModel.FK_tb_warranty_activities_ActivityType" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

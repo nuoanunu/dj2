@@ -37,6 +37,7 @@ namespace ThienNga2.Models.Entities
         public string SDT { get; set; }
         public int productDetailID { get; set; }
         public string Note { get; set; }
+        public Nullable<int> type { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual AspNetUser AspNetUser1 { get; set; }
@@ -48,5 +49,6 @@ namespace ThienNga2.Models.Entities
         public virtual ICollection<warrantyActivityFee> warrantyActivityFees { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<warrantyActivityFixingFee> warrantyActivityFixingFees { get; set; }
+        public virtual ActivityType ActivityType { get; set; }
     }
 }
