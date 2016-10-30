@@ -438,7 +438,7 @@ namespace ThienNga2.Controllers
             {
                 code = code.Substring(code.IndexOf("StoreSKU") + 10, code.Length - code.IndexOf("StoreSKU") - 10);
             }
-            tb_product_detail t = (tb_product_detail)am.tb_product_detail.Where(u => u.productStoreID.Equals(code) || u.producFactoryID.Equals(code) );
+            tb_product_detail t = (tb_product_detail)am.tb_product_detail.Where(u => u.productStoreID.Equals(code) || u.producFactoryID.Equals(code) ).FirstOrDefault();
             if (t == null) return 0;
             else return t.price * quantity;
         }
