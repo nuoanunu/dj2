@@ -327,14 +327,18 @@
                                                         }
                                                         <td>
                                                             @foreach (warrantyActivityFee fee in oldact.warrantyActivityFees)
-                                                            {
-                                                                @Html.Display(fee.productSKU + ",")
+                                                            {<ul>
+                                                                 <li>@fee.productSKU : @fee.quantity cái</li>
+                                                            </ul>
+                                                               
                                                             }
                                                         </td>
                                                         <td>
                                                             @foreach (warrantyActivityFixingFee fee in oldact.warrantyActivityFixingFees)
                                                             {
-                                                                @Html.Display(fee.FixDetail + ",")
+                                                                <ul>
+                                                                    <li>@fee.FixDetail</li>
+                                                                </ul>
                                                             }
                                                         </td>
                                                         <td>
