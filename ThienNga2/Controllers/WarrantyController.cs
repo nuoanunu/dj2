@@ -519,7 +519,7 @@ namespace ThienNga2.Controllers
         {
             if (ksu != null && ksu.Trim().Length > 0)
             {
-                tb_product_detail pd = (tb_product_detail)am.tb_product_detail.Where(u => u.productStoreID.Equals(ksu));
+                tb_product_detail pd = (tb_product_detail)am.tb_product_detail.Where(u => u.productStoreID.Equals(ksu)).FirstOrDefault();
                 if (pd != null)
                 {
                     tb_warranty_activities act = am.tb_warranty_activities.Find(int.Parse(activitiesID));
