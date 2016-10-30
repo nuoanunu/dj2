@@ -418,7 +418,7 @@
 
                                     <div class="text-center mtop20">
                                         @if (User.IsInRole("Admin") || User.IsInRole("Quản lý sữa chữa"))
-                                        {<button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#MyempList@(act.id)"><i class="fa fa-pencil"></i>Giao cho</button>
+                                        {<button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#MyempList@(act.id)"><i class="fa fa-pencil"></i>Đổi KT sửa</button>
                                         <div class="modal fade" id="MyempList@(act.id)" role="dialog">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
@@ -428,7 +428,7 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <form action="/Warranty/GiaoViec" method="post">
-                                                            Chọn nhân viện
+                                                            Chọn nhân viên
                                                             <input type="hidden" value="@act.id" name="actid" />
                                                             <select name="empId">
                                                                 @foreach (AspNetUser user in (List<AspNetUser>)ViewData["NhanVienKyThuat"])

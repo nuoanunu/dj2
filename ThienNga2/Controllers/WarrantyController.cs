@@ -59,6 +59,7 @@ namespace ThienNga2.Controllers
                 am.SaveChanges();
             }
             log logg = new log();
+            logg.date = DateTime.Now;
             logg.warrantyActivitiesID = actid;
             logg.account = User.Identity.GetUserId();
             logg.action = am.AspNetUsers.Find(logg.account).FullName + " đã giao nhiệm vu sửa thiết bị cho " + user.FullName;
