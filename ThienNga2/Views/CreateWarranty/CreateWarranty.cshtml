@@ -110,7 +110,7 @@
                 <div class="section"><span></span>Thông tin tiếp nhận sản phẩm</div>
                 <div class="inner-wrap">
                     <input type="hidden" id="actid" name="actid" value="" />
-                    <label>Khách hàng yêu cầu <input type="text" id="Descrip" required name="Descrip" value="" /></label>
+                    <label>Khách hàng yêu cầu <label><input type="radio" name="type" value="1">Yêu cầu Sữa chữa</label><label><input type="radio" name="type" value="2">Yêu cầu Bảo hành</label>  </label>
 
                     <label>SDT khách hàng <input type="tel" id="phoneNumber" name="phoneNumber" value="" required/></label>
                     <label>Tên khách hàng <input type="text" id="cusname" name="cusname" value="" required /></label>
@@ -118,9 +118,10 @@
                     <div id="divName"></div>
                     <div id="divDescription"></div> 
                     <div id="divGroup"></div> 
+                    <label>Tình trạng lúc nhận <input type="text" id="Descrip" required name="Descrip" value="" /></label>
+
                     </label>
-                   <label>Phân loại <label><input type="radio" name="type" value="1">Sữa chữa</label><label><input type="radio" name="type" value="2">Bảo hành</label>  </label>
-                 </div>
+                </div>
                 <div class="button-section">
                     <input type="submit" name="Tạo" />
 
