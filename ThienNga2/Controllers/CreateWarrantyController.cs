@@ -241,7 +241,8 @@ namespace ThienNga2.Controllers
                 String sdt = act.SDT;
                 String sp = act.tb_warranty.item.tb_product_detail.productName;
                 String mbh = act.tb_warranty.warrantyID;
-                String datetake = act.startDate.ToString();
+                String datetake = act.startDate.ToShortDateString();
+                String request = act.ActivityType.name;
                 String des = act.Description;
          
                 using (StringWriter sw = new StringWriter())
@@ -252,12 +253,14 @@ namespace ThienNga2.Controllers
 
                         //Generate Invoice (Bill) Header.
                         sb.Append("<table width='100%' cellspacing='0' cellpadding='2'>");
-                        sb.Append("<tr><td align='center' style='background-color: #18B5F0' colspan = '2'><b>BIÊN NHẬN SỮA CHỮA</b></td></tr>");
+                        sb.Append("<tr><td align='center' style='background-color: #18B5F0' colspan = '2'><b>BIÊN NHẬN DỊCH VỤ</b></td></tr>");
                         sb.Append("<tr><td colspan = '2'></td></tr>");
                         sb.Append("<tr><td><b>Mã số: </b>");
                         sb.Append(MaBill);
                         sb.Append("</td><td align = 'right'><b>Ngày: </b>");
                         sb.Append(datetake);
+                        sb.Append("</td><td align = 'right'><b>Yêu cầu khách hàng: </b>");
+                        sb.Append(request);
                         sb.Append(" </td></tr>");
                         sb.Append("<tr><td colspan = '2'><b>Tên khách: </b>");
                         sb.Append(cusname);
