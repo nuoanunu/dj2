@@ -176,6 +176,7 @@ namespace ThienNga2.Controllers
 
             return View("CreateWarranty");
         }
+
         [HttpPost]
         public ActionResult Confirrm(String actid)
         {

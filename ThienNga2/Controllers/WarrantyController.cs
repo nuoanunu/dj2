@@ -583,6 +583,9 @@ namespace ThienNga2.Controllers
                 }
                 ViewData["Total"] = money;
                 ViewData["HoaDonBaoHanh"] = act;
+                AspNetRole role = am.AspNetRoles.SqlQuery("SELECT * FROM AspNetRoles where  id='c58194a2-1502-4623-b549-00cea9250711'").FirstOrDefault();
+                List<AspNetUser> nhanviens = role.AspNetUsers.ToList();
+                ViewData["NhanVienKyThuat"] = nhanviens;
                 return View("ChiTietHoaDonBaoHanh");
             }
             return RedirectToAction("Index");
