@@ -7,6 +7,7 @@ using ThienNga2.Models.Entities;
 
 namespace ThienNga2.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CustomerController : EntitiesAM
     {
         // GET: Customer
