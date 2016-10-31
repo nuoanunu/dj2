@@ -93,6 +93,31 @@
     </script>
 </head>
 <body>
+    @if (Model != null)
+    {
+        <div class="form-style-10">
+            <form action="/CreateWarranty/CreateNew" method="post">
+
+                <div class="section"><span></span>Chỉnh sữa</div>
+                <div class="inner-wrap">
+                    <input type="hidden" id="actid" name="actid" value="@(Model.id)" />
+                    <label>Khách hàng yêu cầu<label><input type="radio" name="type" value="1">Sữa chữa</label><label><input type="radio" name="type" value="2">Bảo hành</label>  </label>
+
+                    <label>SDT khách hàng <input type="text" id="phoneNumber" name="phoneNumber" value="@Model.SDT" /></label>
+                    <label>Tên khách hàng <input type="text" id="cusname" name="cusname" value="@Model.TenKhach" /></label>
+                    <label>IMEI sản phẩm <input type="text" id="IMEI" name="IMEI" value="@Model.tb_warranty.warrantyID" /></label>
+                    <label>Tên sản phẩm <input style="display:none" required type="text" id="TenSanPham" name="TenSanPham" value="@Model.itemID" /> </label>
+                    <label> Tình trạng lúc nhận<input type="text" id="Descrip" name="Descrip" value="@Model.Description" /></label>
+
+                </div>
+                <div class="button-section">
+                    <input type="submit" name="Sữa" />
+
+                </div>
+            </form>
+        </div>
+    }
+
     @if (ViewData["newwarranty"] == null)
     {
         using (Html.BeginForm("CreateNew", "CreateWarranty", FormMethod.Post))
@@ -129,30 +154,5 @@
             </div>
         }
     }
-   @if (ViewData["newwarranty"] != null) {  <div class="form-style-10">
-            <form action="/CreateWarranty/CreateNew" method="post">
-
-                <div class="section"><span></span>Chỉnh sữa</div>
-                <div class="inner-wrap">
-                    <input type="hidden" id="actid" name="actid" value="@(Model.id)" />
-                    <label>Khách hàng yêu cầu<label><input type="radio" name="type" value="1">Sữa chữa</label><label><input type="radio" name="type" value="2">Bảo hành</label>  </label>
-
-                    <label>SDT khách hàng <input type="text" id="phoneNumber" name="phoneNumber" value="@Model.SDT" /></label>
-                    <label>Tên khách hàng <input type="text" id="cusname" name="cusname" value="@Model.TenKhach" /></label>
-                    <label>IMEI sản phẩm <input type="text" id="IMEI" name="IMEI" value="@Model.tb_warranty.warrantyID" /></label>
-                    <label>Tên sản phẩm <input style="display:none" required type="text" id="TenSanPham" name="TenSanPham" value="@Model.itemID" /> </label>
-                    <label> Tình trạng lúc nhận<input type="text" id="Descrip" name="Descrip" value="@Model.Description" /></label>
-
-                </div>
-                <div class="button-section">
-                    <input type="submit" name="Sữa" />
-
-                </div>
-            </form>
-        </div>
-
-
-
-    }
-
+  
 </body>
