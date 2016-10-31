@@ -58,9 +58,19 @@
                         <td>
                             @wact.warrantyID
                         </td>
-                        <td>
-                            @wact.tb_warranty.item.tb_product_detail.productStoreID
-                        </td>
+                        
+                            @if (wact.tb_warranty != null)
+                            {
+                                <td>
+                                    @wact.tb_warranty.item.tb_product_detail.productStoreID
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    @wact.itemID
+                                </td>
+                            }
                         <td>
                             @wact.AspNetUser.FullName
                         </td>
