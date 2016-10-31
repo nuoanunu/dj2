@@ -62,9 +62,11 @@ namespace ThienNga2.Controllers
             if (name != null)
                 if (name.Trim().Length >= 1)
                 {
+                    System.Diagnostics.Debug.WriteLine("AAAAAAA " + name);
                     List<tb_warranty> lst = am.tb_warranty.SqlQuery("SELECT * FROM dbo.tb_warranty WHERE warrantyID='" + name + "'").ToList();
                     JavaScriptSerializer serializer = new JavaScriptSerializer();
                     string result = "";
+                    System.Diagnostics.Debug.WriteLine("AAAAAAA " + lst.Count());
                     HoaDonBaoHanhCheck vi = new HoaDonBaoHanhCheck();
                     if (lst.Count == 1)
                     {

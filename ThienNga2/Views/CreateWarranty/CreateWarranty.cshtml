@@ -7,34 +7,7 @@
     <link rel="stylesheet" type="text/css" href="~/Content/SearchBar.css">
     <link rel="stylesheet" type="text/css" href="~/Content/Table.css">
     <script>
-        $(document).ready(function () {
-
-            $("#Emp1").val($('input#username').val());
-            $('#Emp1').autocomplete({
-                source: '@Url.Action("Autocomplete")'
-
-            })
-                .data("ui-autocomplete")._renderItem = function (ul, item) {
-                    return $("<li>")
-                      .data("ui-autocomplete-item", item)
-
-                      .append('<a style="color:black">' + item.label + "</a>")
-                      .appendTo(ul);
-                };
-            $('#Emp2').autocomplete({
-                source: '@Url.Action("Autocomplete")'
-
-            })
-               .data("ui-autocomplete")._renderItem = function (ul, item) {
-                   return $("<li>")
-                     .data("ui-autocomplete-item", item)
-
-                     .append('<a style="color:black">' + item.label + "</a>")
-                     .appendTo(ul);
-               };
-
-
-        });
+       
         var currentIMEI = "";
         function checkWarrantyCode() {
             if (currentIMEI != $("#IMEI").val()) {
@@ -109,11 +82,14 @@
                 $('input[type="submit"]').prop('disabled', false);
             }
         }
+      
+  
+    </script>
+    <script>
         $(document).ready(function () {
             setInterval(checkempty, 100);
             setInterval(checkWarrantyCode, 100);
         })
-  
     </script>
 </head>
 <body>
@@ -153,23 +129,19 @@
             </div>
         }
     }
-    else
-    {
-        tb_warranty_activities aa = new tb_warranty_activities();
-        aa=(tb_warranty_activities)ViewData["newwarranty"];
-        <div class="form-style-10">
+   @if (ViewData["newwarranty"] != null) {  <div class="form-style-10">
             <form action="/CreateWarranty/CreateNew" method="post">
 
                 <div class="section"><span></span>Chỉnh sữa</div>
                 <div class="inner-wrap">
-                    <input type="hidden" id="actid" name="actid" value="@aa.id" />
+                    <input type="hidden" id="actid" name="actid" value="@(Model.id)" />
                     <label>Khách hàng yêu cầu<label><input type="radio" name="type" value="1">Sữa chữa</label><label><input type="radio" name="type" value="2">Bảo hành</label>  </label>
 
-                    <label>SDT khách hàng <input type="text" id="phoneNumber" name="phoneNumber" value="@aa.SDT" /></label>
-                    <label>Tên khách hàng <input type="text" id="cusname" name="cusname" value="@aa.TenKhach" /></label>
-                    <label>IMEI sản phẩm <input type="text" id="IMEI" name="IMEI" value="@aa.tb_warranty.warrantyID" /></label>
-                    <label>Tên sản phẩm <input style="display:none" required type="text" id="TenSanPham" name="TenSanPham" value="@aa.itemID" /> </label>
-                    <label> Tình trạng lúc nhận<input type="text" id="Descrip" name="Descrip" value="@aa.Description" /></label>
+                    <label>SDT khách hàng <input type="text" id="phoneNumber" name="phoneNumber" value="@Model.SDT" /></label>
+                    <label>Tên khách hàng <input type="text" id="cusname" name="cusname" value="@Model.TenKhach" /></label>
+                    <label>IMEI sản phẩm <input type="text" id="IMEI" name="IMEI" value="@Model.tb_warranty.warrantyID" /></label>
+                    <label>Tên sản phẩm <input style="display:none" required type="text" id="TenSanPham" name="TenSanPham" value="@Model.itemID" /> </label>
+                    <label> Tình trạng lúc nhận<input type="text" id="Descrip" name="Descrip" value="@Model.Description" /></label>
 
                 </div>
                 <div class="button-section">
