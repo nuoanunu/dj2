@@ -53,6 +53,7 @@ namespace ThienNga2.Models.Entities
         public virtual DbSet<ThongBaoMoi> ThongBaoMois { get; set; }
         public virtual DbSet<tb_warranty> tb_warranty { get; set; }
         public virtual DbSet<tb_warranty_activities> tb_warranty_activities { get; set; }
+        public virtual DbSet<DiemKyThuat> DiemKyThuats { get; set; }
     
         public virtual ObjectResult<ThienNga_checkkho_Result> ThienNga_checkkho(string productcode)
         {

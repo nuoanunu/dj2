@@ -210,6 +210,11 @@
       <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
       <End Role="warrantyActivityFixingFee" EntitySet="warrantyActivityFixingFees" />
     </AssociationSet>
+    <EntitySet Name="DiemKyThuats" EntityType="ThienNgaDatabaseModel.DiemKyThuat" />
+    <AssociationSet Name="FK_DiemKyThuat_AspNetUsers" Association="ThienNgaDatabaseModel.FK_DiemKyThuat_AspNetUsers">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="DiemKyThuat" EntitySet="DiemKyThuats" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="ThienNga_checkkho_Result">
     <Property Type="Int32" Name="id" Nullable="false" />
@@ -384,6 +389,7 @@
     <NavigationProperty Name="ThongBaoMois" Relationship="ThienNgaDatabaseModel.FK_ThongBaoMoi_AspNetUsers" FromRole="AspNetUser" ToRole="ThongBaoMoi" />
     <NavigationProperty Name="tb_warranty_activities" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_AspNetUsers" FromRole="AspNetUser" ToRole="tb_warranty_activities" />
     <NavigationProperty Name="tb_warranty_activities1" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_AspNetUsers1" FromRole="AspNetUser" ToRole="tb_warranty_activities" />
+    <NavigationProperty Name="DiemKyThuats" Relationship="ThienNgaDatabaseModel.FK_DiemKyThuat_AspNetUsers" FromRole="AspNetUser" ToRole="DiemKyThuat" />
   </EntityType>
   <EntityType Name="CustomerType">
     <Key>
@@ -968,6 +974,29 @@
       </Principal>
       <Dependent Role="warrantyActivityFixingFee">
         <PropertyRef Name="activityID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="DiemKyThuat">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Point" Type="Int32" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="userID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="ThienNgaDatabaseModel.FK_DiemKyThuat_AspNetUsers" FromRole="DiemKyThuat" ToRole="AspNetUser" />
+    <Property Name="actid" Type="Int32" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_DiemKyThuat_AspNetUsers">
+    <End Type="ThienNgaDatabaseModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+    <End Type="ThienNgaDatabaseModel.DiemKyThuat" Role="DiemKyThuat" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DiemKyThuat">
+        <PropertyRef Name="userID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

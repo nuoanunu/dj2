@@ -82,6 +82,16 @@
           <Property Name="Color" Type="nvarchar(max)" Nullable="false" />
           <Property Name="MoTaChinhSach" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="DiemKyThuat">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Point" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="date" Nullable="false" />
+          <Property Name="userID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="actid" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="employee">
           <Key>
             <PropertyRef Name="id" />
@@ -369,6 +379,18 @@
             </Principal>
             <Dependent Role="AspNetUserRoles">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DiemKyThuat_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="DiemKyThuat" Type="Self.DiemKyThuat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DiemKyThuat">
+              <PropertyRef Name="userID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -719,6 +741,7 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CustomerType" EntityType="Self.CustomerType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DiemKyThuat" EntityType="Self.DiemKyThuat" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="employee" EntityType="Self.employee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="inventory" EntityType="Self.inventory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="item" EntityType="Self.item" Schema="dbo" store:Type="Tables" />
@@ -757,6 +780,10 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DiemKyThuat_AspNetUsers" Association="Self.FK_DiemKyThuat_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="DiemKyThuat" EntitySet="DiemKyThuat" />
           </AssociationSet>
           <AssociationSet Name="FK_inventory_tb_inventory_name" Association="Self.FK_inventory_tb_inventory_name">
             <End Role="tb_inventory_name" EntitySet="tb_inventory_name" />
@@ -1061,6 +1088,11 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
             <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
             <End Role="warrantyActivityFixingFee" EntitySet="warrantyActivityFixingFees" />
           </AssociationSet>
+          <EntitySet Name="DiemKyThuats" EntityType="ThienNgaDatabaseModel.DiemKyThuat" />
+          <AssociationSet Name="FK_DiemKyThuat_AspNetUsers" Association="ThienNgaDatabaseModel.FK_DiemKyThuat_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="DiemKyThuat" EntitySet="DiemKyThuats" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="ThienNga_checkkho_Result">
           <Property Type="Int32" Name="id" Nullable="false" />
@@ -1235,6 +1267,7 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <NavigationProperty Name="ThongBaoMois" Relationship="ThienNgaDatabaseModel.FK_ThongBaoMoi_AspNetUsers" FromRole="AspNetUser" ToRole="ThongBaoMoi" />
           <NavigationProperty Name="tb_warranty_activities" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_AspNetUsers" FromRole="AspNetUser" ToRole="tb_warranty_activities" />
           <NavigationProperty Name="tb_warranty_activities1" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_AspNetUsers1" FromRole="AspNetUser" ToRole="tb_warranty_activities" />
+          <NavigationProperty Name="DiemKyThuats" Relationship="ThienNgaDatabaseModel.FK_DiemKyThuat_AspNetUsers" FromRole="AspNetUser" ToRole="DiemKyThuat" />
         </EntityType>
         <EntityType Name="CustomerType">
           <Key>
@@ -1822,6 +1855,29 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="DiemKyThuat">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Point" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="userID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="ThienNgaDatabaseModel.FK_DiemKyThuat_AspNetUsers" FromRole="DiemKyThuat" ToRole="AspNetUser" />
+          <Property Name="actid" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_DiemKyThuat_AspNetUsers">
+          <End Type="ThienNgaDatabaseModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="ThienNgaDatabaseModel.DiemKyThuat" Role="DiemKyThuat" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DiemKyThuat">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2289,6 +2345,17 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
                 <ScalarProperty Name="warrantyID" ColumnName="warrantyID" />
                 <ScalarProperty Name="employee" ColumnName="employee" />
                 <ScalarProperty Name="startDate" ColumnName="startDate" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DiemKyThuats">
+            <EntityTypeMapping TypeName="ThienNgaDatabaseModel.DiemKyThuat">
+              <MappingFragment StoreEntitySet="DiemKyThuat">
+                <ScalarProperty Name="actid" ColumnName="actid" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Point" ColumnName="Point" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

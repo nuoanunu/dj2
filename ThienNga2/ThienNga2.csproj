@@ -265,6 +265,9 @@
     <Compile Include="Models\Entities\CustomerType.cs">
       <DependentUpon>ThienNgaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\DiemKyThuat.cs">
+      <DependentUpon>ThienNgaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\employee.cs">
       <DependentUpon>ThienNgaModel.tt</DependentUpon>
     </Compile>

@@ -466,5 +466,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="DiemKyThuats">
+      <EntityTypeMapping TypeName="ThienNgaDatabaseModel.DiemKyThuat">
+        <MappingFragment StoreEntitySet="DiemKyThuat">
+          <ScalarProperty Name="actid" ColumnName="actid" />
+          <ScalarProperty Name="userID" ColumnName="userID" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Point" ColumnName="Point" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

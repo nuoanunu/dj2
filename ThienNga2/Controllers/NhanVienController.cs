@@ -22,7 +22,7 @@ namespace ThienNga2.Controllers
         public ActionResult Detail(String id) {
             ViewData["thisaccount"] = am.AspNetUsers.Find(id);
             ViewData["Roles"] = am.AspNetRoles.ToList();
-            return View("Profile");
+            return View("Profile", am.AspNetUsers.Find(id));
         }
         [Authorize]
         public JsonResult getNewNoti() {

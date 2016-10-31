@@ -1,4 +1,5 @@
 ﻿@using ThienNga2.Models.Entities
+@model ThienNga2.Models.Entities.AspNetUser
 <style>
     <style > body {
         background: white;
@@ -388,43 +389,50 @@
         $(function() {
             var day_data = [{
                 "period": "Jan",
-                "Hours worked": 80
+                "Point":  @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 1).Sum(u => u.Point)) +0
             }, {
                 "period": "Feb",
-                "Hours worked": 125
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 2).Sum(u => u.Point)) +0
             }, {
                 "period": "Mar",
-                "Hours worked": 176
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 3).Sum(u => u.Point)) +0
             }, {
                 "period": "Apr",
-                "Hours worked": 224
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month ==4).Sum(u => u.Point)) +0
             }, {
                 "period": "May",
-                "Hours worked": 265
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 5).Sum(u => u.Point)) +0
             }, {
                 "period": "Jun",
-                "Hours worked": 314
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 6).Sum(u => u.Point)) +0
             }, {
                 "period": "Jul",
-                "Hours worked": 347
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 7).Sum(u => u.Point)) +0
             }, {
                 "period": "Aug",
-                "Hours worked": 287
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 8).Sum(u => u.Point)) +0
             }, {
                 "period": "Sep",
-                "Hours worked": 240
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 9).Sum(u => u.Point)) +0
             }, {
                 "period": "Oct",
-                "Hours worked": 211
-            }];
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 10).Sum(u => u.Point)) +0
+            }, {
+                "period": "Nov",
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 11).Sum(u => u.Point)) +0
+            }, {
+                "period": "Dec",
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 12).Sum(u => u.Point)) +0
+            }
+            ];
             Morris.Bar({
                 element: 'graph_bar',
                 data: day_data,
                 xkey: 'period',
                 hideHover: 'auto',
                 barColors: ['#26B99A', '#34495E', '#ACADAC', '#3498DB'],
-                ykeys: ['Hours worked', 'sorned'],
-                labels: ['Hours worked', 'SORN'],
+                ykeys: ['Point', 'sorned'],
+                labels: ['Point', 'SORN'],
                 xLabelAngle: 60
             });
         });
@@ -432,8 +440,7 @@
     <script>
         function updateRole(roleid, userid) {
 
-            alert(roleid);
-            alert(userid);
+          
             $.getJSON("/Warranty/updateRole?updateRole=" + roleid + "&userid=" + userid, function (result) {
                 $.each(result, function (name, value) {
                     if (name == "result") {
