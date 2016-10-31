@@ -6,10 +6,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>WarrantyList</title>
-
-    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"> </script>
-    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"> </script>
-    <script>
+     <script>
         $(document).ready(function () {
             $('#example').DataTable();
         });
@@ -209,9 +206,10 @@
         }
         function finishEdit() {
             var newvalues = "?wactID=" + $("#waID").val() + "&newDate=" + $("#newDate").val() + "&newIMEI=" + $("#newIMEI").val() + "&newSKU=" + $("#newSKU").val() + "&newName=" + $("#newName").val() + "&newSDT=" + $("#newSDT").val() + "&newDuration=" + $("#newDuration").val() + "&newDescription=" + $("#newDescription").val() + "&newChinhPhu=" + $('input[name=newChinhPhu]:checked').val() + "&newNhomKhach=" + $("#groupID").val();
-            alert("DOINT");
+            alert("/Warranty/updateWAR" + newvalues);
+            $("#newDuration").val("/Warranty/updateWAR" + newvalues);
             $.getJSON("/Warranty/updateWAR" + newvalues, function (result) {
-
+                alert("ahuhuhuhu" );
                 $.each(result, function (name, value) {
                     
                     if (name == "name") {
@@ -233,9 +231,6 @@
                             jQuery("td[id=" + $("#mainID").val() + "nhomkhachID"+ "]").each(function () {
                                 $(this).text($("#groupID").val());
                             });
-
-
-
                             //$("#" + $("#mainID").val() + "date").text($("#newDate").val());
                             //$("#" + $("#mainID").val() + "SKUID").text($("#newSKU").val());
                             //$("#" + $("#mainID").val() + "NameID").text($("#newName").val());
@@ -249,6 +244,7 @@
                        
                    
                             $("#" + $("#waID") + "chinhphuid").val($('input[name=newChinhPhu]:checked').val());
+                            alert("Cập nhật thành công");
                         }
                         else {
                             alert("Cập nhật thất bại, hãy coi lại dữ liệu");

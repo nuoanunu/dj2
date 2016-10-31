@@ -185,7 +185,7 @@ namespace ThienNga2.Controllers
             tb_warranty_activities a = am.tb_warranty_activities.Find(int.Parse(actid));
             ViewData["newwarranty"] = a;
 
-            return View("CreateWarranty");
+            return View("CreateWarranty",a);
         }
 
         [HttpPost]

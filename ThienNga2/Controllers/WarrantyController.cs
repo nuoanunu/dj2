@@ -229,7 +229,7 @@ namespace ThienNga2.Controllers
         [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult IMEILIST()
         {
-            ViewData["allwar"] = am.tb_warranty.ToList();
+            ViewData["allwar"] = am.tb_warranty.SqlQuery("select top 100 * from [tb_warranty] order by newid()").ToList();
 
             ViewData["dsnkh"] = am.CustomerTypes.ToList();
             return View("allIMEI");
@@ -364,8 +364,7 @@ namespace ThienNga2.Controllers
         public String updateWAR(String wactID, String newDate, String newIMEI, String newSKU, String newName, String newSDT, String newDuration, String newDescription, String newChinhPhu, String newNhomKhach)
         {
             System.Diagnostics.Debug.WriteLine("AAAA");
-            try
-            {
+            
                 tb_warranty wact = am.tb_warranty.Find(int.Parse(wactID));
                 if (wact != null)
                 {
@@ -374,7 +373,7 @@ namespace ThienNga2.Controllers
                     date = DateTime.ParseExact(newDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
 
-                    tb_product_detail dt = (tb_product_detail)am.tb_product_detail.Where(u => u.productName.Equals(newSKU) || u.producFactoryID.Equals(newSKU) || u.productStoreID.Equals(newSKU));
+                    tb_product_detail dt = (tb_product_detail)am.tb_product_detail.Where(u => u.productName.Equals(newSKU) || u.producFactoryID.Equals(newSKU) || u.productStoreID.Equals(newSKU)).FirstOrDefault();
                     tb_customer cus = null;
                     if (am.tb_customer.SqlQuery("SELECT * FROM tb_customer where phonenumber='" + newSDT + "'").ToList().Count() >= 1)
                     {
@@ -427,11 +426,7 @@ namespace ThienNga2.Controllers
                 model.name = "succeed";
                 JavaScriptSerializer js = new JavaScriptSerializer();
                 return js.Serialize(model);
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("LOI CMNR");
-            }
+           
 
 
             return "";
