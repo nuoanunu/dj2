@@ -10,7 +10,7 @@ using ThienNga2.Models.ViewModel;
 
 namespace ThienNga2.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class ProductController : EntitiesAM
     {
 
