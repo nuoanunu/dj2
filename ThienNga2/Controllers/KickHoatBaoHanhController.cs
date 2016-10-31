@@ -16,7 +16,7 @@ namespace ThienNga2.Controllers
         public ActionResult Index()
         {
             var model = new KichHoatBaoHanh();
-            ViewData["dspspgd"] = am.items.SqlQuery("SELECT TOP 100 * FROM dbo.item  where productDetailID != 481 ORDER BY DateOfSold DESC ").ToList();
+            ViewData["dspspgd"] = am.items.SqlQuery("SELECT TOP 100 * FROM dbo.item  where productDetailID != 481  ORDER BY DateOfSold DESC ").ToList();
             return View(model);
         }
         public ActionResult FindByFilter(String msk, String sku,DateTime? date, String sdt) {
@@ -139,9 +139,7 @@ namespace ThienNga2.Controllers
 
         public ActionResult Delete(String warrantyID, String itemID)
         {
-            System.Diagnostics.Debug.WriteLine("cc j vay " + int.Parse(warrantyID));
-
-
+            
             tb_warranty a = am.tb_warranty.Find(int.Parse(warrantyID));
             am.tb_warranty.Remove(a);
             am.SaveChanges();

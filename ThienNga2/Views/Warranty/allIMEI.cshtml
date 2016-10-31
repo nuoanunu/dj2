@@ -6,7 +6,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>WarrantyList</title>
-    <script src="//code.jquery.com/jquery-1.12.3.js"> </script>
+
     <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"> </script>
     <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"> </script>
     <script>
@@ -209,11 +209,11 @@
         }
         function finishEdit() {
             var newvalues = "?wactID=" + $("#waID").val() + "&newDate=" + $("#newDate").val() + "&newIMEI=" + $("#newIMEI").val() + "&newSKU=" + $("#newSKU").val() + "&newName=" + $("#newName").val() + "&newSDT=" + $("#newSDT").val() + "&newDuration=" + $("#newDuration").val() + "&newDescription=" + $("#newDescription").val() + "&newChinhPhu=" + $('input[name=newChinhPhu]:checked').val() + "&newNhomKhach=" + $("#groupID").val();
-
+            alert("DOINT");
             $.getJSON("/Warranty/updateWAR" + newvalues, function (result) {
 
                 $.each(result, function (name, value) {
-
+                    
                     if (name == "name") {
                         if (value == "succeed") {
                             alert("Da cap nhat thanh cong");

@@ -51,7 +51,7 @@
                             }
                          
                             $("#cainut" + index).text("");
-                            $("#cainut" + index).append('<a href="/KickHoatBaoHanh/Delete2?warrantyID=' + imei + '&itemID=' + itemid + '">Xóa</a>');
+                            $("#cainut" + index).append('<button class="btn btn-danger" onclick=\'Delete2("'+imei+'", "'+itemid+'")\'>Xóa</button>');
                         }                
 
                 });
@@ -62,6 +62,27 @@
     </script>
 
     <script>
+        function Delete(imei, itemID) {
+            var txt;
+            var r = confirm("Bấm xóa bạn sẽ xoa luôn dữ liệu bảo hành của IMEI này");
+            if (r == true) {
+                window.location.href = "/KickHoatBaoHanh/Delete?warrantyID="+imei+"&itemID="+itemID;
+            } else {
+           
+            }
+
+        }
+        function Delete2(imei, itemID) {
+            var txt;
+            var r = confirm("Bấm xóa bạn sẽ xoa luôn dữ liệu bảo hành của IMEI này");
+            if (r == true) {
+                window.location.href = "/KickHoatBaoHanh/Delete2?warrantyID=" + imei + "&itemID=" + itemID;
+            } else {
+
+            }
+
+        }
+     
         $(document).ready(function () {
 
             function checkHidden() {
@@ -359,12 +380,11 @@
                                     }
                                 </td>
                                 <td bgcolor="@color">
-                                    @using (Html.BeginForm("Delete", "KickHoatBaoHanh", FormMethod.Post))
-                                    {
+                                    
                                         <input type="hidden" value="@war.id" name="warrantyID" />
                                         <input type="hidden" value="@it.id" name="itemID" />
-                                        <input type="submit" value="Xóa" />
-                                    }
+                                        <button class="btn btn-danger" onclick='Delete("@(war.id)", "@(it.id)")'  type="submit" value="" >Xóa</button>
+                                    
                                 </td>
                             </tr>
                         }

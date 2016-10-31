@@ -1,7 +1,4 @@
 ﻿@using ThienNga2.Models.Entities;
-<!DOCTYPE html>
-
-<html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>NewProduct</title>
@@ -10,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="~/Content/Table.css">
     <script>
         $(document).ready(function () {
-           
+
             $("#Emp1").val($('input#username').val());
             $('#Emp1').autocomplete({
                 source: '@Url.Action("Autocomplete")'
@@ -97,8 +94,25 @@
                 }
             }
         };
-        setInterval(checkWarrantyCode, 100);
-
+        
+        function checkempty() {
+            var enableeee = true;
+            if ($("#phoneNumber").val() == "") { enableeee = false; }
+            if ($("#cusname").val() == "") { enableeee = false; }
+            if ($("#IMEI").val() == "") { enableeee = false; }
+            if ($("#Descrip").val() == "") { enableeee = false; }
+            if (!enableeee) {
+                $('input[type="submit"]').prop('disabled', true);
+            }
+            else {
+                $('input[type="submit"]').prop('disabled', false);
+            }
+        }
+        $(document).ready(function () {
+            setInterval(checkempty, 100);
+            setInterval(checkWarrantyCode, 100);
+        })
+  
     </script>
 </head>
 <body>
@@ -112,7 +126,7 @@
                     <div class="section"><span></span>Thông tin tiếp nhận sản phẩm</div>
                     <div class="inner-wrap">
                         <input type="hidden" id="actid" name="actid" value="" />
-                        <label>Khách hàng yêu cầu <label><input type="radio" name="type" value="1">Yêu cầu sửa chữa</label><label><input type="radio" name="type" value="2">Yêu cầu Bảo hành</label>  </label>
+                        <label>Khách hàng yêu cầu <label><input type="radio" checked name="type" value="1">Yêu cầu sửa chữa</label><label><input type="radio" name="type" value="2">Yêu cầu Bảo hành</label>  </label>
 
                         <label>SDT khách hàng <input type="tel" id="phoneNumber" name="phoneNumber" value="" required /></label>
                         <label>Tên khách hàng <input type="text" id="cusname" name="cusname" value="" required /></label>
@@ -122,12 +136,13 @@
                             <div id="divName"></div>
                             <div id="divDescription"></div>
                             <div id="divGroup"></div>
-                            <label>
-                                Tên sản phẩm <input style="display:none" required type="text" id="TenSanPham" name="TenSanPham" value="" />
+                        </label>
+                        <label>
+                            Tên sản phẩm <input style="display:none" required type="text" id="TenSanPham" name="TenSanPham" value="" />
 
-                                <label>Tình trạng lúc nhận <input type="text" id="Descrip" required name="Descrip" value="" /></label>
+                            <label>Tình trạng lúc nhận <input type="text" id="Descrip" required name="Descrip" value="" /></label>
 
-                            </label>
+                        </label>
                     </div>
                     <div class="button-section">
                         <input type="submit" name="Tạo" />
@@ -137,33 +152,32 @@
             </div>
         }
     }
-    @if (ViewData["newwarranty"] != null)
+    else
     {
-        tb_warranty_activities a = (tb_warranty_activities)ViewData["newwarranty"];
-        using (Html.BeginForm("CreateNew", "CreateWarranty", FormMethod.Post))
-        {
-            <div class="form-style-10">
-                <form>
+        tb_warranty_activities aa = new tb_warranty_activities();
+        aa=(tb_warranty_activities)ViewData["newwarranty"];
+        <div class="form-style-10">
+            <form action="/CreateWarranty/CreateNew" method="post">
 
-                    <div class="section"><span></span>Chỉnh sữa</div>
-                    <div class="inner-wrap">
-                        <input type="hidden" id="actid" name="actid" value="@a.id" />
-                        <label>Khách hàng yêu cầu<label><input type="radio" name="type" value="1">Sữa chữa</label><label><input type="radio" name="type" value="2">Bảo hành</label>  </label>
+                <div class="section"><span></span>Chỉnh sữa</div>
+                <div class="inner-wrap">
+                    <input type="hidden" id="actid" name="actid" value="@aa.id" />
+                    <label>Khách hàng yêu cầu<label><input type="radio" name="type" value="1">Sữa chữa</label><label><input type="radio" name="type" value="2">Bảo hành</label>  </label>
 
-                        <label>SDT khách hàng <input type="text" id="phoneNumber" name="phoneNumber" value="@a.SDT" /></label>
-                        <label>Tên khách hàng <input type="text" id="cusname" name="cusname" value="@a.TenKhach" /></label>
-                        <label>IMEI sản phẩm <input type="text" id="IMEI" name="IMEI" value="@a.tb_warranty.warrantyID" /></label>
-                        <label>Tên sản phẩm <input style="display:none" required type="text" id="TenSanPham" name="TenSanPham" value="" /> </label>
-                        <label> Tình trạng lúc nhận<input type="text" id="Descrip" name="Descrip" value="@a.Description" /></label>
+                    <label>SDT khách hàng <input type="text" id="phoneNumber" name="phoneNumber" value="@aa.SDT" /></label>
+                    <label>Tên khách hàng <input type="text" id="cusname" name="cusname" value="@aa.TenKhach" /></label>
+                    <label>IMEI sản phẩm <input type="text" id="IMEI" name="IMEI" value="@aa.tb_warranty.warrantyID" /></label>
+                    <label>Tên sản phẩm <input style="display:none" required type="text" id="TenSanPham" name="TenSanPham" value="@aa.itemID" /> </label>
+                    <label> Tình trạng lúc nhận<input type="text" id="Descrip" name="Descrip" value="@aa.Description" /></label>
 
-                    </div>
-                    <div class="button-section">
-                        <input type="submit" name="Sữa" />
+                </div>
+                <div class="button-section">
+                    <input type="submit" name="Sữa" />
 
-                    </div>
-                </form>
-            </div>
-        }
+                </div>
+            </form>
+        </div>
+
 
 
     }
