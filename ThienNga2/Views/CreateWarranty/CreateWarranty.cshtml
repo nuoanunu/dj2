@@ -10,8 +10,7 @@
     <link rel="stylesheet" type="text/css" href="~/Content/Table.css">
     <script>
         $(document).ready(function () {
-            $('input[type="submit"]').prop('disabled', true);
-        
+           
             $("#Emp1").val($('input#username').val());
             $('#Emp1').autocomplete({
                 source: '@Url.Action("Autocomplete")'
@@ -21,7 +20,7 @@
                     return $("<li>")
                       .data("ui-autocomplete-item", item)
 
-                      .append('<a style="color:black">' + item.label +"</a>")
+                      .append('<a style="color:black">' + item.label + "</a>")
                       .appendTo(ul);
                 };
             $('#Emp2').autocomplete({
@@ -53,14 +52,15 @@
                                 $('#IMEI').css("background-color", "green");
                                 $('#IMEI').css("color", "white");
                                 $("#divName").text("Tên sản phẩm: " + value);
-                                
+
                             }
 
                         }
                         if (name == "remainingTime") {
                             flag = true;
                             if (value != null) {
-                                $("#divDate").text("Ngày hết hạn: " +value);
+                                $("#divDate").text("Ngày hết hạn: " + value);
+                                $("#TenSanPham").css("display", "none");
                             }
 
                         }
@@ -88,46 +88,53 @@
                     })
                 });
                 if (!flag) {
-                    $('input[type="submit"]').prop('disabled', true);
-                    $('#IMEI').css("background-color", "red");
+
+                    $('#IMEI').css("background-color", "orange");
                     $('#IMEI').css("color", "white");
-                    $("#divDate").text("Ko tìm thấy IMEI sản phẩm, vui lòng kiểm tra lại");
+                    $("#divDate").text("Sản phẩm này ko tồn tại trong hệ thống, nếu muốn tạo bảo hành, vui lòng điền tên sản phẩm");
+                    $("#TenSanPham").css("display", "");
+                    $("#TenSanPham").css("background", "orange");
                 }
             }
         };
         setInterval(checkWarrantyCode, 100);
-        
-        </script>
+
+    </script>
 </head>
 <body>
     @if (ViewData["newwarranty"] == null)
     {
         using (Html.BeginForm("CreateNew", "CreateWarranty", FormMethod.Post))
         {
-        <div class="form-style-10">
-            <form>
+            <div class="form-style-10">
+                <form>
 
-                <div class="section"><span></span>Thông tin tiếp nhận sản phẩm</div>
-                <div class="inner-wrap">
-                    <input type="hidden" id="actid" name="actid" value="" />
-                    <label>Khách hàng yêu cầu <label><input type="radio" name="type" value="1">Yêu cầu sửa chữa</label><label><input type="radio" name="type" value="2">Yêu cầu Bảo hành</label>  </label>
+                    <div class="section"><span></span>Thông tin tiếp nhận sản phẩm</div>
+                    <div class="inner-wrap">
+                        <input type="hidden" id="actid" name="actid" value="" />
+                        <label>Khách hàng yêu cầu <label><input type="radio" name="type" value="1">Yêu cầu sửa chữa</label><label><input type="radio" name="type" value="2">Yêu cầu Bảo hành</label>  </label>
 
-                    <label>SDT khách hàng <input type="tel" id="phoneNumber" name="phoneNumber" value="" required/></label>
-                    <label>Tên khách hàng <input type="text" id="cusname" name="cusname" value="" required /></label>
-                    <label>IMEI sản phẩm <input required type="text" id="IMEI"  name="IMEI" value="" /> <div id="divDate"></div> 
-                    <div id="divName"></div>
-                    <div id="divDescription"></div> 
-                    <div id="divGroup"></div> 
-                    <label>Tình trạng lúc nhận <input type="text" id="Descrip" required name="Descrip" value="" /></label>
+                        <label>SDT khách hàng <input type="tel" id="phoneNumber" name="phoneNumber" value="" required /></label>
+                        <label>Tên khách hàng <input type="text" id="cusname" name="cusname" value="" required /></label>
+                        <label>
+                            IMEI sản phẩm <input required type="text" id="IMEI" name="IMEI" value="" />
+                            <div id="divDate"></div>
+                            <div id="divName"></div>
+                            <div id="divDescription"></div>
+                            <div id="divGroup"></div>
+                            <label>
+                                Tên sản phẩm <input style="display:none" required type="text" id="TenSanPham" name="TenSanPham" value="" />
 
-                    </label>
-                </div>
-                <div class="button-section">
-                    <input type="submit" name="Tạo" />
+                                <label>Tình trạng lúc nhận <input type="text" id="Descrip" required name="Descrip" value="" /></label>
 
-                </div>
-            </form>
-        </div>
+                            </label>
+                    </div>
+                    <div class="button-section">
+                        <input type="submit" name="Tạo" />
+
+                    </div>
+                </form>
+            </div>
         }
     }
     @if (ViewData["newwarranty"] != null)
@@ -137,18 +144,19 @@
         {
             <div class="form-style-10">
                 <form>
-                    
+
                     <div class="section"><span></span>Chỉnh sữa</div>
                     <div class="inner-wrap">
-                      <input type="hidden" id="actid" name="actid" value="@a.id" />
-                        <label>Khách hàng yêu cầu <input type="text" id="Descrip" name="Descrip" value="@a.Description" /></label>
+                        <input type="hidden" id="actid" name="actid" value="@a.id" />
+                        <label>Khách hàng yêu cầu<label><input type="radio" name="type" value="1">Sữa chữa</label><label><input type="radio" name="type" value="2">Bảo hành</label>  </label>
 
                         <label>SDT khách hàng <input type="text" id="phoneNumber" name="phoneNumber" value="@a.SDT" /></label>
                         <label>Tên khách hàng <input type="text" id="cusname" name="cusname" value="@a.TenKhach" /></label>
                         <label>IMEI sản phẩm <input type="text" id="IMEI" name="IMEI" value="@a.tb_warranty.warrantyID" /></label>
-                        <label>Phân loại <label><input type="radio" name="type" value="1">Sữa chữa</label><label><input type="radio" name="type" value="2">Bảo hành</label>  </label>
+                        <label>Tên sản phẩm <input style="display:none" required type="text" id="TenSanPham" name="TenSanPham" value="" /> </label>
+                        <label> Tình trạng lúc nhận<input type="text" id="Descrip" name="Descrip" value="@a.Description" /></label>
 
-                     </div>
+                    </div>
                     <div class="button-section">
                         <input type="submit" name="Sữa" />
 

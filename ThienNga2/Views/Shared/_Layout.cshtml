@@ -359,9 +359,69 @@
             }]
         });
     </script>
+    <script>
+        var quay = true;
+        function checkNewNoti() {
+            if (quay) {
+                $.getJSON("/NhanVien/getNewNoti", function (result) {
+                    $.each(result, function (name, value) {
+                        if (name == "title") { $("#title").text(value); }
+
+                        if (name == "link") { $("#tblink").attr('href', value); }
+                        if (name == "description") { $("#tblink").text(value); }
+                        if (name == "id") { $("#tbID").val(value); }
+                    });
+                    if (result != null) {
+                        quay = false;
+                        $("#notimodal").modal('show');
+                    }
+
+                });
+            }
+        }
+        setInterval(checkNewNoti, 1000);
+        function xacnhan() {
+            $.getJSON("/NhanVien/XacNhanSuaChua?id=" + $("#tbID").val(), function (result) {
+                $.each(result, function (name, value) {
+                    if (name == "result") {
+                        if (value == "true") {
+                            $("#notimodal").modal('hide');
+                            quay = true;
+                        }
+                        else {
+                            alert("Có lỗi xảy ra");
+                            $("#notimodal").modal('hide');
+                         
+                        }
+                    }
+                });
+             
+
+            });
+        }
+    </script>
+    <div class="modal fade" id="notimodal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="title">Nhiệm vụ sữa chữa sản phẩm</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" value="" id="tbID" />
+                    <p><a id="tblink" href=""></a> </p>
+                    <button onclick="xacnhan()" class="btn btn-success">Xác nhận</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
-    </head>
+
 
 @Scripts.Render("~/bundles/bootstrap")
 @RenderSection("scripts", required: false)
+
 </html>

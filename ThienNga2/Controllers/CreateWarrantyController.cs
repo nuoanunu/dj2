@@ -104,8 +104,9 @@ namespace ThienNga2.Controllers
 
         // POST: CreateWarranty/CreateNew
         [HttpPost]
-        public ActionResult CreateNew(String actid, String phoneNumber, String cusname, String IMEI, String Descrip, int type)
+        public ActionResult CreateNew(String actid, String phoneNumber, String cusname, String IMEI, String Descrip, int type,String TenSanPham)
         {
+            try {
             bool add = true;
             tb_warranty_activities act;
             if (actid != null)
@@ -136,22 +137,26 @@ namespace ThienNga2.Controllers
                 act.AspNetUser1 = emplo2;
             }
             tb_warranty lst = am.tb_warranty.SqlQuery("SELECT * FROM dbo.tb_warranty WHERE warrantyID='" + IMEI + "'").FirstOrDefault();
-            item detail = am.items.SqlQuery("SELECT * FROM dbo.item WHERE id=" + lst.itemID ).FirstOrDefault();
+            if (lst != null) {
+                item detail = am.items.SqlQuery("SELECT * FROM dbo.item WHERE id=" + lst.itemID).FirstOrDefault();
+                act.productDetailID = detail.productDetailID;
+                act.warrantyID = lst.id;
+            }
+             
             act.TenKhach = cusname;
             act.SDT = phoneNumber;
             act.status = 1;
             act.Description = Descrip;
-            act.warrantyID = lst.id;
+            act.itemID = TenSanPham;
             act.startDate = DateTime.Today;
             act.type = type;
-           
             String date = act.startDate.Day.ToString();
             if (date.Length == 1) date = "0" + date;
             String month = act.startDate.Month.ToString();
             if (month.Length == 1) month = "0" + month;
             act.CodeBaoHanh = date + month + "." + phoneNumber.Substring(phoneNumber.Length - 6);
           
-            act.productDetailID = detail.productDetailID;
+           
             if(add)
             am.tb_warranty_activities.Add(act);
             am.SaveChanges();
@@ -161,7 +166,9 @@ namespace ThienNga2.Controllers
             act.id = id;
             act = am.tb_warranty_activities.Find(id);
             return RedirectToAction("ConfirmCreate", "CreateWarranty", new { acid = id });
-
+            }
+            catch (Exception e) { }
+            return RedirectToAction("Index");
 
         }
 
@@ -239,8 +246,17 @@ namespace ThienNga2.Controllers
                 String MaBill = act.CodeBaoHanh;
                 String cusname = act.TenKhach;
                 String sdt = act.SDT;
-                String sp = act.tb_warranty.item.tb_product_detail.productName;
-                String mbh = act.tb_warranty.warrantyID;
+                String sp = "";
+                String mbh = "";
+                if (act.tb_warranty == null) {
+                    sp = act.itemID;
+                    mbh = act.itemID;
+                }
+                else {
+                    sp = act.tb_warranty.item.tb_product_detail.productName;
+                    mbh = act.tb_warranty.warrantyID;
+                }
+     
                 String datetake = act.startDate.ToShortDateString();
                 String request = act.ActivityType.name;
                 String des = act.Description;

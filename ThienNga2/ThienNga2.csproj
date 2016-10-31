@@ -367,6 +367,9 @@
     <Compile Include="Models\Entities\ThienNga_warrantyHistory_Result.cs">
       <DependentUpon>ThienNgaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\ThongBaoMoi.cs">
+      <DependentUpon>ThienNgaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\warrantyActivityFee.cs">
       <DependentUpon>ThienNgaModel.tt</DependentUpon>
     </Compile>

@@ -338,42 +338,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="tb_warranty">
-      <EntityTypeMapping TypeName="ThienNgaDatabaseModel.tb_warranty">
-        <MappingFragment StoreEntitySet="tb_warranty">
-          <ScalarProperty Name="Special" ColumnName="Special" />
-          <ScalarProperty Name="MaChinh" ColumnName="MaChinh" />
-          <ScalarProperty Name="description" ColumnName="description" />
-          <ScalarProperty Name="duration" ColumnName="duration" />
-          <ScalarProperty Name="startdate" ColumnName="startdate" />
-          <ScalarProperty Name="itemID" ColumnName="itemID" />
-          <ScalarProperty Name="warrantyID" ColumnName="warrantyID" />
-          <ScalarProperty Name="id" ColumnName="id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="tb_warranty_activities">
-      <EntityTypeMapping TypeName="ThienNgaDatabaseModel.tb_warranty_activities">
-        <MappingFragment StoreEntitySet="tb_warranty_activities">
-          <ScalarProperty Name="type" ColumnName="type" />
-          <ScalarProperty Name="Note" ColumnName="Note" />
-          <ScalarProperty Name="productDetailID" ColumnName="productDetailID" />
-          <ScalarProperty Name="SDT" ColumnName="SDT" />
-          <ScalarProperty Name="TenKhach" ColumnName="TenKhach" />
-          <ScalarProperty Name="CodeBaoHanh" ColumnName="CodeBaoHanh" />
-          <ScalarProperty Name="empFixer" ColumnName="empFixer" />
-          <ScalarProperty Name="finishFixingDate" ColumnName="finishFixingDate" />
-          <ScalarProperty Name="itemID" ColumnName="itemID" />
-          <ScalarProperty Name="realeaseDATE" ColumnName="realeaseDATE" />
-          <ScalarProperty Name="status" ColumnName="status" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="warrantyID" ColumnName="warrantyID" />
-          <ScalarProperty Name="employee" ColumnName="employee" />
-          <ScalarProperty Name="startDate" ColumnName="startDate" />
-          <ScalarProperty Name="id" ColumnName="id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="tb_warrnaty_status">
       <EntityTypeMapping TypeName="ThienNgaDatabaseModel.tb_warrnaty_status">
         <MappingFragment StoreEntitySet="tb_warrnaty_status">
@@ -450,6 +414,54 @@
       <EntityTypeMapping TypeName="ThienNgaDatabaseModel.ActivityType">
         <MappingFragment StoreEntitySet="ActivityType">
           <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ThongBaoMois">
+      <EntityTypeMapping TypeName="ThienNgaDatabaseModel.ThongBaoMoi">
+        <MappingFragment StoreEntitySet="ThongBaoMoi">
+          <ScalarProperty Name="hreflink" ColumnName="hreflink" />
+          <ScalarProperty Name="Confirmed" ColumnName="Confirmed" />
+          <ScalarProperty Name="Reciever" ColumnName="Reciever" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_warranty">
+      <EntityTypeMapping TypeName="ThienNgaDatabaseModel.tb_warranty">
+        <MappingFragment StoreEntitySet="tb_warranty">
+          <ScalarProperty Name="Special" ColumnName="Special" />
+          <ScalarProperty Name="MaChinh" ColumnName="MaChinh" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="duration" ColumnName="duration" />
+          <ScalarProperty Name="startdate" ColumnName="startdate" />
+          <ScalarProperty Name="itemID" ColumnName="itemID" />
+          <ScalarProperty Name="warrantyID" ColumnName="warrantyID" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_warranty_activities">
+      <EntityTypeMapping TypeName="ThienNgaDatabaseModel.tb_warranty_activities">
+        <MappingFragment StoreEntitySet="tb_warranty_activities">
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="productDetailID" ColumnName="productDetailID" />
+          <ScalarProperty Name="SDT" ColumnName="SDT" />
+          <ScalarProperty Name="TenKhach" ColumnName="TenKhach" />
+          <ScalarProperty Name="CodeBaoHanh" ColumnName="CodeBaoHanh" />
+          <ScalarProperty Name="empFixer" ColumnName="empFixer" />
+          <ScalarProperty Name="finishFixingDate" ColumnName="finishFixingDate" />
+          <ScalarProperty Name="itemID" ColumnName="itemID" />
+          <ScalarProperty Name="realeaseDATE" ColumnName="realeaseDATE" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="warrantyID" ColumnName="warrantyID" />
+          <ScalarProperty Name="employee" ColumnName="employee" />
+          <ScalarProperty Name="startDate" ColumnName="startDate" />
           <ScalarProperty Name="id" ColumnName="id" />
         </MappingFragment>
       </EntityTypeMapping>

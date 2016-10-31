@@ -1,5 +1,8 @@
 ﻿
 @using ThienNga2.Models.Entities
+
+<script src="~/Content/js/select/select2.full.js"></script>
+<link href="~/Content/css/select/select2.min.css" rel="stylesheet" />
 <script>
     setInterval(function () { loadprice($('#searchID').val(), $('#quantitySKU').val()); }, 100);
     var skupicked = $('#searchID').val();
@@ -182,7 +185,10 @@
                                                 <tr>
                                                     <td>
                                                         <input type="hidden" name="activitiesID" value="@act.id" />
-                                                        <input style="width:100%" id="searchID" type="text" name="ksu" />
+                                                        <select id="searchID" name="ksu" class="skuselector select2_single form-control" tabindex="-1">
+                                                            <option selected value=""></option>
+                                                        </select>
+                                                  
                                                     </td>
                                                     <td>
                                                         <input style="width:100%" id="quantitySKU" type="text" name="quantity" />
@@ -225,48 +231,48 @@
                                         <tbody>
                                             @foreach (warrantyActivityFixingFee fee in act.warrantyActivityFixingFees)
                                             {
-                                            <tr>
-                                                <td>
-                                                    @fee.FixDetail
-                                                </td>
-                                                <td>
-                                                    @fee.fee.ToString("N")
-                                                </td>
-                                                @if ((bool)fee.active)
-                                                {
+                                                <tr>
                                                     <td>
+                                                        @fee.FixDetail
+                                                    </td>
+                                                    <td>
+                                                        @fee.fee.ToString("N")
+                                                    </td>
+                                                    @if ((bool)fee.active)
+                                                    {
+                                                        <td>
 
-                                                        @using (Html.BeginForm("XoaFixingFee", "Warranty"))
-                                                        {
-                                                            <input type="hidden" name="feeID" value="@fee.id" />
-                                                            <input type="hidden" name="activitiesID" value="@fee.tb_warranty_activities.id" />
-                                                            <input type="submit" name="Xóa" value="Xóa" />
-                                                        }
-                                                    </td>
-                                                }
-                                                else
-                                                {
-                                                    <td>
-                                                        Đã Xóa
-                                                    </td>
-                                                }
-                                            </tr>
+                                                            @using (Html.BeginForm("XoaFixingFee", "Warranty"))
+                                                            {
+                                                                <input type="hidden" name="feeID" value="@fee.id" />
+                                                                <input type="hidden" name="activitiesID" value="@fee.tb_warranty_activities.id" />
+                                                                <input type="submit" name="Xóa" value="Xóa" />
+                                                            }
+                                                        </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            Đã Xóa
+                                                        </td>
+                                                    }
+                                                </tr>
                                             }
                                             @using (Html.BeginForm("AddFixingFee", "Warranty"))
                                             {
-                                            <tr>
-                                                <td>
-                                                    
-                                                    <input type="text" name="fixDetail" />
-                                                </td>
-                                                <td>
-                                                    <input type="text" name="price" />
-                                                </td>
-                                                <input type="hidden" name="activitiesID" value="@act.id" />
-                                                <td>
-                                                    <input type="submit" name="ThêmS" />
-                                                </td>
-                                            </tr>
+                                                <tr>
+                                                    <td>
+
+                                                        <input type="text" name="fixDetail" />
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="price" />
+                                                    </td>
+                                                    <input type="hidden" name="activitiesID" value="@act.id" />
+                                                    <td>
+                                                        <input type="submit" name="ThêmS" />
+                                                    </td>
+                                                </tr>
                                             }
                                         </tbody>
                                     </table>
@@ -300,7 +306,7 @@
                                                         Sữa chữa khác
                                                     </th>
                                                     <th>
-                                                       Tình trạng lúc nhận
+                                                        Tình trạng lúc nhận
                                                     </th>
                                                     <th>
                                                         Chi tiết
@@ -308,7 +314,11 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach (tb_warranty_activities oldact in act.tb_warranty.tb_warranty_activities.Where(u=>u.status==6 || u.status==7).ToList())
+                                                @if (act.tb_warranty != null)
+                                                {
+
+
+                                                foreach (tb_warranty_activities oldact in act.tb_warranty.tb_warranty_activities.Where(u => u.status == 6 || u.status == 7).ToList())
                                                 {
                                                     <tr>
                                                         <td>
@@ -328,9 +338,9 @@
                                                         <td>
                                                             @foreach (warrantyActivityFee fee in oldact.warrantyActivityFees)
                                                             {<ul>
-                                                                 <li>@fee.productSKU : @fee.quantity cái</li>
+                                                                <li>@fee.productSKU : @fee.quantity cái</li>
                                                             </ul>
-                                                               
+
                                                             }
                                                         </td>
                                                         <td>
@@ -349,7 +359,7 @@
                                                         </td>
                                                     </tr>
                                                 }
-                                               
+                                                }
                                             </tbody>
                                         </table>
                                     </div>
@@ -396,17 +406,23 @@
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="panel-body">
-                                    <h3 class="green"><i class="fa fa-paint-brush"></i>@act.tb_warranty.item.tb_product_detail.productStoreID</h3>
-                                    @if (act.tb_warranty.item.tb_customer != null) { 
-                                    if (act.tb_warranty.item.tb_customer.CustomerType != null)
-                                    {
-                                    <div class="project_detail" style="background-color:@act.tb_warranty.item.tb_customer.CustomerType.Color">
+                                    @if (act.tb_warranty != null)
+                                    { <h3 class="green"><i class="fa fa-paint-brush"></i>@act.tb_warranty.item.tb_product_detail.productStoreID</h3>
 
-                                        <p class="title">Nhóm khách</p>
-                                        <p>@act.tb_warranty.item.tb_customer.CustomerType.GroupName</p>
-                                     
-                                    </div>
-                                            }
+                                        if (act.tb_warranty.item.tb_customer.CustomerType != null)
+                                        {
+                                            <div class="project_detail" style="background-color:@act.tb_warranty.item.tb_customer.CustomerType.Color">
+
+                                                <p class="title">Nhóm khách</p>
+                                                <p>@act.tb_warranty.item.tb_customer.CustomerType.GroupName</p>
+
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <h3 class="green"><i class="fa fa-paint-brush"></i>@act.itemID</h3>
+
                                     }
                                     <div class="project_detail">
 
@@ -419,15 +435,25 @@
                                     <br>
                                     <h5>Thông tin bảo hành sản phẩm</h5>
                                     <ul class="list-unstyled project_files">
-                                        <li>
-                                            <a href=""><i class="fa fa-file-word-o"></i>Ngày kích hoạt @act.tb_warranty.startdate.ToShortDateString()</a>
-                                        </li>
-                                        <li>
-                                            <a href=""><i class="fa fa-file-pdf-o"></i>Thời hạn @act.tb_warranty.duration</a>
-                                        </li>
-                                        <li>
-                                            <a href=""><i class="fa fa-mail-forward"></i>IMEI @act.tb_warranty.item.tb_warranty.FirstOrDefault().warrantyID</a>
-                                        </li>
+                                        @if (act.tb_warranty != null)
+                                        {
+                                            <li>
+                                                <a href=""><i class="fa fa-file-word-o"></i>Ngày kích hoạt @act.tb_warranty.startdate.ToShortDateString()</a>
+                                            </li>
+                                            <li>
+                                                <a href=""><i class="fa fa-file-pdf-o"></i>Thời hạn @act.tb_warranty.duration</a>
+                                            </li>
+                                            <li>
+                                                <a href=""><i class="fa fa-mail-forward"></i>IMEI @act.tb_warranty.item.tb_warranty.FirstOrDefault().warrantyID</a>
+                                            </li>
+
+                                        }
+                                        else
+                                        {
+                                            <li>
+                                                <a href=""><i class="fa fa-file-word-o"></i>Ko phải sản phẩm được phân phối tại của hàng</a>
+                                            </li>
+                                        }
 
                                     </ul>
                                     <br>
@@ -448,9 +474,9 @@
                                                             <input type="hidden" value="@act.id" name="actid" />
                                                             <select name="empId">
                                                                 @foreach (AspNetUser user in (List<AspNetUser>)ViewData["NhanVienKyThuat"])
-                                                                    {
+                                                                {
                                                                     <option value="@user.Id"> @user.FullName</option>
-                                                                    }
+                                                                }
                                                             </select>
                                                             <button type="submit"> Giao </button>
                                                         </form>
@@ -482,5 +508,22 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            $(document).ready(function () {
+                $(".select2_single").select2({
+                    placeholder: "Chọn SKU",
+                    allowClear: true
+                });
+            });
+            var productname =@Html.Raw(ViewData["namelist"]);
 
+            $(".skuselector").each(function () {
+
+                for (var i = 0; i < productname.length ; i++) {
+                    $(this).append(new Option(productname[i],productname[i]));
+                }
+            });
+        })
+    </script>
 }

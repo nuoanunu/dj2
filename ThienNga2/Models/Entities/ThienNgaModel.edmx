@@ -124,7 +124,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="warrantyActivitiesID" Type="int" Nullable="false" />
-          <Property Name="action" Type="varchar(max)" Nullable="false" />
+          <Property Name="action" Type="nvarchar(max)" Nullable="false" />
           <Property Name="date" Type="date" Nullable="false" />
           <Property Name="account" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
@@ -238,7 +238,7 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="startDate" Type="date" Nullable="false" />
           <Property Name="employee" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="warrantyID" Type="int" Nullable="false" />
+          <Property Name="warrantyID" Type="int" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="status" Type="int" Nullable="false" />
           <Property Name="realeaseDATE" Type="date" />
@@ -248,7 +248,7 @@
           <Property Name="CodeBaoHanh" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="TenKhach" Type="nvarchar" MaxLength="50" />
           <Property Name="SDT" Type="nvarchar" MaxLength="50" />
-          <Property Name="productDetailID" Type="int" Nullable="false" />
+          <Property Name="productDetailID" Type="int" />
           <Property Name="Note" Type="nvarchar(max)" />
           <Property Name="type" Type="int" />
         </EntityType>
@@ -271,6 +271,17 @@
           <Property Name="datecode" Type="nvarchar" MaxLength="50" />
           <Property Name="series" Type="nvarchar(max)" />
           <Property Name="code" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ThongBaoMoi">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Reciever" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Confirmed" Type="bit" Nullable="false" />
+          <Property Name="hreflink" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="warrantyActivityFee">
           <Key>
@@ -560,7 +571,7 @@ warning 6035: The relationship 'FK_inventory_tb_product_detail1' has columns tha
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_tb_warranty_activities_tb_warranty">
-          <End Role="tb_warranty" Type="Self.tb_warranty" Multiplicity="1" />
+          <End Role="tb_warranty" Type="Self.tb_warranty" Multiplicity="0..1" />
           <End Role="tb_warranty_activities" Type="Self.tb_warranty_activities" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tb_warranty">
@@ -592,6 +603,18 @@ warning 6035: The relationship 'FK_inventory_tb_product_detail1' has columns tha
             </Principal>
             <Dependent Role="tb_warranty">
               <PropertyRef Name="itemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ThongBaoMoi_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="ThongBaoMoi" Type="Self.ThongBaoMoi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ThongBaoMoi">
+              <PropertyRef Name="Reciever" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -712,6 +735,7 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <EntitySet Name="tb_warranty_activities" EntityType="Self.tb_warranty_activities" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_warrnaty_status" EntityType="Self.tb_warrnaty_status" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="temp" EntityType="Self.temp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ThongBaoMoi" EntityType="Self.ThongBaoMoi" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="warrantyActivityFee" EntityType="Self.warrantyActivityFee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="warrantyActivityFixingFee" EntityType="Self.warrantyActivityFixingFee" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_account_role" Association="Self.FK_account_role">
@@ -809,6 +833,10 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <AssociationSet Name="FK_tb_warranty_item" Association="Self.FK_tb_warranty_item">
             <End Role="item" EntitySet="item" />
             <End Role="tb_warranty" EntitySet="tb_warranty" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ThongBaoMoi_AspNetUsers" Association="Self.FK_ThongBaoMoi_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="ThongBaoMoi" EntitySet="ThongBaoMoi" />
           </AssociationSet>
           <AssociationSet Name="FK_warrantyActivityFee_tb_warranty_activities" Association="Self.FK_warrantyActivityFee_tb_warranty_activities">
             <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
@@ -908,8 +936,6 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <EntitySet Name="tb_customer" EntityType="ThienNgaDatabaseModel.tb_customer" />
           <EntitySet Name="tb_inventory_name" EntityType="ThienNgaDatabaseModel.tb_inventory_name" />
           <EntitySet Name="tb_product_detail" EntityType="ThienNgaDatabaseModel.tb_product_detail" />
-          <EntitySet Name="tb_warranty" EntityType="ThienNgaDatabaseModel.tb_warranty" />
-          <EntitySet Name="tb_warranty_activities" EntityType="ThienNgaDatabaseModel.tb_warranty_activities" />
           <EntitySet Name="tb_warrnaty_status" EntityType="ThienNgaDatabaseModel.tb_warrnaty_status" />
           <EntitySet Name="temps" EntityType="ThienNgaDatabaseModel.temp" />
           <EntitySet Name="warrantyActivityFees" EntityType="ThienNgaDatabaseModel.warrantyActivityFee" />
@@ -925,14 +951,6 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="ThienNgaDatabaseModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tb_warranty_activities_AspNetUsers" Association="ThienNgaDatabaseModel.FK_tb_warranty_activities_AspNetUsers">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tb_warranty_activities_AspNetUsers1" Association="ThienNgaDatabaseModel.FK_tb_warranty_activities_AspNetUsers1">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
           </AssociationSet>
           <AssociationSet Name="FK_item_CustomerType" Association="ThienNgaDatabaseModel.FK_item_CustomerType">
             <End Role="CustomerType" EntitySet="CustomerTypes" />
@@ -962,14 +980,6 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
             <End Role="tb_product_detail" EntitySet="tb_product_detail" />
             <End Role="item" EntitySet="items" />
           </AssociationSet>
-          <AssociationSet Name="FK_tb_warranty_item" Association="ThienNgaDatabaseModel.FK_tb_warranty_item">
-            <End Role="item" EntitySet="items" />
-            <End Role="tb_warranty" EntitySet="tb_warranty" />
-          </AssociationSet>
-          <AssociationSet Name="FK_log_tb_warranty_activities" Association="ThienNgaDatabaseModel.FK_log_tb_warranty_activities">
-            <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
-            <End Role="log" EntitySet="logs" />
-          </AssociationSet>
           <AssociationSet Name="FK_order_tb_customer" Association="ThienNgaDatabaseModel.FK_order_tb_customer">
             <End Role="tb_customer" EntitySet="tb_customer" />
             <End Role="order" EntitySet="orders" />
@@ -981,22 +991,6 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <AssociationSet Name="FK_tb_product_detail_tb_cate" Association="ThienNgaDatabaseModel.FK_tb_product_detail_tb_cate">
             <End Role="tb_cate" EntitySet="tb_cate" />
             <End Role="tb_product_detail" EntitySet="tb_product_detail" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tb_warranty_activities_tb_warranty" Association="ThienNgaDatabaseModel.FK_tb_warranty_activities_tb_warranty">
-            <End Role="tb_warranty" EntitySet="tb_warranty" />
-            <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tb_warranty_activities_tb_warrnaty_status" Association="ThienNgaDatabaseModel.FK_tb_warranty_activities_tb_warrnaty_status">
-            <End Role="tb_warrnaty_status" EntitySet="tb_warrnaty_status" />
-            <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
-          </AssociationSet>
-          <AssociationSet Name="FK_warrantyActivityFee_tb_warranty_activities" Association="ThienNgaDatabaseModel.FK_warrantyActivityFee_tb_warranty_activities">
-            <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
-            <End Role="warrantyActivityFee" EntitySet="warrantyActivityFees" />
-          </AssociationSet>
-          <AssociationSet Name="FK_warrantyActivityFixingFee_tb_warranty_activities" Association="ThienNgaDatabaseModel.FK_warrantyActivityFixingFee_tb_warranty_activities">
-            <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
-            <End Role="warrantyActivityFixingFee" EntitySet="warrantyActivityFixingFees" />
           </AssociationSet>
           <AssociationSet Name="AspNetUserRoles" Association="ThienNgaDatabaseModel.AspNetUserRoles">
             <End Role="AspNetRole" EntitySet="AspNetRoles" />
@@ -1024,9 +1018,48 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
             <End Role="NhanVien" EntitySet="NhanViens" />
           </AssociationSet>
           <EntitySet Name="ActivityTypes" EntityType="ThienNgaDatabaseModel.ActivityType" />
+          <EntitySet Name="ThongBaoMois" EntityType="ThienNgaDatabaseModel.ThongBaoMoi" />
+          <AssociationSet Name="FK_ThongBaoMoi_AspNetUsers" Association="ThienNgaDatabaseModel.FK_ThongBaoMoi_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="ThongBaoMoi" EntitySet="ThongBaoMois" />
+          </AssociationSet>
+          <EntitySet Name="tb_warranty" EntityType="ThienNgaDatabaseModel.tb_warranty" />
+          <EntitySet Name="tb_warranty_activities" EntityType="ThienNgaDatabaseModel.tb_warranty_activities" />
           <AssociationSet Name="FK_tb_warranty_activities_ActivityType" Association="ThienNgaDatabaseModel.FK_tb_warranty_activities_ActivityType">
             <End Role="ActivityType" EntitySet="ActivityTypes" />
             <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_warranty_activities_AspNetUsers" Association="ThienNgaDatabaseModel.FK_tb_warranty_activities_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_warranty_activities_AspNetUsers1" Association="ThienNgaDatabaseModel.FK_tb_warranty_activities_AspNetUsers1">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_warranty_item" Association="ThienNgaDatabaseModel.FK_tb_warranty_item">
+            <End Role="item" EntitySet="items" />
+            <End Role="tb_warranty" EntitySet="tb_warranty" />
+          </AssociationSet>
+          <AssociationSet Name="FK_log_tb_warranty_activities" Association="ThienNgaDatabaseModel.FK_log_tb_warranty_activities">
+            <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
+            <End Role="log" EntitySet="logs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_warranty_activities_tb_warranty" Association="ThienNgaDatabaseModel.FK_tb_warranty_activities_tb_warranty">
+            <End Role="tb_warranty" EntitySet="tb_warranty" />
+            <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_warranty_activities_tb_warrnaty_status" Association="ThienNgaDatabaseModel.FK_tb_warranty_activities_tb_warrnaty_status">
+            <End Role="tb_warrnaty_status" EntitySet="tb_warrnaty_status" />
+            <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_warrantyActivityFee_tb_warranty_activities" Association="ThienNgaDatabaseModel.FK_warrantyActivityFee_tb_warranty_activities">
+            <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
+            <End Role="warrantyActivityFee" EntitySet="warrantyActivityFees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_warrantyActivityFixingFee_tb_warranty_activities" Association="ThienNgaDatabaseModel.FK_warrantyActivityFixingFee_tb_warranty_activities">
+            <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
+            <End Role="warrantyActivityFixingFee" EntitySet="warrantyActivityFixingFees" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="ThienNga_checkkho_Result">
@@ -1196,11 +1229,12 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <Property Name="FullName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="ThienNgaDatabaseModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="ThienNgaDatabaseModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
-          <NavigationProperty Name="tb_warranty_activities" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_AspNetUsers" FromRole="AspNetUser" ToRole="tb_warranty_activities" />
-          <NavigationProperty Name="tb_warranty_activities1" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_AspNetUsers1" FromRole="AspNetUser" ToRole="tb_warranty_activities" />
           <NavigationProperty Name="AspNetRoles" Relationship="ThienNgaDatabaseModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
           <NavigationProperty Name="logs" Relationship="ThienNgaDatabaseModel.FK_log_AspNetUsers" FromRole="AspNetUser" ToRole="log" />
           <NavigationProperty Name="NhanViens" Relationship="ThienNgaDatabaseModel.FK_NhanVien_AspNetUsers" FromRole="AspNetUser" ToRole="NhanVien" />
+          <NavigationProperty Name="ThongBaoMois" Relationship="ThienNgaDatabaseModel.FK_ThongBaoMoi_AspNetUsers" FromRole="AspNetUser" ToRole="ThongBaoMoi" />
+          <NavigationProperty Name="tb_warranty_activities" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_AspNetUsers" FromRole="AspNetUser" ToRole="tb_warranty_activities" />
+          <NavigationProperty Name="tb_warranty_activities1" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_AspNetUsers1" FromRole="AspNetUser" ToRole="tb_warranty_activities" />
         </EntityType>
         <EntityType Name="CustomerType">
           <Key>
@@ -1253,8 +1287,8 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <NavigationProperty Name="tb_customer" Relationship="ThienNgaDatabaseModel.FK_item_tb_customer" FromRole="item" ToRole="tb_customer" />
           <NavigationProperty Name="tb_inventory_name" Relationship="ThienNgaDatabaseModel.FK_item_tb_inventory_name" FromRole="item" ToRole="tb_inventory_name" />
           <NavigationProperty Name="tb_product_detail" Relationship="ThienNgaDatabaseModel.FK_item_tb_product_detail" FromRole="item" ToRole="tb_product_detail" />
-          <NavigationProperty Name="tb_warranty" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_item" FromRole="item" ToRole="tb_warranty" />
           <Property Name="Verified" Type="Boolean" />
+          <NavigationProperty Name="tb_warranty" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_item" FromRole="item" ToRole="tb_warranty" />
         </EntityType>
         <EntityType Name="log">
           <Key>
@@ -1262,11 +1296,11 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="warrantyActivitiesID" Type="Int32" Nullable="false" />
-          <Property Name="action" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="action" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="account" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="tb_warranty_activities" Relationship="ThienNgaDatabaseModel.FK_log_tb_warranty_activities" FromRole="log" ToRole="tb_warranty_activities" />
           <NavigationProperty Name="AspNetUser" Relationship="ThienNgaDatabaseModel.FK_log_AspNetUsers" FromRole="log" ToRole="AspNetUser" />
+          <NavigationProperty Name="tb_warranty_activities" Relationship="ThienNgaDatabaseModel.FK_log_tb_warranty_activities" FromRole="log" ToRole="tb_warranty_activities" />
         </EntityType>
         <EntityType Name="order">
           <Key>
@@ -1357,50 +1391,6 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <NavigationProperty Name="items" Relationship="ThienNgaDatabaseModel.FK_item_tb_product_detail" FromRole="tb_product_detail" ToRole="item" />
           <NavigationProperty Name="tb_cate" Relationship="ThienNgaDatabaseModel.FK_tb_product_detail_tb_cate" FromRole="tb_product_detail" ToRole="tb_cate" />
         </EntityType>
-        <EntityType Name="tb_warranty">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="warrantyID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="itemID" Type="Int32" Nullable="false" />
-          <Property Name="startdate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="duration" Type="Int32" Nullable="false" />
-          <Property Name="description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="MaChinh" Type="Boolean" Nullable="false" />
-          <Property Name="Special" Type="Int32" />
-          <NavigationProperty Name="item" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_item" FromRole="tb_warranty" ToRole="item" />
-          <NavigationProperty Name="tb_warranty_activities" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_tb_warranty" FromRole="tb_warranty" ToRole="tb_warranty_activities" />
-        </EntityType>
-        <EntityType Name="tb_warranty_activities">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="startDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="employee" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="warrantyID" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="status" Type="Int32" Nullable="false" />
-          <Property Name="realeaseDATE" Type="DateTime" Precision="0" />
-          <Property Name="itemID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="finishFixingDate" Type="DateTime" Precision="0" />
-          <Property Name="empFixer" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="CodeBaoHanh" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="TenKhach" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SDT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="productDetailID" Type="Int32" Nullable="false" />
-          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUser" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_AspNetUsers" FromRole="tb_warranty_activities" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser1" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_AspNetUsers1" FromRole="tb_warranty_activities" ToRole="AspNetUser" />
-          <NavigationProperty Name="logs" Relationship="ThienNgaDatabaseModel.FK_log_tb_warranty_activities" FromRole="tb_warranty_activities" ToRole="log" />
-          <NavigationProperty Name="tb_warranty" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_tb_warranty" FromRole="tb_warranty_activities" ToRole="tb_warranty" />
-          <NavigationProperty Name="tb_warrnaty_status" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_tb_warrnaty_status" FromRole="tb_warranty_activities" ToRole="tb_warrnaty_status" />
-          <NavigationProperty Name="warrantyActivityFees" Relationship="ThienNgaDatabaseModel.FK_warrantyActivityFee_tb_warranty_activities" FromRole="tb_warranty_activities" ToRole="warrantyActivityFee" />
-          <NavigationProperty Name="warrantyActivityFixingFees" Relationship="ThienNgaDatabaseModel.FK_warrantyActivityFixingFee_tb_warranty_activities" FromRole="tb_warranty_activities" ToRole="warrantyActivityFixingFee" />
-          <Property Name="type" Type="Int32" />
-          <NavigationProperty Name="ActivityType" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_ActivityType" FromRole="tb_warranty_activities" ToRole="ActivityType" />
-        </EntityType>
         <EntityType Name="tb_warrnaty_status">
           <Key>
             <PropertyRef Name="id" />
@@ -1482,30 +1472,6 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
             </Principal>
             <Dependent Role="AspNetUserLogin">
               <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tb_warranty_activities_AspNetUsers">
-          <End Type="ThienNgaDatabaseModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
-          <End Type="ThienNgaDatabaseModel.tb_warranty_activities" Role="tb_warranty_activities" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="tb_warranty_activities">
-              <PropertyRef Name="employee" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tb_warranty_activities_AspNetUsers1">
-          <End Type="ThienNgaDatabaseModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
-          <End Type="ThienNgaDatabaseModel.tb_warranty_activities" Role="tb_warranty_activities" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="tb_warranty_activities">
-              <PropertyRef Name="empFixer" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1593,30 +1559,6 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_tb_warranty_item">
-          <End Type="ThienNgaDatabaseModel.item" Role="item" Multiplicity="1" />
-          <End Type="ThienNgaDatabaseModel.tb_warranty" Role="tb_warranty" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="item">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="tb_warranty">
-              <PropertyRef Name="itemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_log_tb_warranty_activities">
-          <End Type="ThienNgaDatabaseModel.tb_warranty_activities" Role="tb_warranty_activities" Multiplicity="1" />
-          <End Type="ThienNgaDatabaseModel.log" Role="log" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tb_warranty_activities">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="log">
-              <PropertyRef Name="warrantyActivitiesID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_order_tb_customer">
           <End Type="ThienNgaDatabaseModel.tb_customer" Role="tb_customer" Multiplicity="0..1" />
           <End Type="ThienNgaDatabaseModel.order" Role="order" Multiplicity="*" />
@@ -1650,54 +1592,6 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
             </Principal>
             <Dependent Role="tb_product_detail">
               <PropertyRef Name="cateID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tb_warranty_activities_tb_warranty">
-          <End Type="ThienNgaDatabaseModel.tb_warranty" Role="tb_warranty" Multiplicity="1" />
-          <End Type="ThienNgaDatabaseModel.tb_warranty_activities" Role="tb_warranty_activities" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tb_warranty">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="tb_warranty_activities">
-              <PropertyRef Name="warrantyID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_tb_warranty_activities_tb_warrnaty_status">
-          <End Type="ThienNgaDatabaseModel.tb_warrnaty_status" Role="tb_warrnaty_status" Multiplicity="1" />
-          <End Type="ThienNgaDatabaseModel.tb_warranty_activities" Role="tb_warranty_activities" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tb_warrnaty_status">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="tb_warranty_activities">
-              <PropertyRef Name="status" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_warrantyActivityFee_tb_warranty_activities">
-          <End Type="ThienNgaDatabaseModel.tb_warranty_activities" Role="tb_warranty_activities" Multiplicity="1" />
-          <End Type="ThienNgaDatabaseModel.warrantyActivityFee" Role="warrantyActivityFee" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tb_warranty_activities">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="warrantyActivityFee">
-              <PropertyRef Name="activityID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_warrantyActivityFixingFee_tb_warranty_activities">
-          <End Type="ThienNgaDatabaseModel.tb_warranty_activities" Role="tb_warranty_activities" Multiplicity="1" />
-          <End Type="ThienNgaDatabaseModel.warrantyActivityFixingFee" Role="warrantyActivityFixingFee" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tb_warranty_activities">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="warrantyActivityFixingFee">
-              <PropertyRef Name="activityID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1752,6 +1646,74 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tb_warranty_activities" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_ActivityType" FromRole="ActivityType" ToRole="tb_warranty_activities" />
         </EntityType>
+        <EntityType Name="ThongBaoMoi">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Reciever" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Confirmed" Type="Boolean" Nullable="false" />
+          <Property Name="hreflink" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="ThienNgaDatabaseModel.FK_ThongBaoMoi_AspNetUsers" FromRole="ThongBaoMoi" ToRole="AspNetUser" />
+        </EntityType>
+        <Association Name="FK_ThongBaoMoi_AspNetUsers">
+          <End Type="ThienNgaDatabaseModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="ThienNgaDatabaseModel.ThongBaoMoi" Role="ThongBaoMoi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ThongBaoMoi">
+              <PropertyRef Name="Reciever" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tb_warranty">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="warrantyID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="itemID" Type="Int32" Nullable="false" />
+          <Property Name="startdate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="duration" Type="Int32" Nullable="false" />
+          <Property Name="description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="MaChinh" Type="Boolean" Nullable="false" />
+          <Property Name="Special" Type="Int32" />
+          <NavigationProperty Name="item" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_item" FromRole="tb_warranty" ToRole="item" />
+          <NavigationProperty Name="tb_warranty_activities" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_tb_warranty" FromRole="tb_warranty" ToRole="tb_warranty_activities" />
+        </EntityType>
+        <EntityType Name="tb_warranty_activities">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="startDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="employee" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="warrantyID" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <Property Name="realeaseDATE" Type="DateTime" Precision="0" />
+          <Property Name="itemID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="finishFixingDate" Type="DateTime" Precision="0" />
+          <Property Name="empFixer" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CodeBaoHanh" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TenKhach" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SDT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="productDetailID" Type="Int32" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="type" Type="Int32" />
+          <NavigationProperty Name="ActivityType" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_ActivityType" FromRole="tb_warranty_activities" ToRole="ActivityType" />
+          <NavigationProperty Name="AspNetUser" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_AspNetUsers" FromRole="tb_warranty_activities" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser1" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_AspNetUsers1" FromRole="tb_warranty_activities" ToRole="AspNetUser" />
+          <NavigationProperty Name="logs" Relationship="ThienNgaDatabaseModel.FK_log_tb_warranty_activities" FromRole="tb_warranty_activities" ToRole="log" />
+          <NavigationProperty Name="tb_warranty" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_tb_warranty" FromRole="tb_warranty_activities" ToRole="tb_warranty" />
+          <NavigationProperty Name="tb_warrnaty_status" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_tb_warrnaty_status" FromRole="tb_warranty_activities" ToRole="tb_warrnaty_status" />
+          <NavigationProperty Name="warrantyActivityFees" Relationship="ThienNgaDatabaseModel.FK_warrantyActivityFee_tb_warranty_activities" FromRole="tb_warranty_activities" ToRole="warrantyActivityFee" />
+          <NavigationProperty Name="warrantyActivityFixingFees" Relationship="ThienNgaDatabaseModel.FK_warrantyActivityFixingFee_tb_warranty_activities" FromRole="tb_warranty_activities" ToRole="warrantyActivityFixingFee" />
+        </EntityType>
         <Association Name="FK_tb_warranty_activities_ActivityType">
           <End Type="ThienNgaDatabaseModel.ActivityType" Role="ActivityType" Multiplicity="0..1" />
           <End Type="ThienNgaDatabaseModel.tb_warranty_activities" Role="tb_warranty_activities" Multiplicity="*" />
@@ -1761,6 +1723,102 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
             </Principal>
             <Dependent Role="tb_warranty_activities">
               <PropertyRef Name="type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_warranty_activities_AspNetUsers">
+          <End Type="ThienNgaDatabaseModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="ThienNgaDatabaseModel.tb_warranty_activities" Role="tb_warranty_activities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tb_warranty_activities">
+              <PropertyRef Name="employee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_warranty_activities_AspNetUsers1">
+          <End Type="ThienNgaDatabaseModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="ThienNgaDatabaseModel.tb_warranty_activities" Role="tb_warranty_activities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tb_warranty_activities">
+              <PropertyRef Name="empFixer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_warranty_item">
+          <End Type="ThienNgaDatabaseModel.item" Role="item" Multiplicity="1" />
+          <End Type="ThienNgaDatabaseModel.tb_warranty" Role="tb_warranty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="item">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_warranty">
+              <PropertyRef Name="itemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_log_tb_warranty_activities">
+          <End Type="ThienNgaDatabaseModel.tb_warranty_activities" Role="tb_warranty_activities" Multiplicity="1" />
+          <End Type="ThienNgaDatabaseModel.log" Role="log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_warranty_activities">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="log">
+              <PropertyRef Name="warrantyActivitiesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_warranty_activities_tb_warranty">
+          <End Type="ThienNgaDatabaseModel.tb_warranty" Role="tb_warranty" Multiplicity="0..1" />
+          <End Type="ThienNgaDatabaseModel.tb_warranty_activities" Role="tb_warranty_activities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_warranty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_warranty_activities">
+              <PropertyRef Name="warrantyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_warranty_activities_tb_warrnaty_status">
+          <End Type="ThienNgaDatabaseModel.tb_warrnaty_status" Role="tb_warrnaty_status" Multiplicity="1" />
+          <End Type="ThienNgaDatabaseModel.tb_warranty_activities" Role="tb_warranty_activities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_warrnaty_status">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tb_warranty_activities">
+              <PropertyRef Name="status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_warrantyActivityFee_tb_warranty_activities">
+          <End Type="ThienNgaDatabaseModel.tb_warranty_activities" Role="tb_warranty_activities" Multiplicity="1" />
+          <End Type="ThienNgaDatabaseModel.warrantyActivityFee" Role="warrantyActivityFee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_warranty_activities">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="warrantyActivityFee">
+              <PropertyRef Name="activityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_warrantyActivityFixingFee_tb_warranty_activities">
+          <End Type="ThienNgaDatabaseModel.tb_warranty_activities" Role="tb_warranty_activities" Multiplicity="1" />
+          <End Type="ThienNgaDatabaseModel.warrantyActivityFixingFee" Role="warrantyActivityFixingFee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_warranty_activities">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="warrantyActivityFixingFee">
+              <PropertyRef Name="activityID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2107,42 +2165,6 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tb_warranty">
-            <EntityTypeMapping TypeName="ThienNgaDatabaseModel.tb_warranty">
-              <MappingFragment StoreEntitySet="tb_warranty">
-                <ScalarProperty Name="Special" ColumnName="Special" />
-                <ScalarProperty Name="MaChinh" ColumnName="MaChinh" />
-                <ScalarProperty Name="description" ColumnName="description" />
-                <ScalarProperty Name="duration" ColumnName="duration" />
-                <ScalarProperty Name="startdate" ColumnName="startdate" />
-                <ScalarProperty Name="itemID" ColumnName="itemID" />
-                <ScalarProperty Name="warrantyID" ColumnName="warrantyID" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tb_warranty_activities">
-            <EntityTypeMapping TypeName="ThienNgaDatabaseModel.tb_warranty_activities">
-              <MappingFragment StoreEntitySet="tb_warranty_activities">
-                <ScalarProperty Name="type" ColumnName="type" />
-                <ScalarProperty Name="Note" ColumnName="Note" />
-                <ScalarProperty Name="productDetailID" ColumnName="productDetailID" />
-                <ScalarProperty Name="SDT" ColumnName="SDT" />
-                <ScalarProperty Name="TenKhach" ColumnName="TenKhach" />
-                <ScalarProperty Name="CodeBaoHanh" ColumnName="CodeBaoHanh" />
-                <ScalarProperty Name="empFixer" ColumnName="empFixer" />
-                <ScalarProperty Name="finishFixingDate" ColumnName="finishFixingDate" />
-                <ScalarProperty Name="itemID" ColumnName="itemID" />
-                <ScalarProperty Name="realeaseDATE" ColumnName="realeaseDATE" />
-                <ScalarProperty Name="status" ColumnName="status" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="warrantyID" ColumnName="warrantyID" />
-                <ScalarProperty Name="employee" ColumnName="employee" />
-                <ScalarProperty Name="startDate" ColumnName="startDate" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tb_warrnaty_status">
             <EntityTypeMapping TypeName="ThienNgaDatabaseModel.tb_warrnaty_status">
               <MappingFragment StoreEntitySet="tb_warrnaty_status">
@@ -2219,6 +2241,54 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
             <EntityTypeMapping TypeName="ThienNgaDatabaseModel.ActivityType">
               <MappingFragment StoreEntitySet="ActivityType">
                 <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ThongBaoMois">
+            <EntityTypeMapping TypeName="ThienNgaDatabaseModel.ThongBaoMoi">
+              <MappingFragment StoreEntitySet="ThongBaoMoi">
+                <ScalarProperty Name="hreflink" ColumnName="hreflink" />
+                <ScalarProperty Name="Confirmed" ColumnName="Confirmed" />
+                <ScalarProperty Name="Reciever" ColumnName="Reciever" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_warranty">
+            <EntityTypeMapping TypeName="ThienNgaDatabaseModel.tb_warranty">
+              <MappingFragment StoreEntitySet="tb_warranty">
+                <ScalarProperty Name="Special" ColumnName="Special" />
+                <ScalarProperty Name="MaChinh" ColumnName="MaChinh" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="startdate" ColumnName="startdate" />
+                <ScalarProperty Name="itemID" ColumnName="itemID" />
+                <ScalarProperty Name="warrantyID" ColumnName="warrantyID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_warranty_activities">
+            <EntityTypeMapping TypeName="ThienNgaDatabaseModel.tb_warranty_activities">
+              <MappingFragment StoreEntitySet="tb_warranty_activities">
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="productDetailID" ColumnName="productDetailID" />
+                <ScalarProperty Name="SDT" ColumnName="SDT" />
+                <ScalarProperty Name="TenKhach" ColumnName="TenKhach" />
+                <ScalarProperty Name="CodeBaoHanh" ColumnName="CodeBaoHanh" />
+                <ScalarProperty Name="empFixer" ColumnName="empFixer" />
+                <ScalarProperty Name="finishFixingDate" ColumnName="finishFixingDate" />
+                <ScalarProperty Name="itemID" ColumnName="itemID" />
+                <ScalarProperty Name="realeaseDATE" ColumnName="realeaseDATE" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="warrantyID" ColumnName="warrantyID" />
+                <ScalarProperty Name="employee" ColumnName="employee" />
+                <ScalarProperty Name="startDate" ColumnName="startDate" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

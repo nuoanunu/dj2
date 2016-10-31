@@ -19,11 +19,12 @@ namespace ThienNga2.Models.Entities
         {
             this.AspNetUserClaims = new HashSet<AspNetUserClaim>();
             this.AspNetUserLogins = new HashSet<AspNetUserLogin>();
-            this.tb_warranty_activities = new HashSet<tb_warranty_activities>();
-            this.tb_warranty_activities1 = new HashSet<tb_warranty_activities>();
             this.AspNetRoles = new HashSet<AspNetRole>();
             this.logs = new HashSet<log>();
             this.NhanViens = new HashSet<NhanVien>();
+            this.ThongBaoMois = new HashSet<ThongBaoMoi>();
+            this.tb_warranty_activities = new HashSet<tb_warranty_activities>();
+            this.tb_warranty_activities1 = new HashSet<tb_warranty_activities>();
         }
     
         public string Id { get; set; }
@@ -45,14 +46,16 @@ namespace ThienNga2.Models.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tb_warranty_activities> tb_warranty_activities { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tb_warranty_activities> tb_warranty_activities1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetRole> AspNetRoles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<log> logs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NhanVien> NhanViens { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ThongBaoMoi> ThongBaoMois { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tb_warranty_activities> tb_warranty_activities { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tb_warranty_activities> tb_warranty_activities1 { get; set; }
     }
 }

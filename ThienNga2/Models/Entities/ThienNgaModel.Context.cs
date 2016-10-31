@@ -44,14 +44,15 @@ namespace ThienNga2.Models.Entities
         public virtual DbSet<tb_customer> tb_customer { get; set; }
         public virtual DbSet<tb_inventory_name> tb_inventory_name { get; set; }
         public virtual DbSet<tb_product_detail> tb_product_detail { get; set; }
-        public virtual DbSet<tb_warranty> tb_warranty { get; set; }
-        public virtual DbSet<tb_warranty_activities> tb_warranty_activities { get; set; }
         public virtual DbSet<tb_warrnaty_status> tb_warrnaty_status { get; set; }
         public virtual DbSet<temp> temps { get; set; }
         public virtual DbSet<warrantyActivityFee> warrantyActivityFees { get; set; }
         public virtual DbSet<warrantyActivityFixingFee> warrantyActivityFixingFees { get; set; }
         public virtual DbSet<NhanVien> NhanViens { get; set; }
         public virtual DbSet<ActivityType> ActivityTypes { get; set; }
+        public virtual DbSet<ThongBaoMoi> ThongBaoMois { get; set; }
+        public virtual DbSet<tb_warranty> tb_warranty { get; set; }
+        public virtual DbSet<tb_warranty_activities> tb_warranty_activities { get; set; }
     
         public virtual ObjectResult<ThienNga_checkkho_Result> ThienNga_checkkho(string productcode)
         {

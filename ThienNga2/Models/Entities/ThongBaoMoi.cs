@@ -12,15 +12,15 @@ namespace ThienNga2.Models.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class log
+    public partial class ThongBaoMoi
     {
         public int id { get; set; }
-        public int warrantyActivitiesID { get; set; }
-        public string action { get; set; }
-        public System.DateTime date { get; set; }
-        public string account { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string Reciever { get; set; }
+        public bool Confirmed { get; set; }
+        public string hreflink { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
-        public virtual tb_warranty_activities tb_warranty_activities { get; set; }
     }
 }

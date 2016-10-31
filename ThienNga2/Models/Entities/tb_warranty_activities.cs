@@ -25,7 +25,7 @@ namespace ThienNga2.Models.Entities
         public int id { get; set; }
         public System.DateTime startDate { get; set; }
         public string employee { get; set; }
-        public int warrantyID { get; set; }
+        public Nullable<int> warrantyID { get; set; }
         public string Description { get; set; }
         public int status { get; set; }
         public Nullable<System.DateTime> realeaseDATE { get; set; }
@@ -35,10 +35,11 @@ namespace ThienNga2.Models.Entities
         public string CodeBaoHanh { get; set; }
         public string TenKhach { get; set; }
         public string SDT { get; set; }
-        public int productDetailID { get; set; }
+        public Nullable<int> productDetailID { get; set; }
         public string Note { get; set; }
         public Nullable<int> type { get; set; }
     
+        public virtual ActivityType ActivityType { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual AspNetUser AspNetUser1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -49,6 +50,5 @@ namespace ThienNga2.Models.Entities
         public virtual ICollection<warrantyActivityFee> warrantyActivityFees { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<warrantyActivityFixingFee> warrantyActivityFixingFees { get; set; }
-        public virtual ActivityType ActivityType { get; set; }
     }
 }

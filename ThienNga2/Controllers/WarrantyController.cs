@@ -25,15 +25,29 @@ namespace ThienNga2.Controllers
 
         // GET: Warranty
 
-        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Admin Hà Nội,Nhân Viên Quản Lý Sửa Chữa")]
         public ActionResult Index()
         {
-            ViewData["AllWarranty"] = am.tb_warranty_activities.ToList();
-            List<SelectListItem> list = new List<SelectListItem>();
-            AspNetRole role = am.AspNetRoles.SqlQuery("SELECT * FROM AspNetRoles where  id='c58194a2-1502-4623-b549-00cea9250711'").FirstOrDefault();
-            List<AspNetUser> nhanviens = role.AspNetUsers.ToList();
-            
-            ViewData["NhanVienKyThuat"] = nhanviens;
+            if (User.IsInRole("Nhân Viên kỹ thuật"))
+            {
+                String uid = User.Identity.GetUserId();
+                ViewData["AllWarranty"] = am.tb_warranty_activities.Where(ui => ui.empFixer.Equals(uid)).ToList();
+
+                List<SelectListItem> list = new List<SelectListItem>();
+                AspNetRole role = am.AspNetRoles.SqlQuery("SELECT * FROM AspNetRoles where  id='c58194a2-1502-4623-b549-00cea9250711'").FirstOrDefault();
+                List<AspNetUser> nhanviens = role.AspNetUsers.ToList();
+                ViewData["NhanVienKyThuat"] = nhanviens;
+            }
+            else
+            {
+                ViewData["AllWarranty"] = am.tb_warranty_activities.ToList();
+
+                List<SelectListItem> list = new List<SelectListItem>();
+                AspNetRole role = am.AspNetRoles.SqlQuery("SELECT * FROM AspNetRoles where  id='c58194a2-1502-4623-b549-00cea9250711'").FirstOrDefault();
+                List<AspNetUser> nhanviens = role.AspNetUsers.ToList();
+
+                ViewData["NhanVienKyThuat"] = nhanviens;
+            }
             return View("WarrantyCheck");
         }
         [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
@@ -64,6 +78,13 @@ namespace ThienNga2.Controllers
             logg.account = User.Identity.GetUserId();
             logg.action = am.AspNetUsers.Find(logg.account).FullName + " đã giao nhiệm vu sửa thiết bị cho " + user.FullName;
             am.logs.Add(logg);
+            am.SaveChanges();
+            ThongBaoMoi tb = new ThongBaoMoi();
+            tb.hreflink = "/Warranty/ActivityDetail?id=" + actid;
+            tb.Title = "Nhận sữa chữa";
+            tb.Description = "Bạn đã chịu trách nhiệm sữa chữa cho mã bảo hành: " + act.CodeBaoHanh;
+            tb.Reciever = user.Id;
+            am.ThongBaoMois.Add(tb);
             am.SaveChanges();
             return RedirectToAction("ActivityDetail", new { id = act.id });
         }
@@ -603,7 +624,20 @@ namespace ThienNga2.Controllers
                     money = money + fee.fee;
                 }
                 ViewData["Total"] = money;
-                ViewData["HoaDonBaoHanh"] = act;
+                ViewData["HoaDonBaoHanh"] = act; String namelist = "[";
+                try
+                {
+
+
+                    foreach (tb_product_detail productdetail in am.tb_product_detail.ToList())
+                    {
+                        namelist = namelist + ",'" + productdetail.productStoreID + "'";
+                    }
+                    namelist = namelist.Remove(1, 1);
+                    namelist = namelist + "]";
+                }
+                catch (Exception e) { }
+                ViewData["namelist"] = namelist;
                 AspNetRole role = am.AspNetRoles.SqlQuery("SELECT * FROM AspNetRoles where  id='c58194a2-1502-4623-b549-00cea9250711'").FirstOrDefault();
                 List<AspNetUser> nhanviens = role.AspNetUsers.ToList();
                 ViewData["NhanVienKyThuat"] = nhanviens;
