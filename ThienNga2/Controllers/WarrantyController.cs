@@ -229,7 +229,7 @@ namespace ThienNga2.Controllers
         [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult IMEILIST()
         {
-            ViewData["allwar"] = am.tb_warranty.SqlQuery("SELECT TOP 10 * from tb_warranty");
+            ViewData["allwar"] = am.tb_warranty.ToList();
 
             ViewData["dsnkh"] = am.CustomerTypes.ToList();
             return View("allIMEI");
