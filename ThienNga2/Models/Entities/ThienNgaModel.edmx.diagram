@@ -59,6 +59,8 @@
         <AssociationConnector Association="ThienNgaDatabaseModel.FK_warrantyActivityFixingFee_tb_warranty_activities" />
         <EntityTypeShape EntityType="ThienNgaDatabaseModel.DiemKyThuat" Width="1.5" PointX="12" PointY="5.375" />
         <AssociationConnector Association="ThienNgaDatabaseModel.FK_DiemKyThuat_AspNetUsers" />
+        <EntityTypeShape EntityType="ThienNgaDatabaseModel.HangBaoHanh" Width="1.5" PointX="18.875" PointY="9.125" />
+        <AssociationConnector Association="ThienNgaDatabaseModel.FK_HangBaoHanh_tb_warranty_activities" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -1,0 +1,247 @@
+﻿@model ThienNga2.Models.Entities.tb_warranty_activities
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+    <script>
+
+        var currentIMEI = "";
+        function checkWarrantyCode() {
+            if (currentIMEI != $("#tb_warranty_warrantyID").val()) {
+               
+                currentIMEI = $("#tb_warranty_warrantyID").val();
+                var flag = false;
+                var warCode = $("#tb_warranty_warrantyID").val();
+                $.getJSON("/CreateWarranty/getCorrectData?name=" + warCode, function (result) {
+                    $.each(result, function (name, value) {
+                        if (name == "productName") {
+                            flag = true;
+                            if (value != null) {
+                                $('#tb_warranty_warrantyID').css("background-color", "green");
+                                $('#tb_warranty_warrantyID').css("color", "white");
+                                $("#divName").text("Tên sản phẩm: " + value);
+
+                            }
+
+                        }
+                        if (name == "remainingTime") {
+                            flag = true;
+                            if (value != null) {
+                                $("#divDate").text("Ngày hết hạn: " + value);
+                                $("#TenSanPham").css("display", "none");
+                                $("#TenSanPham").val("");
+                                $("#LBTenSanPham").css("display", "none");
+                            }
+
+                        }
+                        if (name == "mieuTa") {
+                            if (flag && value != null) {
+                                $("#divDescription").text("Miêu tả: " + value);
+
+                            }
+                        }
+                        if (name == "special") {
+                            if (flag && value != null) {
+                                if (value == 1) {
+                                    $("#divDescription").text("Hàng đơn lẻ ");
+                                    $('#tb_warranty_warrantyID').css("background-color", "pink");
+                                }
+
+                            }
+                        }
+                        if (name == "nhomkhach") {
+                            $("#divGroup").text("Nhóm khách: " + value);
+                        }
+                        if (name == "maukhach") {
+                            $("#divGroup").css("background-color", value);
+                        }
+                    })
+                });
+                if (!flag) {
+
+                    $('#tb_warranty_warrantyID').css("background-color", "orange");
+                    $('#tb_warranty_warrantyID').css("color", "white");
+                    $("#divDate").text("Sản phẩm này ko tồn tại trong hệ thống, nếu muốn tạo bảo hành, vui lòng điền tên sản phẩm");
+                    $("#TenSanPham").css("display", "");
+                    $("#LBTenSanPham").css("display", "");
+                    $("#TenSanPham").css("background", "orange");
+                    $("#divGroup").text("");
+                    $("#divName").text("");
+                    $("#divDescription").text("");
+                }
+                
+            }
+        };
+
+        function checkempty() {
+            var enableeee = true;
+            if ($("#phoneNumber").val() == "") { enableeee = false; }
+            if ($("#cusname").val() == "") { enableeee = false; }
+            if ($("#IMEI").val() == "") { enableeee = false; }
+            if ($("#Descrip").val() == "") { enableeee = false; }
+            if (!enableeee) {
+                $('input[type="submit"]').prop('disabled', true);
+            }
+            else {
+                $('input[type="submit"]').prop('disabled', false);
+            }
+        }
+
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            setInterval(checkempty, 100);
+            setInterval(checkWarrantyCode, 100);
+        })
+    </script>
+</head>
+<body>
+
+    @using (Html.BeginForm("TaoHoaDonBaoHanh", "CreateWarranty", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Tạo hóa đơn bảo hành</h4>
+            <hr />
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, "Tình trạng chung lúc nhận", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <textarea id="Description" class = "form-control" name="Description" style="width:100%"></textarea>
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.tb_warranty.warrantyID, "IMEI", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.tb_warranty.warrantyID, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.tb_warranty.warrantyID, "", new { @class = "text-danger" })
+                        </div>
+                        @Html.LabelFor(model => model.itemID, "Tên sản phẩm tạm", htmlAttributes: new { @class = "control-label col-md-2" , @id = "LBTenSanPham", @style = "display:none;" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.itemID, new { htmlAttributes = new { @class = "form-control" ,@id= "TenSanPham" ,@style="display:none;" } })
+                            @Html.ValidationMessageFor(model => model.itemID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TenKhach, "Họ & tên khách hàng", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.TenKhach, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.TenKhach, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SDT, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.SDT, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.SDT, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-2" style="text-align:right"> <label>Khách hàng yêu cầu</label></div>
+                        <div class="col-md-9">
+                            <label><input type="radio" name="type" checked value="1">Sữa chữa</label><label><input type="radio" name="type" value="2">Bảo hành</label>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="panel widget light-widget panel-bd-top">
+                        <div class="panel-body">
+                            <div class="text-center vd_info-parent" style="width:100%;padding-top:0;margin-top:0">  <span style="font-family:OpenSans-Bold;font-size:20px;">Thông tin IMEI</span></div>
+                            <br />
+                            <div class="mgtp-20">
+                                <table class="table table-striped table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width:60%;"><font color="black"> Ngày kích hoạt</font></td>
+                                            <td> <p id="divDate"></p></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td><font color="black">Tên sản phẩm</font></td>
+                                            <td> <p id="divName"></p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><font color="black">Mô tả IMEI</font></td>
+                                            <td><p id="divDescription"></p> </td>
+                                        </tr>
+                                        <tr>
+                                            <td><font color="black"> Phân loại bảo hành </font></td>
+                                            <td> <p id="divGroup"></p> </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Các bộ phận<small></small></h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Có nhận</th>
+                                <th>Tên</th>
+                                <th>Số lượng</th>
+                                <th>Ghi Chú</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.HangBaoHanhs.Count(); i++)
+                            {
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" />
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(model => model.HangBaoHanhs[i].Name, new { htmlAttributes = new { @class = "form-control" ,@disabled="disabled" } })
+
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(model => model.HangBaoHanhs[i].Quantity, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+
+                                    </td>
+                                    <td>
+                                        @Html.TextAreaFor(model => model.HangBaoHanhs[i].Note, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+
+        </div>
+    }
+
+
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</body>
+</html>

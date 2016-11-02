@@ -215,6 +215,11 @@
       <End Role="AspNetUser" EntitySet="AspNetUsers" />
       <End Role="DiemKyThuat" EntitySet="DiemKyThuats" />
     </AssociationSet>
+    <EntitySet Name="HangBaoHanhs" EntityType="ThienNgaDatabaseModel.HangBaoHanh" />
+    <AssociationSet Name="FK_HangBaoHanh_tb_warranty_activities" Association="ThienNgaDatabaseModel.FK_HangBaoHanh_tb_warranty_activities">
+      <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
+      <End Role="HangBaoHanh" EntitySet="HangBaoHanhs" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="ThienNga_checkkho_Result">
     <Property Type="Int32" Name="id" Nullable="false" />
@@ -868,6 +873,7 @@
     <NavigationProperty Name="tb_warrnaty_status" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_tb_warrnaty_status" FromRole="tb_warranty_activities" ToRole="tb_warrnaty_status" />
     <NavigationProperty Name="warrantyActivityFees" Relationship="ThienNgaDatabaseModel.FK_warrantyActivityFee_tb_warranty_activities" FromRole="tb_warranty_activities" ToRole="warrantyActivityFee" />
     <NavigationProperty Name="warrantyActivityFixingFees" Relationship="ThienNgaDatabaseModel.FK_warrantyActivityFixingFee_tb_warranty_activities" FromRole="tb_warranty_activities" ToRole="warrantyActivityFixingFee" />
+    <NavigationProperty Name="HangBaoHanhs" Relationship="ThienNgaDatabaseModel.FK_HangBaoHanh_tb_warranty_activities" FromRole="tb_warranty_activities" ToRole="HangBaoHanh" />
   </EntityType>
   <Association Name="FK_tb_warranty_activities_ActivityType">
     <End Type="ThienNgaDatabaseModel.ActivityType" Role="ActivityType" Multiplicity="0..1" />
@@ -997,6 +1003,29 @@
       </Principal>
       <Dependent Role="DiemKyThuat">
         <PropertyRef Name="userID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="HangBaoHanh">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Quantity" Type="Int32" Nullable="false" />
+    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="wactID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="tb_warranty_activities" Relationship="ThienNgaDatabaseModel.FK_HangBaoHanh_tb_warranty_activities" FromRole="HangBaoHanh" ToRole="tb_warranty_activities" />
+  </EntityType>
+  <Association Name="FK_HangBaoHanh_tb_warranty_activities">
+    <End Type="ThienNgaDatabaseModel.tb_warranty_activities" Role="tb_warranty_activities" Multiplicity="1" />
+    <End Type="ThienNgaDatabaseModel.HangBaoHanh" Role="HangBaoHanh" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_warranty_activities">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="HangBaoHanh">
+        <PropertyRef Name="wactID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

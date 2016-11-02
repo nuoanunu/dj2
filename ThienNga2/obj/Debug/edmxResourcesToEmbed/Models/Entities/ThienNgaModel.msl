@@ -477,5 +477,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="HangBaoHanhs">
+      <EntityTypeMapping TypeName="ThienNgaDatabaseModel.HangBaoHanh">
+        <MappingFragment StoreEntitySet="HangBaoHanh">
+          <ScalarProperty Name="wactID" ColumnName="wactID" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

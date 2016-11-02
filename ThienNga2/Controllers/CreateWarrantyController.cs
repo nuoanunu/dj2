@@ -49,7 +49,29 @@ namespace ThienNga2.Controllers
         // GET: CreateWarranty
         public ActionResult Index()
         {
-            return View("CreateWarranty");
+            tb_warranty_activities wact = new tb_warranty_activities();
+            wact.HangBaoHanhs = new List<HangBaoHanh>();
+            HangBaoHanh maybay = new HangBaoHanh();
+            maybay.Name = "Máy Bay";
+            maybay.Quantity = 0;
+            HangBaoHanh taydieukhien = new HangBaoHanh();
+            taydieukhien.Name = "Tay điều khiển";
+            taydieukhien.Quantity = 0;
+            HangBaoHanh pin = new HangBaoHanh();
+            pin.Name = "Pin";
+            pin.Quantity = 0;
+            HangBaoHanh sac = new HangBaoHanh();
+            sac.Name = "Sạc";
+            sac.Quantity = 0;
+            HangBaoHanh gimbal = new HangBaoHanh();
+            gimbal.Name = "Gimbal";
+            gimbal.Quantity = 0;
+            wact.HangBaoHanhs.Add(gimbal);
+            wact.HangBaoHanhs.Add(sac);
+            wact.HangBaoHanhs.Add(pin);
+            wact.HangBaoHanhs.Add(taydieukhien);
+            wact.HangBaoHanhs.Add(maybay);
+            return View("Create", wact);
         }
 
         // GET: CreateWarranty/Details/5
@@ -103,7 +125,20 @@ namespace ThienNga2.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public ActionResult TaoHoaDonBaoHanh(tb_warranty_activities model) {
+            int actid= CreateAct( "",  model.SDT,  model.SDT,  model.tb_warranty.warrantyID,  model.Description, (int)model.type, model.itemID );
+            if (actid != 0)
+            {   foreach (HangBaoHanh bh in model.HangBaoHanhs) {
+                    bh.wactID = actid;
+                    if (bh.Quantity > 0) am.HangBaoHanhs.Add(bh);
+                    am.SaveChanges();
+                }
 
+                return RedirectToAction("ConfirmCreate", "CreateWarranty", new { acid = actid });
+            }
+            else return RedirectToAction("Index");
+        }
         // POST: CreateWarranty/CreateNew
         [HttpPost]
         public ActionResult CreateNew(String actid, String phoneNumber, String cusname, String IMEI, String Descrip, int type,String TenSanPham)
@@ -172,6 +207,74 @@ namespace ThienNga2.Controllers
             catch (Exception e) { }
             return RedirectToAction("Index");
 
+        }
+        public int CreateAct(String actid, String phoneNumber, String cusname, String IMEI, String Descrip, int type, String TenSanPham)
+        {
+            try
+            {
+                bool add = true;
+                tb_warranty_activities act;
+                if (actid != null)
+                {
+                    if (actid.Trim().Length > 0)
+                    {
+                        try
+                        {
+                            act = am.tb_warranty_activities.Find(int.Parse(actid));
+                            add = false;
+                        }
+                        catch { return 0; }
+                    }
+                    else act = new tb_warranty_activities();
+
+                }
+                else
+                    act = new tb_warranty_activities();
+                phoneNumber = phoneNumber.Trim();
+                var emplo1 = am.AspNetUsers.SqlQuery("SELECT * FROM dbo.AspNetUsers WHERE Id='" + User.Identity.GetUserId() + "'").ToList().First();
+                AspNetUser emplo2 = null;
+
+                act.employee = (string)emplo1.Id;
+                act.AspNetUser = emplo1;
+                if (emplo2 != null)
+                {
+                    act.empFixer = (string)emplo2.Id;
+                    act.AspNetUser1 = emplo2;
+                }
+                tb_warranty lst = am.tb_warranty.SqlQuery("SELECT * FROM dbo.tb_warranty WHERE warrantyID='" + IMEI + "'").FirstOrDefault();
+                if (lst != null)
+                {
+                    item detail = am.items.SqlQuery("SELECT * FROM dbo.item WHERE id=" + lst.itemID).FirstOrDefault();
+                    act.productDetailID = detail.productDetailID;
+                    act.warrantyID = lst.id;
+                }
+
+                act.TenKhach = cusname;
+                act.SDT = phoneNumber;
+                act.status = 1;
+                act.Description = Descrip;
+                act.itemID = TenSanPham;
+                act.startDate = DateTime.Today;
+                act.type = type;
+                String date = act.startDate.Day.ToString();
+                if (date.Length == 1) date = "0" + date;
+                String month = act.startDate.Month.ToString();
+                if (month.Length == 1) month = "0" + month;
+                act.CodeBaoHanh = date + month + "." + phoneNumber.Substring(phoneNumber.Length - 6);
+
+
+                if (add)
+                    am.tb_warranty_activities.Add(act);
+                am.SaveChanges();
+                int id = act.id;
+                System.Diagnostics.Debug.WriteLine("ID NAY " + id);
+
+                act.id = id;
+                act = am.tb_warranty_activities.Find(id);
+                return act.id;
+           }
+            catch (Exception e) { }
+            return 0;
         }
 
         public ActionResult ConfirmCreate(int acid)

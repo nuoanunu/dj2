@@ -8,7 +8,7 @@
     <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <title>@ViewBag.Title - Thien Nga</title>
-
+   
     <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/fonts/css/font-awesome.min.css" rel="stylesheet" />
     <!-- Custom styling plus plugins -->
@@ -81,30 +81,46 @@
                         <div class="menu_section">
                             <h3>General</h3>
                             <ul class="nav side-menu">
-                                <li>
-                                    <a href="/ProductItem"><i class="fa fa-home"></i> Bán hàng </a>
-                                </li>
-                                <li>
-                                    <a href="/KickHoatBaoHanh"><i class="fa fa-edit"></i> Kích hoạt bảo hành <span class="fa fa-chevron-down"></span></a>
+                                @if (User.IsInRole("Admin") || User.IsInRole("Bán Hàng"))
+                                {
+                                    <li>
+                                        <a href="/ProductItem"><i class="fa fa-home"></i> Bán hàng </a>
+                                    </li>
+                                }
+                                @if (User.IsInRole("Admin") || User.IsInRole("Kích  Hoạt bảo Hành"))
+                                {
+                                    <li>
+                                        <a href="/KickHoatBaoHanh"><i class="fa fa-edit"></i> Kích hoạt bảo hành <span class="fa fa-chevron-down"></span></a>
 
-                                </li>
-                                <li>
-                                    <a href="/CreateWarranty/"><i class="fa fa-desktop"></i> Sữa chữa bảo hành<span class="fa fa-chevron-down"></span></a>
+                                    </li>
+                                }
+                                @if (User.IsInRole("Admin") || User.IsInRole("Nhân Viên Quản Lý Sửa Chữa") || User.IsInRole("Tạo Hóa Đơn Bảo Hành"))
+                                {
+                                    <li>
+                                        <a href="/CreateWarranty/"><i class="fa fa-desktop"></i> Sữa chữa bảo hành<span class="fa fa-chevron-down"></span></a>
 
-                                </li>
-                                <li>
-                                    <a href="/Warranty"><i class="fa fa-table"></i> Kiểm tra bảo hành <span class="fa fa-chevron-down"></span></a>
+                                    </li>
+                                }
+                                @if (User.IsInRole("Admin") || User.IsInRole("Nhân Viên Quản Lý Sửa Chữa") || User.IsInRole("Nhân Viên kỹ thuật"))
+                                {
+                                    <li>
+                                        <a href="/Warranty"><i class="fa fa-table"></i> Kiểm tra bảo hành <span class="fa fa-chevron-down"></span></a>
 
-                                </li>
-                                <li>
-                                    <a href="/Inventory"><i class="fa fa-bar-chart-o"></i> Kiểm kho <span class="fa fa-chevron-down"></span></a>
+                                    </li>
+                                }
+                                @if (User.IsInRole("Admin") || User.IsInRole("Quản lý kho") || User.IsInRole("Xuất Kho") || User.IsInRole("Thêm Kho"))
+                                {
+                                    <li>
+                                        <a href="/Inventory"><i class="fa fa-bar-chart-o"></i> Kiểm kho <span class="fa fa-chevron-down"></span></a>
 
-                                </li>
+                                    </li>
+                                }
                                 <li>
                                     <a href="/Product"><i class="fa fa-bug"></i> Tra cứu sản phẩm <span class="fa fa-chevron-down"></span></a>
                                 </li>
                             </ul>
                         </div>
+                        @if(User.IsInRole("Admin")){ 
                         <div class="menu_section">
                             <h3>Admin</h3>
                             <ul class="nav side-menu">
@@ -135,6 +151,7 @@
 
                             </ul>
                         </div>
+                        }
                     </div>
                     <!-- /sidebar menu -->
                     <!-- /menu footer buttons -->
@@ -155,7 +172,7 @@
                         <script>
                             $("#logoutbutton").click(function () {
                                 $("#logoutForm").submit();
-                            })
+                                })
                         </script>
                         <form style="display:none" action="/Account/LogOff" class="navbar-right" id="logoutForm" method="post">
                             @Html.AntiForgeryToken()
@@ -291,7 +308,7 @@
         <div class="clearfix"></div>
         <div id="notif-group" class="tabbed_notifications"></div>
     </div>
-    
+
     <script>
         var myChart9 = echarts.init(document.getElementById('mainb'), theme);
         myChart9.setOption({
@@ -393,11 +410,11 @@
                         else {
                             alert("Có lỗi xảy ra");
                             $("#notimodal").modal('hide');
-                         
+
                         }
                     }
                 });
-             
+
 
             });
         }

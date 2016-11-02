@@ -271,6 +271,9 @@
     <Compile Include="Models\Entities\employee.cs">
       <DependentUpon>ThienNgaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\HangBaoHanh.cs">
+      <DependentUpon>ThienNgaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\inventory.cs">
       <DependentUpon>ThienNgaModel.tt</DependentUpon>
     </Compile>
@@ -782,6 +785,7 @@
     <Content Include="Views\NhanVien\Profile.cshtml" />
     <Content Include="Views\Product\XemThongTin.cshtml" />
     <Content Include="Views\Warranty\ChinhSuaIMEI.cshtml" />
+    <Content Include="Views\CreateWarranty\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
