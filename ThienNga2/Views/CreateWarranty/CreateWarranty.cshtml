@@ -98,7 +98,7 @@
         <div class="form-style-10">
             <form action="/CreateWarranty/CreateNew" method="post">
 
-                <div class="section"><span></span>Chỉnh sữa</div>
+                <div class="section">Chỉnh sữa</div>
                 <div class="inner-wrap">
                     <input type="hidden" id="actid" name="actid" value="@(Model.id)" />
                     <label>Khách hàng yêu cầu<label><input type="radio" name="type" value="1">Sữa chữa</label><label><input type="radio" name="type" value="2">Bảo hành</label>  </label>
@@ -107,12 +107,12 @@
                     <label>Tên khách hàng <input type="text" id="cusname" name="cusname" value="@Model.TenKhach" /></label>
                     <label>IMEI sản phẩm <input type="text" id="IMEI" name="IMEI" value="@Model.tb_warranty.warrantyID" /></label>
                     <label>Tên sản phẩm <input style="display:none" required type="text" id="TenSanPham" name="TenSanPham" value="@Model.itemID" /> </label>
-                    <label> Tình trạng lúc nhận<input type="text" id="Descrip" name="Descrip" value="@Model.Description" /></label>
+                    <label> Tình trạng lúc nhận<textarea type="text" id="Descrip" name="Descrip" value="@Model.Description"></textarea></label>
 
                 </div>
                 <div class="button-section">
                     <input type="submit" name="Sữa" />
-
+                    <button class="btn btn-danger"  type="reset"  > Clear </button>
                 </div>
             </form>
         </div>
@@ -125,7 +125,7 @@
             <div class="form-style-10">
                 <form>
 
-                    <div class="section"><span></span>Thông tin tiếp nhận sản phẩm</div>
+                    <div class="section">Thông tin tiếp nhận sản phẩm</div>
                     <div class="inner-wrap">
                         <input type="hidden" id="actid" name="actid" value="" />
                         <label>Khách hàng yêu cầu <label><input type="radio" checked name="type" value="1">Yêu cầu sửa chữa</label><label><input type="radio" name="type" value="2">Yêu cầu Bảo hành</label>  </label>
@@ -142,13 +142,13 @@
                         <label>
                             Tên sản phẩm <input style="display:none" required type="text" id="TenSanPham" name="TenSanPham" value="" />
 
-                            <label>Tình trạng lúc nhận <input type="text" id="Descrip" required name="Descrip" value="" /></label>
+                            <label>Tình trạng lúc nhận <textarea type="text" id="Descrip" required name="Descrip" value="" ></textarea></label>
 
                         </label>
                     </div>
                     <div class="button-section">
-                        <input type="submit" name="Tạo" />
-
+                        <input class="btn btn-primary" type="submit" name="Tạo" />
+                        <button class="btn btn-danger" type="reset"> Clear </button>
                     </div>
                 </form>
             </div>
