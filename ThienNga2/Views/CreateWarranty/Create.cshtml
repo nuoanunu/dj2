@@ -186,6 +186,23 @@
                     </div>
                 </div>
             </div>
+            <script>
+                function checked() {
+                    for (var i = 0 ; i < @Model.HangBaoHanhs.Count() ; i++) {
+                        if ($("#check" + i).is(":checked")) {
+                            $("#HangBaoHanhs_" + i + "__Name").prop('disabled', false);;
+                            $("#HangBaoHanhs_"+i+"__Quantity").prop('disabled', false);
+                        }
+                        else {
+                            $("#HangBaoHanhs_" + i + "__Name").prop('disabled', true);
+                            $("#HangBaoHanhs_" + i + "__Quantity").prop('disabled', true);
+                            $("#HangBaoHanhs_" + i + "__Quantity").val(0);
+                        }
+                    }
+          
+                }
+                setInterval(checked, 100);
+            </script>
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Các bộ phận<small></small></h2>
@@ -207,7 +224,7 @@
                             {
                                 <tr>
                                     <td>
-                                        <input type="checkbox" />
+                                        <input id="check@(i)" type="checkbox" value="@i" />
                                     </td>
                                     <td>
                                         @Html.EditorFor(model => model.HangBaoHanhs[i].Name, new { htmlAttributes = new { @class = "form-control" ,@disabled="disabled" } })
