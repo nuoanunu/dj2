@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ThienNga2.Models;
 using System.Web.Security;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ThienNga2.Controllers
 {
@@ -350,7 +351,24 @@ namespace ThienNga2.Controllers
             AddErrors(result);
             return View();
         }
+        public async Task<ActionResult> ChangePassword(String uid,String newpassword, String confirm)
+        {
+            if (newpassword.Equals(confirm)) {
+                var user =  UserManager.FindById(uid);
+                if (user == null)
+                {
+                    // Don't reveal that the user does not exist
+                    return RedirectToAction("Index", "NhanVien");
+                }
+                String stamp = await UserManager.GetSecurityStampAsync(user.Id);
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var result = await UserManager.ResetPasswordAsync(user.Id, code, newpassword);
 
+                return RedirectToAction("Detail", "NhanVien", new { id = uid });
+            }
+            ViewData["error"] = "No match";
+            return RedirectToAction("Index", "NhanVien");
+        }
         //
         // GET: /Account/ResetPasswordConfirmation
         [AllowAnonymous]
