@@ -145,7 +145,6 @@ namespace ThienNga2.Controllers
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
         public ActionResult Register()
         {
             ViewBag.Name = new SelectList(context.Roles.ToList(), "Name", "Name");
@@ -156,7 +155,6 @@ namespace ThienNga2.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
@@ -221,7 +219,47 @@ namespace ThienNga2.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+        public async Task<ActionResult> RegisterForAdmin(RegisterViewModel model)
+        {
+            bool flag = false;
+            //if (model.Name.Equals("Nhân Viên")) {
+            //    flag = true;
 
+            //}
+            //else
+            //{
+            //    if (model.Name.Equals("Admin") || model.Name.Equals("Bán Hàng") || model.Name.Equals("Quản lý kho"))
+            //    {
+            //        if (rolesArray == null)
+            //        {
+            //            ViewBag.Name = new SelectList(context.Roles.ToList(), "Name", "Name");
+            //          //  return View(model);
+            //        }
+            //        else
+            //            foreach (string role in rolesArray)
+            //            {
+
+            //                if (role.Equals("Admin")) flag = true;
+            //            }
+            //    }
+            //}
+            //if (!flag) {
+            //    ViewBag.Name = new SelectList(context.Roles.ToList(), "Name", "Name");
+            //  //  return View(model);
+            //}
+
+            if (ModelState.IsValid)
+
+            {
+
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumer, PhoneNumberConfirmed = true, FullName = model.FullName };
+
+                var result = await UserManager.CreateAsync(user, model.Password);
+   
+            }
+            // If we got this far, something failed, redisplay form
+            return RedirectToAction("index","NhanVien");
+        }
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
