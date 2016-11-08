@@ -191,6 +191,29 @@
           <Property Name="QuiCach" Type="nvarchar" MaxLength="50" />
           <Property Name="warrantyAvailable" Type="bit" />
         </EntityType>
+        <EntityType Name="RequestMuon">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="productID" Type="int" />
+          <Property Name="quantity" Type="int" Nullable="false" />
+          <Property Name="status" Type="int" Nullable="false" />
+          <Property Name="creator" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="createdDate" Type="datetime" Nullable="false" />
+          <Property Name="recieveDate" Type="datetime" />
+          <Property Name="returnDate" Type="datetime" />
+          <Property Name="TemporaryName" Type="nvarchar" MaxLength="128" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="warrantyID" Type="int" />
+        </EntityType>
+        <EntityType Name="RequestStatus">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
         <EntityType Name="role">
           <Key>
             <PropertyRef Name="roleID" />
@@ -554,6 +577,54 @@ warning 6035: The relationship 'FK_inventory_tb_product_detail1' has columns tha
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_RequestMuon_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="RequestMuon" Type="Self.RequestMuon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RequestMuon">
+              <PropertyRef Name="creator" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestMuon_RequestStatus1">
+          <End Role="RequestStatus" Type="Self.RequestStatus" Multiplicity="1" />
+          <End Role="RequestMuon" Type="Self.RequestMuon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequestStatus">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="RequestMuon">
+              <PropertyRef Name="status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestMuon_tb_product_detail">
+          <End Role="tb_product_detail" Type="Self.tb_product_detail" Multiplicity="0..1" />
+          <End Role="RequestMuon" Type="Self.RequestMuon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_product_detail">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="RequestMuon">
+              <PropertyRef Name="productID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestMuon_tb_warranty_activities">
+          <End Role="tb_warranty_activities" Type="Self.tb_warranty_activities" Multiplicity="0..1" />
+          <End Role="RequestMuon" Type="Self.RequestMuon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_warranty_activities">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="RequestMuon">
+              <PropertyRef Name="warrantyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tb_customer_CustomerType">
           <End Role="CustomerType" Type="Self.CustomerType" Multiplicity="0..1" />
           <End Role="tb_customer" Type="Self.tb_customer" Multiplicity="*" />
@@ -772,6 +843,8 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <EntitySet Name="NhanVien" EntityType="Self.NhanVien" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="order" EntityType="Self.order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="orderDetail" EntityType="Self.orderDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RequestMuon" EntityType="Self.RequestMuon" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RequestStatus" EntityType="Self.RequestStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_cate" EntityType="Self.tb_cate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tb_customer" EntityType="Self.tb_customer" Schema="dbo" store:Type="Tables" />
@@ -855,6 +928,22 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <AssociationSet Name="FK_orderDetail_order" Association="Self.FK_orderDetail_order">
             <End Role="order" EntitySet="order" />
             <End Role="orderDetail" EntitySet="orderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestMuon_AspNetUsers" Association="Self.FK_RequestMuon_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="RequestMuon" EntitySet="RequestMuon" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestMuon_RequestStatus1" Association="Self.FK_RequestMuon_RequestStatus1">
+            <End Role="RequestStatus" EntitySet="RequestStatus" />
+            <End Role="RequestMuon" EntitySet="RequestMuon" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestMuon_tb_product_detail" Association="Self.FK_RequestMuon_tb_product_detail">
+            <End Role="tb_product_detail" EntitySet="tb_product_detail" />
+            <End Role="RequestMuon" EntitySet="RequestMuon" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestMuon_tb_warranty_activities" Association="Self.FK_RequestMuon_tb_warranty_activities">
+            <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
+            <End Role="RequestMuon" EntitySet="RequestMuon" />
           </AssociationSet>
           <AssociationSet Name="FK_tb_customer_CustomerType" Association="Self.FK_tb_customer_CustomerType">
             <End Role="CustomerType" EntitySet="CustomerType" />
@@ -1072,11 +1161,6 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
             <End Role="NhanVien" EntitySet="NhanViens" />
           </AssociationSet>
           <EntitySet Name="ActivityTypes" EntityType="ThienNgaDatabaseModel.ActivityType" />
-          <EntitySet Name="ThongBaoMois" EntityType="ThienNgaDatabaseModel.ThongBaoMoi" />
-          <AssociationSet Name="FK_ThongBaoMoi_AspNetUsers" Association="ThienNgaDatabaseModel.FK_ThongBaoMoi_AspNetUsers">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="ThongBaoMoi" EntitySet="ThongBaoMois" />
-          </AssociationSet>
           <EntitySet Name="tb_warranty" EntityType="ThienNgaDatabaseModel.tb_warranty" />
           <EntitySet Name="tb_warranty_activities" EntityType="ThienNgaDatabaseModel.tb_warranty_activities" />
           <AssociationSet Name="FK_tb_warranty_activities_ActivityType" Association="ThienNgaDatabaseModel.FK_tb_warranty_activities_ActivityType">
@@ -1124,6 +1208,29 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <AssociationSet Name="FK_HangBaoHanh_tb_warranty_activities" Association="ThienNgaDatabaseModel.FK_HangBaoHanh_tb_warranty_activities">
             <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
             <End Role="HangBaoHanh" EntitySet="HangBaoHanhs" />
+          </AssociationSet>
+          <EntitySet Name="ThongBaoMois" EntityType="ThienNgaDatabaseModel.ThongBaoMoi" />
+          <AssociationSet Name="FK_ThongBaoMoi_AspNetUsers" Association="ThienNgaDatabaseModel.FK_ThongBaoMoi_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="ThongBaoMoi" EntitySet="ThongBaoMois" />
+          </AssociationSet>
+          <EntitySet Name="RequestStatus" EntityType="ThienNgaDatabaseModel.RequestStatu" />
+          <EntitySet Name="RequestMuons" EntityType="ThienNgaDatabaseModel.RequestMuon" />
+          <AssociationSet Name="FK_RequestMuon_AspNetUsers" Association="ThienNgaDatabaseModel.FK_RequestMuon_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="RequestMuon" EntitySet="RequestMuons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestMuon_RequestStatus1" Association="ThienNgaDatabaseModel.FK_RequestMuon_RequestStatus1">
+            <End Role="RequestStatu" EntitySet="RequestStatus" />
+            <End Role="RequestMuon" EntitySet="RequestMuons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestMuon_tb_product_detail" Association="ThienNgaDatabaseModel.FK_RequestMuon_tb_product_detail">
+            <End Role="tb_product_detail" EntitySet="tb_product_detail" />
+            <End Role="RequestMuon" EntitySet="RequestMuons" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestMuon_tb_warranty_activities" Association="ThienNgaDatabaseModel.FK_RequestMuon_tb_warranty_activities">
+            <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
+            <End Role="RequestMuon" EntitySet="RequestMuons" />
           </AssociationSet>
           </EntityContainer>
         <ComplexType Name="ThienNga_checkkho_Result">
@@ -1296,10 +1403,11 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <NavigationProperty Name="AspNetRoles" Relationship="ThienNgaDatabaseModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
           <NavigationProperty Name="logs" Relationship="ThienNgaDatabaseModel.FK_log_AspNetUsers" FromRole="AspNetUser" ToRole="log" />
           <NavigationProperty Name="NhanViens" Relationship="ThienNgaDatabaseModel.FK_NhanVien_AspNetUsers" FromRole="AspNetUser" ToRole="NhanVien" />
-          <NavigationProperty Name="ThongBaoMois" Relationship="ThienNgaDatabaseModel.FK_ThongBaoMoi_AspNetUsers" FromRole="AspNetUser" ToRole="ThongBaoMoi" />
           <NavigationProperty Name="tb_warranty_activities" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_AspNetUsers" FromRole="AspNetUser" ToRole="tb_warranty_activities" />
           <NavigationProperty Name="tb_warranty_activities1" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_AspNetUsers1" FromRole="AspNetUser" ToRole="tb_warranty_activities" />
           <NavigationProperty Name="DiemKyThuats" Relationship="ThienNgaDatabaseModel.FK_DiemKyThuat_AspNetUsers" FromRole="AspNetUser" ToRole="DiemKyThuat" />
+          <NavigationProperty Name="ThongBaoMois" Relationship="ThienNgaDatabaseModel.FK_ThongBaoMoi_AspNetUsers" FromRole="AspNetUser" ToRole="ThongBaoMoi" />
+          <NavigationProperty Name="RequestMuons" Relationship="ThienNgaDatabaseModel.FK_RequestMuon_AspNetUsers" FromRole="AspNetUser" ToRole="RequestMuon" />
         </EntityType>
         <EntityType Name="CustomerType">
           <Key>
@@ -1455,6 +1563,7 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <Property Name="minThresHold" Type="Int32" />
           <NavigationProperty Name="items" Relationship="ThienNgaDatabaseModel.FK_item_tb_product_detail" FromRole="tb_product_detail" ToRole="item" />
           <NavigationProperty Name="tb_cate" Relationship="ThienNgaDatabaseModel.FK_tb_product_detail_tb_cate" FromRole="tb_product_detail" ToRole="tb_cate" />
+          <NavigationProperty Name="RequestMuons" Relationship="ThienNgaDatabaseModel.FK_RequestMuon_tb_product_detail" FromRole="tb_product_detail" ToRole="RequestMuon" />
         </EntityType>
         <EntityType Name="tb_warrnaty_status">
           <Key>
@@ -1711,30 +1820,6 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="tb_warranty_activities" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_ActivityType" FromRole="ActivityType" ToRole="tb_warranty_activities" />
         </EntityType>
-        <EntityType Name="ThongBaoMoi">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Reciever" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Confirmed" Type="Boolean" Nullable="false" />
-          <Property Name="hreflink" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUser" Relationship="ThienNgaDatabaseModel.FK_ThongBaoMoi_AspNetUsers" FromRole="ThongBaoMoi" ToRole="AspNetUser" />
-        </EntityType>
-        <Association Name="FK_ThongBaoMoi_AspNetUsers">
-          <End Type="ThienNgaDatabaseModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
-          <End Type="ThienNgaDatabaseModel.ThongBaoMoi" Role="ThongBaoMoi" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ThongBaoMoi">
-              <PropertyRef Name="Reciever" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="tb_warranty">
           <Key>
             <PropertyRef Name="id" />
@@ -1779,6 +1864,7 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <NavigationProperty Name="warrantyActivityFees" Relationship="ThienNgaDatabaseModel.FK_warrantyActivityFee_tb_warranty_activities" FromRole="tb_warranty_activities" ToRole="warrantyActivityFee" />
           <NavigationProperty Name="warrantyActivityFixingFees" Relationship="ThienNgaDatabaseModel.FK_warrantyActivityFixingFee_tb_warranty_activities" FromRole="tb_warranty_activities" ToRole="warrantyActivityFixingFee" />
           <NavigationProperty Name="HangBaoHanhs" Relationship="ThienNgaDatabaseModel.FK_HangBaoHanh_tb_warranty_activities" FromRole="tb_warranty_activities" ToRole="HangBaoHanh" />
+          <NavigationProperty Name="RequestMuons" Relationship="ThienNgaDatabaseModel.FK_RequestMuon_tb_warranty_activities" FromRole="tb_warranty_activities" ToRole="RequestMuon" />
         </EntityType>
         <Association Name="FK_tb_warranty_activities_ActivityType">
           <End Type="ThienNgaDatabaseModel.ActivityType" Role="ActivityType" Multiplicity="0..1" />
@@ -1931,6 +2017,106 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
             </Principal>
             <Dependent Role="HangBaoHanh">
               <PropertyRef Name="wactID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ThongBaoMoi">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Reciever" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Confirmed" Type="Boolean" Nullable="false" />
+          <Property Name="hreflink" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="ThienNgaDatabaseModel.FK_ThongBaoMoi_AspNetUsers" FromRole="ThongBaoMoi" ToRole="AspNetUser" />
+        </EntityType>
+        <Association Name="FK_ThongBaoMoi_AspNetUsers">
+          <End Type="ThienNgaDatabaseModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="ThienNgaDatabaseModel.ThongBaoMoi" Role="ThongBaoMoi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ThongBaoMoi">
+              <PropertyRef Name="Reciever" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="RequestStatu">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="RequestMuons" Relationship="ThienNgaDatabaseModel.FK_RequestMuon_RequestStatus1" FromRole="RequestStatu" ToRole="RequestMuon" />
+        </EntityType>
+        <EntityType Name="RequestMuon">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="productID" Type="Int32" />
+          <Property Name="quantity" Type="Int32" Nullable="false" />
+          <Property Name="status" Type="Int32" Nullable="false" />
+          <Property Name="creator" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="createdDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="recieveDate" Type="DateTime" Precision="3" />
+          <Property Name="returnDate" Type="DateTime" Precision="3" />
+          <Property Name="TemporaryName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="warrantyID" Type="Int32" />
+          <NavigationProperty Name="AspNetUser" Relationship="ThienNgaDatabaseModel.FK_RequestMuon_AspNetUsers" FromRole="RequestMuon" ToRole="AspNetUser" />
+          <NavigationProperty Name="RequestStatu" Relationship="ThienNgaDatabaseModel.FK_RequestMuon_RequestStatus1" FromRole="RequestMuon" ToRole="RequestStatu" />
+          <NavigationProperty Name="tb_product_detail" Relationship="ThienNgaDatabaseModel.FK_RequestMuon_tb_product_detail" FromRole="RequestMuon" ToRole="tb_product_detail" />
+          <NavigationProperty Name="tb_warranty_activities" Relationship="ThienNgaDatabaseModel.FK_RequestMuon_tb_warranty_activities" FromRole="RequestMuon" ToRole="tb_warranty_activities" />
+        </EntityType>
+        <Association Name="FK_RequestMuon_AspNetUsers">
+          <End Type="ThienNgaDatabaseModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="ThienNgaDatabaseModel.RequestMuon" Role="RequestMuon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RequestMuon">
+              <PropertyRef Name="creator" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestMuon_RequestStatus1">
+          <End Type="ThienNgaDatabaseModel.RequestStatu" Role="RequestStatu" Multiplicity="1" />
+          <End Type="ThienNgaDatabaseModel.RequestMuon" Role="RequestMuon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequestStatu">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="RequestMuon">
+              <PropertyRef Name="status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestMuon_tb_product_detail">
+          <End Type="ThienNgaDatabaseModel.tb_product_detail" Role="tb_product_detail" Multiplicity="0..1" />
+          <End Type="ThienNgaDatabaseModel.RequestMuon" Role="RequestMuon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_product_detail">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="RequestMuon">
+              <PropertyRef Name="productID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestMuon_tb_warranty_activities">
+          <End Type="ThienNgaDatabaseModel.tb_warranty_activities" Role="tb_warranty_activities" Multiplicity="0..1" />
+          <End Type="ThienNgaDatabaseModel.RequestMuon" Role="RequestMuon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_warranty_activities">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="RequestMuon">
+              <PropertyRef Name="warrantyID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2357,18 +2543,6 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ThongBaoMois">
-            <EntityTypeMapping TypeName="ThienNgaDatabaseModel.ThongBaoMoi">
-              <MappingFragment StoreEntitySet="ThongBaoMoi">
-                <ScalarProperty Name="hreflink" ColumnName="hreflink" />
-                <ScalarProperty Name="Confirmed" ColumnName="Confirmed" />
-                <ScalarProperty Name="Reciever" ColumnName="Reciever" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tb_warranty">
             <EntityTypeMapping TypeName="ThienNgaDatabaseModel.tb_warranty">
               <MappingFragment StoreEntitySet="tb_warranty">
@@ -2423,6 +2597,43 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
                 <ScalarProperty Name="Note" ColumnName="Note" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ThongBaoMois">
+            <EntityTypeMapping TypeName="ThienNgaDatabaseModel.ThongBaoMoi">
+              <MappingFragment StoreEntitySet="ThongBaoMoi">
+                <ScalarProperty Name="hreflink" ColumnName="hreflink" />
+                <ScalarProperty Name="Confirmed" ColumnName="Confirmed" />
+                <ScalarProperty Name="Reciever" ColumnName="Reciever" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RequestStatus">
+            <EntityTypeMapping TypeName="ThienNgaDatabaseModel.RequestStatu">
+              <MappingFragment StoreEntitySet="RequestStatus">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RequestMuons">
+            <EntityTypeMapping TypeName="ThienNgaDatabaseModel.RequestMuon">
+              <MappingFragment StoreEntitySet="RequestMuon">
+                <ScalarProperty Name="warrantyID" ColumnName="warrantyID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="TemporaryName" ColumnName="TemporaryName" />
+                <ScalarProperty Name="returnDate" ColumnName="returnDate" />
+                <ScalarProperty Name="recieveDate" ColumnName="recieveDate" />
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="creator" ColumnName="creator" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="productID" ColumnName="productID" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -21,6 +21,7 @@ namespace ThienNga2.Models.Entities
             this.warrantyActivityFees = new HashSet<warrantyActivityFee>();
             this.warrantyActivityFixingFees = new HashSet<warrantyActivityFixingFee>();
             this.HangBaoHanhs = new List<HangBaoHanh>();
+            this.RequestMuons = new HashSet<RequestMuon>();
         }
     
         public int id { get; set; }
@@ -53,5 +54,7 @@ namespace ThienNga2.Models.Entities
         public virtual ICollection<warrantyActivityFixingFee> warrantyActivityFixingFees { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual List<HangBaoHanh> HangBaoHanhs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RequestMuon> RequestMuons { get; set; }
     }
 }

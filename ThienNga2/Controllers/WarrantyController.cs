@@ -889,5 +889,61 @@ namespace ThienNga2.Controllers
             {
             }
         }
+        public ActionResult newRequestMuon(int actID,String productSKU, int quantity,String tempName,String description) {
+            try { }
+            catch (Exception e) { }
+            RequestMuon request = new RequestMuon();
+            System.Diagnostics.Debug.WriteLine("bbb : " + quantity);
+            System.Diagnostics.Debug.WriteLine("bbb : " + tempName);
+            System.Diagnostics.Debug.WriteLine("bbb : " + description);
+            System.Diagnostics.Debug.WriteLine("aaa : " + productSKU);
+                if (productSKU != null && am.tb_product_detail.Where(u =>u.productStoreID.Equals(productSKU)).FirstOrDefault() != null)
+                {
+                    request.productID = am.tb_product_detail.Where(u => u.productStoreID.Equals(productSKU)).FirstOrDefault().id;
+                    request.creator = User.Identity.GetUserId();
+                    request.status = 1;
+                    request.quantity = quantity;
+                    request.warrantyID = actID;
+                    request.createdDate = DateTime.Now;
+                    am.RequestMuons.Add(request);
+                    am.SaveChanges();
+                System.Diagnostics.Debug.WriteLine("daheo : " + productSKU);
+                log log = new log();
+                    AspNetUser user = am.AspNetUsers.Find(User.Identity.GetUserId());
+                    log.account = User.Identity.GetUserId();
+                    log.date = DateTime.Now;
+                    log.action = user.FullName + " đã gửi yêu cầu mượn " + quantity + " sản phẩm " + productSKU;
+                    log.warrantyActivitiesID = actID;
+                    am.logs.Add(log);
+                    am.SaveChanges();
+                }
+            
+            else
+            {
+                if (tempName != null && tempName.Trim().Length >= 2)
+                {
+                    request.TemporaryName = tempName;
+                    if (description != null)
+                        request.Description = description;
+                    request.creator = User.Identity.GetUserId();
+                    request.status = 1;
+                    request.quantity = quantity;
+                    request.warrantyID = actID;
+                    request.createdDate = DateTime.Now;
+                    am.RequestMuons.Add(request);
+                    am.SaveChanges();
+                    log log = new log();
+                    AspNetUser user = am.AspNetUsers.Find(User.Identity.GetUserId());
+                    log.account = User.Identity.GetUserId();
+                    log.date = DateTime.Now;
+                    log.action = user.FullName + " đã gửi yêu cầu mượn " + quantity + " sản phẩm " + tempName;
+                    log.warrantyActivitiesID = actID;
+                    am.logs.Add(log);
+                    am.SaveChanges();
+                }
+            }
+            
+            return RedirectToAction("ActivityDetail", new { id = actID });
+        }
     }
 }

@@ -418,18 +418,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="ThongBaoMois">
-      <EntityTypeMapping TypeName="ThienNgaDatabaseModel.ThongBaoMoi">
-        <MappingFragment StoreEntitySet="ThongBaoMoi">
-          <ScalarProperty Name="hreflink" ColumnName="hreflink" />
-          <ScalarProperty Name="Confirmed" ColumnName="Confirmed" />
-          <ScalarProperty Name="Reciever" ColumnName="Reciever" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="Title" ColumnName="Title" />
-          <ScalarProperty Name="id" ColumnName="id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="tb_warranty">
       <EntityTypeMapping TypeName="ThienNgaDatabaseModel.tb_warranty">
         <MappingFragment StoreEntitySet="tb_warranty">
@@ -484,6 +472,43 @@
           <ScalarProperty Name="Note" ColumnName="Note" />
           <ScalarProperty Name="Quantity" ColumnName="Quantity" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ThongBaoMois">
+      <EntityTypeMapping TypeName="ThienNgaDatabaseModel.ThongBaoMoi">
+        <MappingFragment StoreEntitySet="ThongBaoMoi">
+          <ScalarProperty Name="hreflink" ColumnName="hreflink" />
+          <ScalarProperty Name="Confirmed" ColumnName="Confirmed" />
+          <ScalarProperty Name="Reciever" ColumnName="Reciever" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RequestStatus">
+      <EntityTypeMapping TypeName="ThienNgaDatabaseModel.RequestStatu">
+        <MappingFragment StoreEntitySet="RequestStatus">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RequestMuons">
+      <EntityTypeMapping TypeName="ThienNgaDatabaseModel.RequestMuon">
+        <MappingFragment StoreEntitySet="RequestMuon">
+          <ScalarProperty Name="warrantyID" ColumnName="warrantyID" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="TemporaryName" ColumnName="TemporaryName" />
+          <ScalarProperty Name="returnDate" ColumnName="returnDate" />
+          <ScalarProperty Name="recieveDate" ColumnName="recieveDate" />
+          <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+          <ScalarProperty Name="creator" ColumnName="creator" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="quantity" ColumnName="quantity" />
+          <ScalarProperty Name="productID" ColumnName="productID" />
           <ScalarProperty Name="id" ColumnName="id" />
         </MappingFragment>
       </EntityTypeMapping>

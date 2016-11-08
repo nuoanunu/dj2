@@ -236,6 +236,7 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductDetailController.cs" />
     <Compile Include="Controllers\ProductItemController.cs" />
+    <Compile Include="Controllers\RequestController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\WarrantyController.cs" />
     <Compile Include="Controllers\XMLReader.cs" />
@@ -290,6 +291,12 @@
       <DependentUpon>ThienNgaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\orderDetail.cs">
+      <DependentUpon>ThienNgaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\RequestMuon.cs">
+      <DependentUpon>ThienNgaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\RequestStatu.cs">
       <DependentUpon>ThienNgaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\role.cs">
@@ -786,6 +793,7 @@
     <Content Include="Views\Product\XemThongTin.cshtml" />
     <Content Include="Views\Warranty\ChinhSuaIMEI.cshtml" />
     <Content Include="Views\CreateWarranty\Create.cshtml" />
+    <Content Include="Views\Request\RequestControll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

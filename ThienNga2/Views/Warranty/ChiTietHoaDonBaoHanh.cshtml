@@ -59,7 +59,15 @@
             <div class="col-md-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Tổng quan</h2>
+                        @if (act.AspNetUser1 != null)
+                        {
+                            <h2>Tổng quan <small style="color:lightgreen"> Người sửa: @act.AspNetUser1.FullName</small> </h2>
+                        }
+                        else
+                        {
+                            <h2>Tổng quan <small style="color:red"> Người sửa: Chưa có</small> </h2>
+                        }
+
 
                         <div class="clearfix"></div>
                     </div>
@@ -125,9 +133,9 @@
                                     <table width="90%" class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th width="40%">SKU</th>
+                                                <th width="35%">SKU</th>
 
-                                                <th width="10%">Số lượng</th>
+                                                <th width="15%">Số lượng</th>
                                                 <th width="40%">Chi phí</th>
 
                                                 <th width="10%">Action</th>
@@ -188,7 +196,7 @@
                                                         <select id="searchID" name="ksu" class="skuselector select2_single form-control" tabindex="-1">
                                                             <option selected value=""></option>
                                                         </select>
-                                                  
+
                                                     </td>
                                                     <td>
                                                         <input style="width:100%" id="quantitySKU" type="text" name="quantity" />
@@ -270,7 +278,7 @@
                                                     </td>
                                                     <input type="hidden" name="activitiesID" value="@act.id" />
                                                     <td>
-                                                        <input type="submit" name="ThêmS" />
+                                                        <input type="submit" name="ThêmS" value="Thêm" />
                                                     </td>
                                                 </tr>
                                             }
@@ -278,6 +286,234 @@
                                     </table>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-9 col-xs-12">
+                                    <div class="x_title">
+                                        <h2>Các sản phẩm đang mượn<small>  <button data-toggle="modal" data-target="#newRequest" class="btn btn-success">Tạo Mới</button></small></h2>
+                                        <div class="modal fade" id="newRequest" role="dialog">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">
+                                                            <span aria-hidden="true">×</span>
+                                                        </button>
+                                                        <h4 class="modal-title" id="myModalLabel">Yêu cầu mượn sản phẩm</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+
+                                                        <h1>Sản phẩm có trong hệ thống</h1><form action="/Warranty/newRequestMuon" method="post">
+
+                                                            <table width="100%" class="table table-striped">
+
+                                                                <tr>
+                                                                    <td width="50%">
+                                                                        Nhập SKU
+                                                                    </td>
+                                                                    <td>
+                                                                        Số lượng
+                                                                    </td>
+                                                                    <td>
+                                                                        Tạo yêu cầu
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <input type="hidden" name="actID" value="@act.id" />
+                                                                        <select style="width:100%" id="searchID2" name="productSKU" class="skuselector select2_single form-control" tabindex="-1">
+                                                                            <option selected value=""></option>
+                                                                        </select>
+
+                                                                    </td>
+                                                                    <td>
+                                                                        <input required style="width:100%" id="quantity" type="text" name="quantity" />
+                                                                    </td>
+                                                                    <input type="hidden" name="tempName" value="asd" />
+                                                                    <input type="hidden" name="description" value="asd" />
+                                                                    <td>
+                                                                        <button type="submit">Tạo yêu cầu</button>
+                                                                    </td>
+
+
+
+                                                                </tr>
+
+                                                            </table>
+                                                        </form>
+                                                        <h1>Sản phẩm KHÔNG có trong hệ thống</h1>
+                                                        <form action="/Warranty/newRequestMuon" method="post">
+                                                            <table width="100%" class="table table-striped">
+
+                                                                <tr>
+                                                                    <td width="50%">
+                                                                        Nhập tên
+                                                                    </td>
+                                                                    <td>
+                                                                        Mô tả
+                                                                    </td>
+                                                                    <td>
+                                                                        Số lượng
+                                                                    </td>
+                                                                    <td>
+                                                                        Tạo yêu cầu
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+
+                                                                    <input type="hidden" name="actID" value="@act.id" />
+                                                                    <td>
+                                                                        <input style="width:100%" required type="text" name="tempName" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input required type="text" name="description" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input required style="width:100%" id="quantity" type="text" name="quantity" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="submit" name="ThêmS" value="Tạo yêu cầu" />
+                                                                    </td>
+
+
+
+                                                                </tr>
+
+                                                            </table>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <table id="myacttable" class="table table-striped projects">
+                                            <thead>
+                                                <tr>
+                                                    <th>Ngày gửi yêu cầu</th>
+                                                    <th>Người Mượn</th>
+                                                    <th>Tên sản phẩm</th>
+                                                    <th>Số lượng</th>
+                                                    <th>Hóa đơn bảo hành</th>
+                                                    <th>Trạng thái</th>
+                                                    <th>Ngày Nhận</th>
+                                                    <th>Ngày trả</th>
+                                                    <th>#Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (RequestMuon request in act.RequestMuons.ToList())
+                                                {
+                                                    <tr>
+                                                        <td>@request.createdDate </td>
+                                                        <td>
+                                                            @request.AspNetUser.FullName
+                                                        </td>
+                                                        @if (request.productID != null)
+                                                        {
+                                                            <td>
+                                                                @request.tb_product_detail.productStoreID
+                                                            </td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>
+                                                                @request.TemporaryName
+                                                            </td>
+                                                        }
+
+
+                                                        <td>
+                                                            @request.quantity
+                                                        </td>
+                                                        <td>
+                                                            <a href="/Warranty/ActivityDetail?id=@request.warrantyID"> @request.tb_warranty_activities.CodeBaoHanh</a>
+                                                        </td>
+                                                        <td>
+                                                            @request.RequestStatu.name
+                                                        </td>
+                                                        <td>
+                                                            @request.recieveDate
+                                                        </td>
+                                                        <td>
+                                                            @request.returnDate
+                                                        </td>
+                                                        @if (request.status == 3)
+                                                        {
+                                                            <td>
+                                                                <a class="btn btn-warning" href="/Request/AllowRequest?id=@request.id">Gửi trả</a>
+                                                            </td>
+                                                        }
+                                                        else
+                                                        if (request.status == 4)
+                                                        {
+                                                            <td>
+                                                                <a class="btn btn-warning">Đã gửi yêu cầu trả</a>
+                                                            </td>
+                                                        }
+                                                        else
+                                                        if (request.status == 1)
+                                                        {
+                                                            <td>
+                                                                <a class="btn btn-warning">Đang chờ sự đồng ý từ quản lý</a>
+                                                            </td>
+                                                        }
+                                                        else if (request.status == 1)
+                                                        {
+                                                            <td>
+                                                                <a class="btn btn-warning">Đang chờ lấy hàng</a>
+                                                            </td>
+                                                        }
+                                                        else if (request.status == 5)
+                                                        {
+                                                            <td>
+                                                                <a class="btn btn-warning">Đang trả</a>
+                                                            </td>
+                                                        }
+                                                    </tr>
+                                                }
+
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <br />
+                            <div class="row">
+                                <h4>Hoat Động gần đây</h4>
+                            </div>
+
+
+                            <!-- end of user messages -->
+                            <ul class="messages">
+                                @foreach (log log in act.logs)
+                                {
+                                    <li>
+                                        <img src="~/Content/images/img.jpg" class="avatar" alt="Avatar">
+                                        <div class="message_date">
+                                            <h3 class="date text-info">Ngày @log.date.Day</h3>
+                                            <p class="month">Tháng @log.date.Month.ToString()</p>
+                                        </div>
+                                        <div class="message_wrapper">
+                                            <h4 class="heading">@log.AspNetUser.FullName  </h4>
+                                            <blockquote class="message">@log.action</blockquote>
+                                            <br>
+
+                                        </div>
+                                    </li>
+                                }
+
+                            </ul>
+                            <!-- end of user messages -->
                             <div class="row">
                                 <div class="col-md-12 col-sm-9 col-xs-12">
                                     <div class="x_title">
@@ -318,47 +554,47 @@
                                                 {
 
 
-                                                foreach (tb_warranty_activities oldact in act.tb_warranty.tb_warranty_activities.Where(u => u.status == 6 || u.status == 7).ToList())
-                                                {
-                                                    <tr>
-                                                        <td>
-                                                            @oldact.startDate
-                                                        </td>
-                                                        <td>
-                                                            @oldact.realeaseDATE
-                                                        </td>
-                                                        @if (oldact.AspNetUser1 != null)
-                                                        {
-                                                            <td>@oldact.AspNetUser1.FullName</td>
-                                                        }
-                                                        else
-                                                        {
-                                                            <td></td>
-                                                        }
-                                                        <td>
-                                                            @foreach (warrantyActivityFee fee in oldact.warrantyActivityFees)
-                                                            {<ul>
-                                                                <li>@fee.productSKU : @fee.quantity cái</li>
-                                                            </ul>
-
-                                                            }
-                                                        </td>
-                                                        <td>
-                                                            @foreach (warrantyActivityFixingFee fee in oldact.warrantyActivityFixingFees)
+                                                    foreach (tb_warranty_activities oldact in act.tb_warranty.tb_warranty_activities.Where(u => u.status == 6 || u.status == 7).ToList())
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                @oldact.startDate
+                                                            </td>
+                                                            <td>
+                                                                @oldact.realeaseDATE
+                                                            </td>
+                                                            @if (oldact.AspNetUser1 != null)
                                                             {
-                                                                <ul>
-                                                                    <li>@fee.FixDetail</li>
-                                                                </ul>
+                                                                <td>@oldact.AspNetUser1.FullName</td>
                                                             }
-                                                        </td>
-                                                        <td>
-                                                            @oldact.Description
-                                                        </td>
-                                                        <td>
-                                                            <a href="/Warranty/ActivityDetail?id=@oldact.id">Detail</a>
-                                                        </td>
-                                                    </tr>
-                                                }
+                                                            else
+                                                            {
+                                                                <td></td>
+                                                            }
+                                                            <td>
+                                                                @foreach (warrantyActivityFee fee in oldact.warrantyActivityFees)
+                                                                {<ul>
+                                                                    <li>@fee.productSKU : @fee.quantity cái</li>
+                                                                </ul>
+
+                                                                }
+                                                            </td>
+                                                            <td>
+                                                                @foreach (warrantyActivityFixingFee fee in oldact.warrantyActivityFixingFees)
+                                                                {
+                                                                    <ul>
+                                                                        <li>@fee.FixDetail</li>
+                                                                    </ul>
+                                                                }
+                                                            </td>
+                                                            <td>
+                                                                @oldact.Description
+                                                            </td>
+                                                            <td>
+                                                                <a href="/Warranty/ActivityDetail?id=@oldact.id">Detail</a>
+                                                            </td>
+                                                        </tr>
+                                                    }
                                                 }
                                             </tbody>
                                         </table>
@@ -367,34 +603,6 @@
 
 
                             </div>
-                            <br />
-                            <div class="row">
-                                <h4>Hoat Động gần đây</h4>
-                            </div>
-
-
-                            <!-- end of user messages -->
-                            <ul class="messages">
-                                @foreach (log log in act.logs)
-                                {
-                                    <li>
-                                        <img src="~/Content/images/img.jpg" class="avatar" alt="Avatar">
-                                        <div class="message_date">
-                                            <h3 class="date text-info">Ngày @log.date.Day</h3>
-                                            <p class="month">Tháng @log.date.Month.ToString()</p>
-                                        </div>
-                                        <div class="message_wrapper">
-                                            <h4 class="heading">@log.AspNetUser.FullName  </h4>
-                                            <blockquote class="message">@log.action</blockquote>
-                                            <br>
-
-                                        </div>
-                                    </li>
-                                }
-
-                            </ul>
-                            <!-- end of user messages -->
-
 
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-12">
@@ -493,6 +701,38 @@
                                     <h5>Tình trạng lúc nhận</h5>
                                     <p>@act.Description</p>
                                     <br>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Bộ phận
+                                                </th>
+                                                <th>
+                                                    Số lượng
+                                                </th>
+                                                <th>
+                                                    Ghi chú
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (HangBaoHanh hbh in act.HangBaoHanhs.ToList())
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @hbh.Name
+                                                    </td>
+                                                    <td>
+                                                        @hbh.Quantity
+                                                    </td>
+                                                    <td>
+                                                        @hbh.Note
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
                                 </div>
 
                             </section>

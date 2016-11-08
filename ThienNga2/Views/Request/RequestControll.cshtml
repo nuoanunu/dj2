@@ -1,0 +1,125 @@
+﻿
+@using ThienNga2.Models.Entities;
+
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+    <title>Inventory</title>
+    <script>
+        $("#myacttable").dataTable();
+    </script>
+</head>
+<div class="">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>Bảo hành và sữa chữa</h3>
+        </div>
+
+        <div class="title_right">
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Danh sách thiết bị đang mượn / đang chờ / đã trả</h2>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                    <p>Danh sách các thiệt bị đã / đang được mượn bởi công nhân</p>
+
+                    <!-- start project list -->
+                    <table id="myacttable" class="table table-striped projects">
+                        <thead>
+                            <tr>
+                                <th>Ngày tạo yêu cầu</th>
+                                <th>Người Tạo</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Hóa đơn bảo hành</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày Nhận</th>
+                                <th>Ngày trả</th>
+                                <th>#Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (RequestMuon request in (List<RequestMuon>)ViewData["AllRequest"])
+                            {
+                                <tr>
+                                    <td>@request.createdDate </td>
+                                    <td>
+                                        @request.AspNetUser.FullName
+                                    </td>
+                                    @if (request.productID != null)
+                                    {
+                                        <td>
+                                            @request.tb_product_detail.productStoreID
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            @request.TemporaryName
+                                        </td>
+                                    }
+
+
+                                    <td>
+                                        @request.quantity
+                                    </td>
+                                    <td>
+                                        <a href="/Warranty/ActivityDetail?id=@request.warrantyID"> @request.tb_warranty_activities.CodeBaoHanh</a>
+                                    </td>
+                                    <td>
+                                       @request.RequestStatu.name
+                                    </td>
+                                    <td>
+                                        @request.recieveDate
+                                    </td>
+                                    <td>
+                                        @request.returnDate
+                                    </td>
+                                    @if (request.status == 1) {
+                                        <td>
+                                            <a class="btn btn-warning" href="/Request/AllowRequest?id=@request.id"> Cho phép mượn</a>
+                                        </td>
+                                    }
+                                    else if (request.status == 2)
+                                    {
+                                        <td>
+                                            <a class="btn btn-danger" href="/Request/Given?id=@request.id"> Xác nhận đã giao</a>
+                                        </td>
+                                    }
+                                    else if (request.status == 4)
+                                    {
+                                        <td>
+                                            <a class="btn btn-success" href="/Request/ItemBack?id=@request.id"> Xác nhận đã về kho</a>
+                                        </td>
+                                    }
+                                </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+                    <!-- end project list -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

@@ -12,27 +12,17 @@ namespace ThienNga2.Models.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class tb_product_detail
+    public partial class RequestStatu
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tb_product_detail()
+        public RequestStatu()
         {
-            this.items = new HashSet<item>();
             this.RequestMuons = new HashSet<RequestMuon>();
         }
     
         public int id { get; set; }
-        public string producFactoryID { get; set; }
-        public string productStoreID { get; set; }
-        public string productName { get; set; }
-        public double price { get; set; }
-        public Nullable<int> cateID { get; set; }
-        public string description { get; set; }
-        public Nullable<int> minThresHold { get; set; }
+        public string name { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<item> items { get; set; }
-        public virtual tb_cate tb_cate { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequestMuon> RequestMuons { get; set; }
     }
