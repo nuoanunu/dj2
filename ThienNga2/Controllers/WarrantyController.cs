@@ -231,7 +231,10 @@ namespace ThienNga2.Controllers
             item item = new item();
             for (int i = 0; i < 20; i++)
             {
-                item.tb_warranty.Add(new tb_warranty());
+                tb_warranty tb = new tb_warranty();
+                tb.description = " ";
+                
+                item.tb_warranty.Add(tb);
             }
             tb_product_detail detail = new tb_product_detail();
             tb_customer cus = new tb_customer();
@@ -307,6 +310,7 @@ namespace ThienNga2.Controllers
             {
 
                 list[i].itemID = item.id;
+                if (list[i].description == null) list[i].description = " ";
                 am.tb_warranty.Add(list[i]);
                 am.SaveChanges();
             }
