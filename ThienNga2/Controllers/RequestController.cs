@@ -15,8 +15,8 @@ namespace ThienNga2.Controllers
             return View("RequestControll");
         }
         [Authorize(Roles = "Nhân Viên Quản Lý Sửa Chữa,Admin,Quản lý kho")]
-        public ActionResult AllowRequest(int rid) {
-            RequestMuon req = am.RequestMuons.Find(rid);
+        public ActionResult AllowRequest(int id) {
+            RequestMuon req = am.RequestMuons.Find(id);
             if (req != null && req.status == 1) {
                 req.status = 2;
                 am.SaveChanges();
@@ -24,8 +24,8 @@ namespace ThienNga2.Controllers
             return RedirectToAction("Index");
         }
         [Authorize(Roles = "Admin,Quản lý kho")]
-        public ActionResult Given(int rid) {
-            RequestMuon req = am.RequestMuons.Find(rid);
+        public ActionResult Given(int id) {
+            RequestMuon req = am.RequestMuons.Find(id);
             if (req != null && req.status ==2)
             {
                 req.status = 3;
@@ -34,8 +34,8 @@ namespace ThienNga2.Controllers
             return RedirectToAction("Index");
         }
         [Authorize(Roles = "Admin,Quản lý kho")]
-        public ActionResult returned(int rid) {
-            RequestMuon req = am.RequestMuons.Find(rid);
+        public ActionResult returned(int id) {
+            RequestMuon req = am.RequestMuons.Find(id);
             if (req != null && req.status == 4)
             {
                 req.status = 5;
