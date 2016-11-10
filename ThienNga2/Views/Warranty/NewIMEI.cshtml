@@ -1,0 +1,249 @@
+﻿@using ThienNga2.Models.Entities
+@model ThienNga2.Models.Entities.item
+<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"> </script>
+<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"> </script>
+<link href="~/Content/css/select/select2.min.css" rel="stylesheet" />
+<script src="~/Content/js/select/select2.full.js"></script>
+<script>
+    $("#myTable").DataTable();
+</script>
+<style>
+    .ui-autocomplete {
+        background-color: antiquewhite;
+        max-height: 100px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: hidden;
+    }
+    /* IE 6 doesn't support max-height
+        * we use height instead, but this forces the menu to always be this tall
+        */
+    * html .ui-autocomplete {
+        height: 100px;
+    }
+</style>
+<script src="http://www.google.com/jsapi"></script>
+
+@using (Html.BeginForm("CreateNewIMEI", "Warranty", FormMethod.Post,
+                                                  new { enctype = "multipart/form-data" }))
+{
+<div class="row">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>
+                Tạo thông tin bảo hành
+                <small>
+                    Nhập dữ liệu về các mã bảo hành
+                </small>
+            </h3>
+        </div>
+
+        <div class="title_right">
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                <div class="input-group">
+                    <button type="submit" class="btn btn-success">Tạo mới</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Thông tin sản phẩm <small></small></h2>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4 col-sm-3 col-xs-12" for="first-name">
+                        Tên Sản Phẩm
+                    </label>
+                    <div class="col-md-8 col-sm-6 col-xs-12">
+                        @Html.TextBoxFor(model => model.tb_product_detail.productName, new { })
+                    </div>
+                </div>
+                <br/>
+                <div class="form-group">
+                    <label class="control-label col-md-4 col-sm-3 col-xs-12" for="last-name">
+                        SKU <span class="required">*</span>
+                    </label>
+            
+                    <div class="col-md-8 col-sm-6 col-xs-12">
+
+                        <select id="tb_product_detail_productStoreID" name="tb_product_detail.productStoreID" class="skuselector select2_single form-control" tabindex="-1">
+                            <option selected value=""></option>
+                        </select>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label class="control-label col-md-4 col-sm-3 col-xs-12" for="last-name">
+                        Ngày mua
+                    </label>
+                    <div class="col-md-8 col-sm-6 col-xs-12">
+                        @Html.TextBoxFor(model => model.DateOfSold, new { @Value= DateTime.Now.ToShortDateString()})
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Thông tin khách hàng <small></small></h2>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br>
+                <div class="form-group">
+                    <label class="control-label col-md-4 col-sm-3 col-xs-12" for="first-name">
+                        Tên
+                    </label>
+                    <div class="col-md-8 col-sm-6 col-xs-12">
+                        @Html.TextBoxFor(model => model.tb_customer.customerName)
+                    </div>
+                </div>
+                <br/>
+                <div class="form-group">
+                    <label class="control-label col-md-4 col-sm-3 col-xs-12" for="last-name">
+                        Sdt <span class="required">*</span>
+                    </label>
+                    <div class="col-md-8 col-sm-6 col-xs-12">
+                        @Html.TextBoxFor(model => model.tb_customer.phonenumber )
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4 col-sm-3 col-xs-12" for="last-name">
+                        Địa chỉ <span class="required">*</span>
+                    </label>
+                    <div class="col-md-8 col-sm-6 col-xs-12">
+                        @Html.TextBoxFor(model => model.tb_customer.address)
+                    </div>
+                </div>
+
+                <br />
+                <div class="form-group">
+                    <label class="control-label col-md-4 col-sm-3 col-xs-12" for="last-name">
+                        Nhóm khách <span class="required">*</span>
+                    </label>
+                    <div class="col-md-8 col-sm-6 col-xs-12">
+                
+                        <select name="tb_customer.Type" id="tb_customer_Type">
+                            @foreach (CustomerType type in (List<CustomerType>)ViewData["dsnkh"])
+                            {
+                                <option style="background:@(type.Color)" value="@type.id"> @type.GroupName </option>
+
+                            }
+
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                        <br />
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+
+                    </div>
+                </div>
+                <br />
+                <div class="ln_solid"></div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Danh Sách IMEI</h2>
+
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+        <div class="x_content">
+
+            <!-- start project list -->
+            <table class="table table-striped projects">
+                <thead>
+                    <tr>
+
+                        <th style="width: 20%">IMEI</th>
+                        <th>Thời hạn bảo hành (tháng)</th>
+                        <th>Thông tin mô tả</th>
+                        <th style="width: 20%">Mã chính</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @for (int i = 0; i < Model.tb_warranty.Count(); i++)
+                    {
+                        <tr>
+                            <td>@Html.TextBoxFor(model => model.tb_warranty[i].warrantyID)</td>
+                            <td>@Html.TextBoxFor(model => model.tb_warranty[i].duration, new { type = "number" })</td>
+                            <td>@Html.TextBoxFor(model => model.tb_warranty[i].description)</td>
+                            <td>@Html.CheckBoxFor(model => model.tb_warranty[i].MaChinh)</td>
+                        </tr>
+                    }
+                    
+
+                </tbody>
+            </table>
+            <!-- end project list -->
+
+        </div>
+    </div>
+</div>
+    <script>
+        $(document).ready(function () {
+            $(".select2_single").select2({
+                placeholder: "Chọn SKU",
+                allowClear: true
+            });
+        });
+        $(document).ready(function () {
+            
+            var productname =@Html.Raw(ViewData["namelist"]);
+
+            $(".skuselector").each(function () {
+
+                for (var i = 0; i < productname.length ; i++) {
+                    $(this).append(new Option(productname[i],productname[i]));
+                }
+            });
+        });
+        var currentSKU = "";
+        function checkName(){
+        
+            if(currentSKU !=$("#tb_product_detail_productStoreID").val() && $("#tb_product_detail_productStoreID").val()!= ""  )  {
+     
+                $.getJSON("/Warranty/getAllData?name="+$("#tb_product_detail_productStoreID").val(), function (result) {
+
+                    $.each(result, function (name, value) {
+                        if (name == "name") {
+                            flag = true;
+                         
+                            if (value != null) {
+                                $("#tb_product_detail_productName").val(value);
+                            }
+                        }
+                    })
+                });
+                currentSKU = $("#tb_product_detail_productStoreID").val();
+            }
+        }
+        setInterval(checkName, 100);
+    </script>
+}
+
+
+

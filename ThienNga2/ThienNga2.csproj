@@ -794,6 +794,7 @@
     <Content Include="Views\Warranty\ChinhSuaIMEI.cshtml" />
     <Content Include="Views\CreateWarranty\Create.cshtml" />
     <Content Include="Views\Request\RequestControll.cshtml" />
+    <Content Include="Views\Warranty\NewIMEI.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

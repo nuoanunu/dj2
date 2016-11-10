@@ -95,7 +95,8 @@ namespace ThienNga2.Controllers
                     d.Point = (int)money / 100000; ;
                     am.SaveChanges();
                 }
-                else {
+                else
+                {
                     am.DiemKyThuats.Add(diem);
                     am.SaveChanges();
                 }
@@ -225,7 +226,36 @@ namespace ThienNga2.Controllers
                 allname.Add(t.productStoreID);
             }
         }
+        public ActionResult newImeiHand()
+        {
+            item item = new item();
+            for (int i = 0; i < 20; i++)
+            {
+                item.tb_warranty.Add(new tb_warranty());
+            }
+            tb_product_detail detail = new tb_product_detail();
+            tb_customer cus = new tb_customer();
+            cus.customerName = "ahihi";
+            cus.phonenumber = "132123";
+            item.tb_customer = cus;
+            item.tb_product_detail = detail;
+            ViewData["dsnkh"] = am.CustomerTypes.ToList();
+            String namelist = "[";
+            try
+            {
 
+
+                foreach (tb_product_detail productdetail in am.tb_product_detail.ToList())
+                {
+                    namelist = namelist + ",'" + productdetail.productStoreID + "'";
+                }
+                namelist = namelist.Remove(1, 1);
+                namelist = namelist + "]";
+            }
+            catch (Exception e) { }
+            ViewData["namelist"] = namelist;
+            return View("NewIMEI", item);
+        }
         [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult IMEILIST()
         {
@@ -234,6 +264,91 @@ namespace ThienNga2.Controllers
             ViewData["dsnkh"] = am.CustomerTypes.ToList();
             return View("allIMEI");
         }
+        public ActionResult CreateNewIMEI(item item)
+        {
+            //try {
+            tb_product_detail detail = item.tb_product_detail;
+            detail.id = am.tb_product_detail.Where(u => u.productStoreID.Equals(detail.productStoreID)).First().id;
+            item.productDetailID = detail.id;
+            tb_customer cus = new tb_customer();
+            cus = item.tb_customer;
+            if (cus.address == null) cus.address = "Không có dữ liệu";
+            if (am.tb_customer.Where(u => u.phonenumber.Equals(cus.phonenumber)).Count() == 0)
+                am.tb_customer.Add(cus);
+            else
+            {
+                cus = am.tb_customer.Where(u => u.phonenumber.Equals(cus.phonenumber)).First();
+            }
+            List<tb_warranty> list = new List<tb_warranty>();
+            foreach (tb_warranty tb in item.tb_warranty)
+            {
+                if (tb.warrantyID != null && tb.duration > 0)
+                {
+                    tb.startdate = item.DateOfSold;
+                    list.Add(tb);
+                }
+            }
+            am.SaveChanges();
+            order order = new order();
+            order.date = DateTime.Now;
+            am.orders.Add(order);
+            am.SaveChanges();
+            item.tb_customer = null;
+            item.tb_product_detail = null;
+            item.customerID = cus.id;
+            item.Verified = true;
+            item.productID = "Nhaptay" + (am.items.Count() + 1);
+            item.orderID = order.id;
+            item.inventoryID = 1;
+            item.tb_warranty = null;
+            am.items.Add(item);
+            am.SaveChanges();
+            for (int i = 0; i < list.Count(); i++)
+            {
+
+                list[i].itemID = item.id;
+                am.tb_warranty.Add(list[i]);
+                am.SaveChanges();
+            }
+            String codee = list.First().warrantyID;
+            return RedirectToAction("search", new { code = codee });
+            //}
+            //catch (Exception e) {
+            //    return RedirectToAction("newImeiHand");
+            //}
+
+        }
+        public String getAllData(String name)
+        {
+            try
+            {
+                if (name != null)
+                    if (name.Trim().Length >= 1)
+                    {
+                        List<tb_product_detail> lst = am.tb_product_detail.SqlQuery("SELECT * FROM dbo.tb_product_detail WHERE productStoreID='" + name + "'").ToList();
+                        System.Diagnostics.Debug.WriteLine("da load xong het " + lst.Count());
+                        JavaScriptSerializer serializer = new JavaScriptSerializer();
+                        string result = "";
+                        productView vi = new productView();
+                        if (lst.Count == 1)
+                        {
+                            if (lst.ElementAt(0).productName.Length >= 17)
+                                vi.name = lst.ElementAt(0).productName;
+
+                            vi.price = lst.ElementAt(0).price + "";
+                        }
+                        result = serializer.Serialize(vi);
+                        System.Diagnostics.Debug.WriteLine(result);
+                        return result;
+                    }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+            }
+
+            return "";
+        }
         public ActionResult DanhSachIMEI()
         {
 
@@ -241,20 +356,25 @@ namespace ThienNga2.Controllers
         }
         public ActionResult search(String code)
         {
-            int searchType = 1;
-            if (searchType == 1)
+            try
             {
-                tb_warranty war = am.tb_warranty.SqlQuery("SELECT * FROM tb_warranty where warrantyID='" + code + "'").FirstOrDefault();
-                ViewData["item"] = war.item;
-            }
-            else if (searchType == 2)
-            {
+                int searchType = 1;
+                if (searchType == 1)
+                {
+                    tb_warranty war = am.tb_warranty.SqlQuery("SELECT * FROM tb_warranty where warrantyID='" + code + "'").FirstOrDefault();
+                    ViewData["item"] = war.item;
+                }
+                else if (searchType == 2)
+                {
 
+                }
+                else if (searchType == 3) { }
+                else if (searchType == 4) { }
+                else if (searchType == 5) { }
+                ViewData["dsnkh"] = am.CustomerTypes.ToList();
             }
-            else if (searchType == 3) { }
-            else if (searchType == 4) { }
-            else if (searchType == 5) { }
-            ViewData["dsnkh"] = am.CustomerTypes.ToList();
+            catch (Exception e) { }
+
             return View("ChinhSuaIMEI");
         }
         public ActionResult Fixitem(int itemid, String itemname, String sku, String dos, int grroup)
@@ -339,6 +459,7 @@ namespace ThienNga2.Controllers
             //  return Json(result);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult EditIMEI(int warrantyID, String IMEI, String duration, String description, bool? machinh)
         {
             try
@@ -361,72 +482,98 @@ namespace ThienNga2.Controllers
             return View("ChinhSuaIMEI");
         }
         [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
+        public ActionResult AddMoreImei(int itemID, String IMEI, int duration, String des, bool? machinh)
+        {try {
+                tb_warranty war = new tb_warranty();
+
+                war.warrantyID = IMEI;
+                war.duration = duration;
+                war.description = des;
+                if (machinh != null)
+                    war.MaChinh = (bool)machinh;
+                else war.MaChinh = false;
+                war.itemID = itemID;
+                am.tb_warranty.Add(war);
+                am.SaveChanges();
+                return RedirectToAction("search", new { code = IMEI });
+
+
+            }
+            catch (Exception e) { }
+
+     
+
+
+            return View("ChinhSuaIMEI");
+        }
+
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public String updateWAR(String wactID, String newDate, String newIMEI, String newSKU, String newName, String newSDT, String newDuration, String newDescription, String newChinhPhu, String newNhomKhach)
         {
             System.Diagnostics.Debug.WriteLine("AAAA");
-            
-                tb_warranty wact = am.tb_warranty.Find(int.Parse(wactID));
-                if (wact != null)
+
+            tb_warranty wact = am.tb_warranty.Find(int.Parse(wactID));
+            if (wact != null)
+            {
+                DateTime date;
+
+                date = DateTime.ParseExact(newDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+
+                tb_product_detail dt = (tb_product_detail)am.tb_product_detail.Where(u => u.productName.Equals(newSKU) || u.producFactoryID.Equals(newSKU) || u.productStoreID.Equals(newSKU)).FirstOrDefault();
+                tb_customer cus = null;
+                if (am.tb_customer.SqlQuery("SELECT * FROM tb_customer where phonenumber='" + newSDT + "'").ToList().Count() >= 1)
                 {
-                    DateTime date;
-
-                    date = DateTime.ParseExact(newDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-
-
-                    tb_product_detail dt = (tb_product_detail)am.tb_product_detail.Where(u => u.productName.Equals(newSKU) || u.producFactoryID.Equals(newSKU) || u.productStoreID.Equals(newSKU)).FirstOrDefault();
-                    tb_customer cus = null;
-                    if (am.tb_customer.SqlQuery("SELECT * FROM tb_customer where phonenumber='" + newSDT + "'").ToList().Count() >= 1)
-                    {
-                        cus = am.tb_customer.SqlQuery("SELECT * FROM tb_customer where phonenumber='" + newSDT + "'").First();
-                    }
-                    int newduration = int.Parse(newDuration);
-                    item itt = am.items.Find(wact.item.id);
-
-                    if (!wact.item.tb_product_detail.productStoreID.Equals(dt.productStoreID))
-                    {
-
-                        itt.productDetailID = dt.id;
-                    }
-                    if (wact.duration != newduration) wact.duration = newduration;
-                    if (wact.startdate != date) wact.startdate = date;
-                    if (wact.description.Equals(newDescription)) wact.description = newDescription;
-                    if (!wact.warrantyID.Equals(newIMEI)) wact.warrantyID = newIMEI;
-                    if (cus != null)
-                    {
-                        if (!cus.customerName.Equals(newName)) cus.customerName = newName;
-                        am.SaveChanges();
-
-                    }
-                    else
-                    {
-                        cus = new tb_customer();
-                        cus.customerName = newName;
-                        cus.phonenumber = newSDT;
-                        cus.address = "ko co"; cus.address2 = "ko co"; cus.Email = "ko co";
-                        am.tb_customer.Add(cus);
-                        am.SaveChanges();
-                        itt.customerID = cus.id;
-                    }
-                    if (newChinhPhu.Equals("true")) wact.MaChinh = true;
-                    else wact.MaChinh = false;
-                    wact.item.customerID = cus.id;
-                    try
-                    {
-                        itt.CustomerType = int.Parse(newNhomKhach);
-                        cus.Type = int.Parse(newNhomKhach);
-                    }
-                    catch (Exception e)
-                    {
-
-                    }
-                    am.SaveChanges();
+                    cus = am.tb_customer.SqlQuery("SELECT * FROM tb_customer where phonenumber='" + newSDT + "'").First();
                 }
+                int newduration = int.Parse(newDuration);
+                item itt = am.items.Find(wact.item.id);
 
-                checkwarModel model = new checkwarModel();
-                model.name = "succeed";
-                JavaScriptSerializer js = new JavaScriptSerializer();
-                return js.Serialize(model);
-           
+                if (!wact.item.tb_product_detail.productStoreID.Equals(dt.productStoreID))
+                {
+
+                    itt.productDetailID = dt.id;
+                }
+                if (wact.duration != newduration) wact.duration = newduration;
+                if (wact.startdate != date) wact.startdate = date;
+                if (wact.description.Equals(newDescription)) wact.description = newDescription;
+                if (!wact.warrantyID.Equals(newIMEI)) wact.warrantyID = newIMEI;
+                if (cus != null)
+                {
+                    if (!cus.customerName.Equals(newName)) cus.customerName = newName;
+                    am.SaveChanges();
+
+                }
+                else
+                {
+                    cus = new tb_customer();
+                    cus.customerName = newName;
+                    cus.phonenumber = newSDT;
+                    cus.address = "ko co"; cus.address2 = "ko co"; cus.Email = "ko co";
+                    am.tb_customer.Add(cus);
+                    am.SaveChanges();
+                    itt.customerID = cus.id;
+                }
+                if (newChinhPhu.Equals("true")) wact.MaChinh = true;
+                else wact.MaChinh = false;
+                wact.item.customerID = cus.id;
+                try
+                {
+                    itt.CustomerType = int.Parse(newNhomKhach);
+                    cus.Type = int.Parse(newNhomKhach);
+                }
+                catch (Exception e)
+                {
+
+                }
+                am.SaveChanges();
+            }
+
+            checkwarModel model = new checkwarModel();
+            model.name = "succeed";
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            return js.Serialize(model);
+
 
 
             return "";
@@ -889,7 +1036,8 @@ namespace ThienNga2.Controllers
             {
             }
         }
-        public ActionResult newRequestMuon(int actID,String productSKU, int quantity,String tempName,String description) {
+        public ActionResult newRequestMuon(int actID, String productSKU, int quantity, String tempName, String description)
+        {
             try { }
             catch (Exception e) { }
             RequestMuon request = new RequestMuon();
@@ -897,27 +1045,27 @@ namespace ThienNga2.Controllers
             System.Diagnostics.Debug.WriteLine("bbb : " + tempName);
             System.Diagnostics.Debug.WriteLine("bbb : " + description);
             System.Diagnostics.Debug.WriteLine("aaa : " + productSKU);
-                if (productSKU != null && am.tb_product_detail.Where(u =>u.productStoreID.Equals(productSKU)).FirstOrDefault() != null)
-                {
-                    request.productID = am.tb_product_detail.Where(u => u.productStoreID.Equals(productSKU)).FirstOrDefault().id;
-                    request.creator = User.Identity.GetUserId();
-                    request.status = 1;
-                    request.quantity = quantity;
-                    request.warrantyID = actID;
-                    request.createdDate = DateTime.Now;
-                    am.RequestMuons.Add(request);
-                    am.SaveChanges();
+            if (productSKU != null && am.tb_product_detail.Where(u => u.productStoreID.Equals(productSKU)).FirstOrDefault() != null)
+            {
+                request.productID = am.tb_product_detail.Where(u => u.productStoreID.Equals(productSKU)).FirstOrDefault().id;
+                request.creator = User.Identity.GetUserId();
+                request.status = 1;
+                request.quantity = quantity;
+                request.warrantyID = actID;
+                request.createdDate = DateTime.Now;
+                am.RequestMuons.Add(request);
+                am.SaveChanges();
                 System.Diagnostics.Debug.WriteLine("daheo : " + productSKU);
                 log log = new log();
-                    AspNetUser user = am.AspNetUsers.Find(User.Identity.GetUserId());
-                    log.account = User.Identity.GetUserId();
-                    log.date = DateTime.Now;
-                    log.action = user.FullName + " đã gửi yêu cầu mượn " + quantity + " sản phẩm " + productSKU;
-                    log.warrantyActivitiesID = actID;
-                    am.logs.Add(log);
-                    am.SaveChanges();
-                }
-            
+                AspNetUser user = am.AspNetUsers.Find(User.Identity.GetUserId());
+                log.account = User.Identity.GetUserId();
+                log.date = DateTime.Now;
+                log.action = user.FullName + " đã gửi yêu cầu mượn " + quantity + " sản phẩm " + productSKU;
+                log.warrantyActivitiesID = actID;
+                am.logs.Add(log);
+                am.SaveChanges();
+            }
+
             else
             {
                 if (tempName != null && tempName.Trim().Length >= 2)
@@ -942,7 +1090,7 @@ namespace ThienNga2.Controllers
                     am.SaveChanges();
                 }
             }
-            
+
             return RedirectToAction("ActivityDetail", new { id = actID });
         }
     }

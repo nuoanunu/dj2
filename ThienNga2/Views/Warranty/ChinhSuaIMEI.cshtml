@@ -296,6 +296,26 @@
 
                                                 </tr>
                                             }
+                                            <tr>
+                                                <form action="/Warranty/AddMoreImei">
+                                                    <input type="hidden" value="@thisitem.tb_warranty.First().itemID" name="itemID" />
+                                                    <td>
+                                                           <input name="IMEI" type="text" placeholder="Mã IMEI"/>
+                                                    </td>
+                                                    <td>
+                                                        <input name="duration" type="text" placeholder="Thời hạn(tháng)" />
+                                                    </td>
+                                                    <td>
+                                                        <input name="des" type="text" placeholder="Mô tả" />
+                                                    </td>
+                                                    <td>
+                                                        <input name="machinh" type="checkbox" value="true" />
+                                                    </td>
+                                                    <td>
+                                                        <button type="submit" class="btn btn-success">Thêm</button>
+                                                    </td>
+                                                </form>
+                                            </tr>
                                             <script>
                                                 function edit(id) {
                                                     $("#" + id + "imei").prop('disabled', false);
