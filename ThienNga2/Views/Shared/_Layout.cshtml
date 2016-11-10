@@ -87,6 +87,12 @@
                                         <a href="/ProductItem"><i class="fa fa-home"></i> Bán hàng </a>
                                     </li>
                                 }
+                                @if (User.IsInRole("Admin") || User.IsInRole("Hóa đơn bảo hành"))
+                                {
+                                    <li>
+                                        <a href="/Warranty/HoaDonBaoHanh"><i class="fa fa-home"></i> Bán hàng </a>
+                                    </li>
+                                }
                                 @if (User.IsInRole("Admin") || User.IsInRole("Kích  Hoạt bảo Hành"))
                                 {
                                     <li>

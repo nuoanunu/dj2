@@ -66,11 +66,17 @@ namespace ThienNga2.Controllers
             HangBaoHanh gimbal = new HangBaoHanh();
             gimbal.Name = "Gimbal";
             gimbal.Quantity = 0;
-            wact.HangBaoHanhs.Add(gimbal);
-            wact.HangBaoHanhs.Add(sac);
-            wact.HangBaoHanhs.Add(pin);
-            wact.HangBaoHanhs.Add(taydieukhien);
+            HangBaoHanh phukien = new HangBaoHanh();
+            phukien.Name = "Phụ kiện";
+            phukien.Quantity = 0;
             wact.HangBaoHanhs.Add(maybay);
+            wact.HangBaoHanhs.Add(gimbal);
+            wact.HangBaoHanhs.Add(taydieukhien);
+            wact.HangBaoHanhs.Add(pin);
+            wact.HangBaoHanhs.Add(sac);
+            wact.HangBaoHanhs.Add(phukien);
+
+
             return View("Create", wact);
         }
 

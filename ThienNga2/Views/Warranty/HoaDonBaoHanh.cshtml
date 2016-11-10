@@ -1,0 +1,117 @@
+﻿
+@using ThienNga2.Models.Entities;
+
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+    <title>Inventory</title>
+    <script>
+        $("#myacttable").dataTable();
+    </script>
+</head>
+<div class="">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>Bảo hành và sữa chữa</h3>
+        </div>
+
+        <div class="title_right">
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Danh sách thiết bị</h2>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                    <p>Danh sách các thiệt bị đã / đang được sữa chữa tại của hàng</p>
+
+                    <!-- start project list -->
+                    <table id="myacttable" class="table table-striped projects">
+                        <thead>
+                            <tr>
+                                <th>Ngày nhận</th>
+                                <th>Tên khách</th>
+                                <th>SKU</th>
+                                <th>Mã hóa đơn bảo hành</th>
+                                <th>Người chịu trách nhiệm sữa chữa</th>
+                                <th style="width: 20%">Tiến trình</thstyle="width:>
+                                <th>Status</th>
+                                <th>#Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (tb_warranty_activities act in (List<tb_warranty_activities>)ViewData["AllWarranty"])
+                            {
+                                <tr>
+                                    <td>@act.startDate.ToShortDateString() </td>
+                                    <td>
+                                        <a>@act.TenKhach</a>
+                                        <br>
+                                        <small>@act.SDT</small>
+                                    </td>
+                                    @if (act.tb_warranty != null)
+                                    {
+                                        <td>
+                                            @act.tb_warranty.item.tb_product_detail.productStoreID
+                                        </td>}
+                                    else
+                                    {
+                                        <td>
+                                            @act.itemID
+                                        </td>
+                                    }
+
+
+                                    <td>
+                                        @act.CodeBaoHanh
+                                    </td>
+                                    <td>
+                                        @if (act.AspNetUser1 != null)
+                                        {
+                                            @act.AspNetUser1.FullName
+                                        }
+
+                                    </td>
+                                    <td class="project_progress">
+                                        <div class="progress progress_sm">
+                                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="57" aria-valuenow="54" style="width: @(Math.Floor((double)act.status*100/7))%;"></div>
+                                        </div>
+                                        <small>@(Math.Floor((double)act.status * 100 / 7)) Complete</small>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-success btn-xs">@act.tb_warrnaty_status.statusName</button>
+                                    </td>
+                                    <td>
+                                        <a href="/Warranty/ActivityDetail?id=@(act.id)" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> Chi tiết </a>
+                                        <a href="/Warranty/HoaDonDetail?id=@(act.id)" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> Xem hóa đơn </a>
+                                        <a href="/Warranty/TraThietBi?id=@(act.id)" class="btn btn-success btn-xs"><i class="fa fa-folder"></i> Xác nhận trả thiết bị </a>
+                                    </td>
+                                </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+                    <!-- end project list -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

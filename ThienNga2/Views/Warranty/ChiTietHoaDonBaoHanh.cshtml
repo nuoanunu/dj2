@@ -33,6 +33,69 @@
     }
     setInterval(loadprice, 100);
 </script>
+<script>
+    $(document).ready(function(){
+      
+        $(".tdproductSKU").each(function(){
+            var id = $(this).attr('id').replace("sku","");
+            $.getJSON("/Warranty/getAllData?name="+$(this).html(), function (result) {
+
+                $.each(result, function (name, value) {
+                    if (name == "name") {
+               
+                        if (value != null) {
+                       
+                            $("#"+id+"name").html(value);
+              
+                        }
+                    }
+                })
+            });
+        })
+    })
+    var currentKUS= "";
+    function checkKSU(){
+        if(currentKUS != $("#searchID").val()) {
+            currentKUS = $("#searchID").val();
+            $.getJSON("/Warranty/getAllData?name="+currentKUS, function (result) {
+
+                $.each(result, function (name, value) {
+                    if (name == "name") {
+               
+                        if (value != null) {
+                       
+                            $("#newLinhKienName").html(value);
+              
+                        }
+                    }
+                })
+            });
+        } 
+    }
+    function checkKSU2(){
+        $(".skuselector").each(function(){
+            if($(this).val()!= "") {
+                var nexttd = $(this).closest('td').next('td');
+                $.getJSON("/Warranty/getAllData?name="+$(this).val(), function (result) {
+
+                    $.each(result, function (name, value) {
+                        if (name == "name") {
+               
+                            if (value != null) {
+                       
+                                nexttd.html(value);
+              
+                            }
+                        }
+                    })
+                });
+            } 
+        })
+        
+    }
+    setInterval(checkKSU2,200);
+    setInterval(checkKSU,100);
+</script>
 @if (ViewData["HoaDonBaoHanh"] != null)
 {
     tb_warranty_activities act = (tb_warranty_activities)ViewData["HoaDonBaoHanh"];
@@ -123,7 +186,7 @@
                             </ul>
                             <br>
 
-                            <div class="col-md-6 col-sm-9 col-xs-12">
+                            <div class="col-md-12 col-sm-9 col-xs-12">
                                 <div class="x_title">
                                     <h2>Linh kiện<small>Các linh kiện cần thay thế</small></h2>
                                     <div class="clearfix"></div>
@@ -133,9 +196,9 @@
                                     <table width="90%" class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th width="35%">SKU</th>
-
-                                                <th width="15%">Số lượng</th>
+                                                <th width="20%">SKU</th>
+                                                <th width="20%">Tên</th>
+                                                <th width="10%">Số lượng</th>
                                                 <th width="40%">Chi phí</th>
 
                                                 <th width="10%">Action</th>
@@ -146,8 +209,9 @@
                                             {
                                                 String color = "#ffffff";
                                                 <tr>
-                                                    <td>
-                                                        @fee.productSKU
+                                                    <td class="tdproductSKU" id="@(fee.id +"sku")">@fee.productSKU.Trim()</td>
+                                                    <td id="@(fee.id +"name")">
+                                                  
                                                     </td>
                                                     <td>
                                                         @fee.quantity
@@ -198,6 +262,9 @@
                                                         </select>
 
                                                     </td>
+                                                    <td id="newLinhKienName">
+                                                        
+                                                    </td>
                                                     <td>
                                                         <input style="width:100%" id="quantitySKU" type="text" name="quantity" />
                                                     </td>
@@ -214,7 +281,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6 col-sm-9 col-xs-12">
+                            <div class="col-md-12 col-sm-9 col-xs-12">
                                 <div class="x_title">
                                     <h2>Chi phí <small>Các chi phí sữa chữa khac ngoài linh kiện</small></h2>
 
@@ -305,10 +372,13 @@
                                                         <h1>Sản phẩm có trong hệ thống</h1><form action="/Warranty/newRequestMuon" method="post">
 
                                                             <table width="100%" class="table table-striped">
-
+                                                                <input type="hidden" name="actID" value="@act.id" />
                                                                 <tr>
-                                                                    <td width="50%">
+                                                                    <td width="30%">
                                                                         Nhập SKU
+                                                                    </td>
+                                                                    <td width="30%">
+                                                                        Tên
                                                                     </td>
                                                                     <td>
                                                                         Số lượng
@@ -319,23 +389,91 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
-                                                                        <input type="hidden" name="actID" value="@act.id" />
-                                                                        <select style="width:100%" id="searchID2" name="productSKU" class="skuselector select2_single form-control" tabindex="-1">
+                                                                     
+                                                                        <select style="width:100%" id="searchID2" name="productSKU[]" class="skuselector select2_single form-control" tabindex="-1">
                                                                             <option selected value=""></option>
                                                                         </select>
+                                                                    </td>
+                                                                    <td>
 
                                                                     </td>
                                                                     <td>
-                                                                        <input required style="width:100%" id="quantity" type="text" name="quantity" />
+                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
                                                                     </td>
-                                                                    <input type="hidden" name="tempName" value="asd" />
-                                                                    <input type="hidden" name="description" value="asd" />
+                                                                    <input type="hidden" name="tempName[]" value="asd" />
+                                                                    <input type="hidden" name="description[]" value="asd" />
+                                                                    <td></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+
+                                                                        <select style="width:100%" id="searchID2" name="productSKU[]" class="skuselector select2_single form-control" tabindex="-1">
+                                                                            <option selected value=""></option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                    </td>
+                                                                    <input type="hidden" name="tempName[]" value="asd" />
+                                                                    <input type="hidden" name="description[]" value="asd" />
+                                                                    <td></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+
+                                                                        <select style="width:100%" id="searchID2" name="productSKU[]" class="skuselector select2_single form-control" tabindex="-1">
+                                                                            <option selected value=""></option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                    </td>
+                                                                    <input type="hidden" name="tempName[]" value="asd" />
+                                                                    <input type="hidden" name="description[]" value="asd" />
+                                                                    <td></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+
+                                                                        <select style="width:100%" id="searchID2" name="productSKU[]" class="skuselector select2_single form-control" tabindex="-1">
+                                                                            <option selected value=""></option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                    </td>
+                                                                    <input type="hidden" name="tempName[]" value="asd" />
+                                                                    <input type="hidden" name="description[]" value="asd" />
+                                                                    <td></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+
+                                                                        <select style="width:100%" id="searchID2" name="productSKU[]" class="skuselector select2_single form-control" tabindex="-1">
+                                                                            <option selected value=""></option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                    </td>
+                                                                    <input type="hidden" name="tempName[]" value="asd" />
+                                                                    <input type="hidden" name="description[]" value="asd" />
+                                                                    <td></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td>
                                                                     <td>
                                                                         <button type="submit">Tạo yêu cầu</button>
                                                                     </td>
-
-
-
+                                                                    </td>
                                                                 </tr>
 
                                                             </table>
@@ -363,20 +501,93 @@
 
                                                                     <input type="hidden" name="actID" value="@act.id" />
                                                                     <td>
-                                                                        <input style="width:100%" required type="text" name="tempName" />
+                                                                        <input style="width:100%"  type="text" name="tempName[]" />
                                                                     </td>
                                                                     <td>
-                                                                        <input required type="text" name="description" />
+                                                                        <input  type="text" name="description[]" />
                                                                     </td>
                                                                     <td>
-                                                                        <input required style="width:100%" id="quantity" type="text" name="quantity" />
+                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
                                                                     </td>
+                                                                    <td>
+                                                                        
+                                                                    </td>
+
+
+
+                                                                </tr>
+                                                                <tr>
+
+                                                                    <input type="hidden" name="actID" value="@act.id" />
+                                                                    <td>
+                                                                        <input style="width:100%"  type="text" name="tempName[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input  type="text" name="description[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                    </td>
+                                                                    <td></td>
+
+
+
+                                                                </tr>
+                                                                <tr>
+
+                                                                    <input type="hidden" name="actID" value="@act.id" />
+                                                                    <td>
+                                                                        <input style="width:100%"  type="text" name="tempName[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input  type="text" name="description[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                    </td>
+                                                                    <td></td>
+
+
+
+                                                                </tr>
+                                                                <tr>
+
+                                                                    <input type="hidden" name="actID" value="@act.id" />
+                                                                    <td>
+                                                                        <input style="width:100%"  type="text" name="tempName[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input  type="text" name="description[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                    </td>
+                                                                    <td></td>
+
+
+
+                                                                </tr>
+                                                                <tr>
+
+                                                                    <input type="hidden" name="actID" value="@act.id" />
+                                                                    <td>
+                                                                        <input style="width:100%"  type="text" name="tempName[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input  type="text" name="description[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                    </td>
+                                                                    <td></td>
+
+
+
+                                                                </tr>
+                                                                <tr><td></td><td></td><td></td>
                                                                     <td>
                                                                         <input type="submit" name="ThêmS" value="Tạo yêu cầu" />
                                                                     </td>
-
-
-
                                                                 </tr>
 
                                                             </table>
@@ -446,14 +657,7 @@
                                                         @if (request.status == 3)
                                                         {
                                                             <td>
-                                                                <a class="btn btn-warning" href="/Request/AllowRequest?id=@request.id">Gửi trả</a>
-                                                            </td>
-                                                        }
-                                                        else
-                                                        if (request.status == 4)
-                                                        {
-                                                            <td>
-                                                                <a class="btn btn-warning">Đã gửi yêu cầu trả</a>
+                                                                <button class="btn btn-warning">Đang giữ</button>
                                                             </td>
                                                         }
                                                         else
@@ -463,16 +667,10 @@
                                                                 <a class="btn btn-warning">Đang chờ sự đồng ý từ quản lý</a>
                                                             </td>
                                                         }
-                                                        else if (request.status == 1)
-                                                        {
-                                                            <td>
-                                                                <a class="btn btn-warning">Đang chờ lấy hàng</a>
-                                                            </td>
-                                                        }
                                                         else if (request.status == 5)
                                                         {
                                                             <td>
-                                                                <a class="btn btn-warning">Đang trả</a>
+                                                                <a class="btn btn-warning">Đã trả</a>
                                                             </td>
                                                         }
                                                     </tr>

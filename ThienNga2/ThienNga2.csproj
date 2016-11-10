@@ -432,6 +432,7 @@
     <Content Include="Content\css\editor\external\google-code-prettify\prettify.css" />
     <Content Include="Content\css\editor\index.css" />
     <Content Include="Content\css\floatexamples.css" />
+    <Content Include="Content\css\HoaDonCSS.css" />
     <Content Include="Content\css\icheck\flat\aero%402x.png" />
     <Content Include="Content\css\icheck\flat\aero.css" />
     <Content Include="Content\css\icheck\flat\aero.png" />
@@ -468,6 +469,7 @@
     <Content Include="Content\css\maps\jquery-jvectormap-2.0.3.css" />
     <Content Include="Content\css\normalize.css" />
     <Content Include="Content\css\nprogress.css" />
+    <Content Include="Content\css\PrintCSS.css" />
     <Content Include="Content\css\progressbar\bootstrap-progressbar-3.3.0.css" />
     <Content Include="Content\css\resetlogin.css" />
     <Content Include="Content\css\select\select2.min.css" />
@@ -795,6 +797,8 @@
     <Content Include="Views\CreateWarranty\Create.cshtml" />
     <Content Include="Views\Request\RequestControll.cshtml" />
     <Content Include="Views\Warranty\NewIMEI.cshtml" />
+    <Content Include="Views\Warranty\HoaDonBaoHanh.cshtml" />
+    <Content Include="Views\Warranty\HoaDonDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
