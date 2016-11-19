@@ -204,6 +204,7 @@ namespace ThienNga2.Controllers
         public ActionResult CreateWhenSale(NewItemViewModel tuple)
         {
             item temp = new item();
+            temp.Verified = true;
             if (tuple.quantity == 0) tuple.quantity = 1;
             List<int> lstOrderID = new List<int>();
             List<int> lstOrderDetaiLID = new List<int>();
@@ -354,6 +355,7 @@ namespace ThienNga2.Controllers
                                 it.warrantyAvailable = ao.warrantyAvailable;
                                 it.customerID = cus.id;
                                 it.orderID = ord.id;
+                                it.Verified = true;
                                 it.inventoryID = inventoryID;
                                 it.productDetailID = pd.id;
                                 String day = DateTime.Today.Day + ""; if (day.Length == 1) day = "0" + day;
@@ -421,7 +423,7 @@ namespace ThienNga2.Controllers
                                         it.inventoryID = inventoryID;
                                         it.productDetailID = 499;
                                         it.tempname = ao.newSKU;
-
+                                        it.Verified = true;
                                         String day = DateTime.Today.Day + ""; if (day.Length == 1) day = "0" + day;
                                         String month = DateTime.Today.Month + ""; if (month.Length == 1) month = "0" + month;
                                         String year = DateTime.Today.Year + ""; if (year.Length == 1) year = "0" + year;
