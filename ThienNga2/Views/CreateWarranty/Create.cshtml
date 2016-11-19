@@ -6,17 +6,45 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Create</title>
+    <style>
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid blue;
+  border-right: 16px solid green;
+  border-bottom: 16px solid red;
+  border-left: 16px solid pink;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+    </style>
     <script>
 
         var currentIMEI = "";
         function checkWarrantyCode() {
+          
             if (currentIMEI != $("#tb_warranty_warrantyID").val()) {
-               
+                $("#loader").css("display","");
                 currentIMEI = $("#tb_warranty_warrantyID").val();
                 var flag = false;
                 var warCode = $("#tb_warranty_warrantyID").val();
                 $.getJSON("/CreateWarranty/getCorrectData?name=" + warCode, function (result) {
                     $.each(result, function (name, value) {
+                        $("#loader").css("display","none");
+                        $("#doneloading").css("display","");
+                        $("#verifiedTD").css("display","");
                         if (name == "productName") {
                             flag = true;
                             if (value != null) {
@@ -58,10 +86,23 @@
                         if (name == "maukhach") {
                             $("#divGroup").css("background-color", value);
                         }
+                        if(name== "verified"){
+                            if (value == "true") {
+                                $("#verifiedTD").text("Mã bảo hành đã được xác nhận");
+                                $("#verifiedTD").css("background-color", "green");
+                                $("#verifiedTD").css("color", "white");
+                            }
+                            else{
+                                $("#verifiedTD").text("Mã bảo hành chưa được xác nhận");
+                                $("#verifiedTD").css("background-color", "orange");
+                            }
+                        }
                     })
                 });
                 if (!flag) {
-
+                    $("#verifiedTD").css("display","none");
+                    $("#loader").css("display","none");
+                    $("#doneloading").css("display","");
                     $('#tb_warranty_warrantyID').css("background-color", "orange");
                     $('#tb_warranty_warrantyID').css("color", "white");
                     $("#divDate").text("Sản phẩm này ko tồn tại trong hệ thống, nếu muốn tạo bảo hành, vui lòng điền tên sản phẩm");
@@ -158,9 +199,15 @@
                         <div class="panel-body">
                             <div class="text-center vd_info-parent" style="width:100%;padding-top:0;margin-top:0">  <span style="font-family:OpenSans-Bold;font-size:20px;">Thông tin IMEI</span></div>
                             <br />
-                            <div class="mgtp-20">
+                            <div style="margin-left:25%;display:none" class="loader" id="loader"></div>
+                            <div class="mgtp-20" id="doneloading" style="display:none">
                                 <table class="table table-striped table-hover">
                                     <tbody>
+                                        <tr>
+                                          
+                                            <td colspan="2" id="verifiedTD"></td>
+                                        
+                                        </tr>
                                         <tr>
                                             <td style="width:60%;"><font color="black"> Ngày kích hoạt</font></td>
                                             <td> <p id="divDate"></p></td>

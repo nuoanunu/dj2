@@ -162,6 +162,7 @@ namespace ThienNga2.Models.ViewModel
         public int sepcial { get; set; }
         public String nhomkhach { get; set; }
         public String maukhach { get; set; }
+        public String verified { get; set; }
     }
     public class emp {
         public String sdt { get; set; }

@@ -74,14 +74,25 @@
         <div class="title_left">
             <h3>
                 Thông tin chi tiết của mã bảo hành
-               
+                @if (!(bool)thisitem.Verified)
+                {
+                    <small style="color:red">Các imei này chưa được xác nhận</small>
+                }
+                else
+                {
+                    <small style="color:green">Các imei này đã được xác nhận</small>
+                }
             </h3>
+           
         </div>
 
         <div class="title_right">
             <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                 <div class="input-group">
-                    <a href="/Warranty/ApproveIMEI?id=@thisitem.id" class="btn btn-success">Xác nhận thông tin các IMEI</a>
+                    @if (!(bool)thisitem.Verified)
+                    {
+                        <a href="/Warranty/ApproveIMEI?id=@thisitem.id" class="btn btn-success">Xác nhận thông tin các IMEI</a>
+                    }
                     <a href="/Warranty/DisapproveIMEI?id=@thisitem.id" class="btn btn-danger">Tạm ngưng các IMEI</a>
                 </div>
             </div>
@@ -263,7 +274,7 @@
                     </thead>
                     <tbody>
 
-                        @foreach (tb_warranty war in thisitem.tb_warranty)
+                        @foreach (tb_warranty war in thisitem.tb_warranty.OrderBy(u=>u.id))
                         {
                             <tr>
                                 <form action="/Warranty/EditIMEI" method="post">

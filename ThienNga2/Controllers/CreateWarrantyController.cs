@@ -114,6 +114,18 @@ namespace ThienNga2.Controllers
                             }
                             vi.nhomkhach = war.item.CustomerType1.GroupName;
                             vi.maukhach = war.item.CustomerType1.Color;
+                            if (war.item.Verified != null) {
+                                if ((bool)war.item.Verified)
+                                {
+                                    vi.verified = "true";
+                                }
+                                else {
+                                    vi.verified = "false";
+                                }
+                            }
+                            else {
+                                vi.verified = "false";
+                            }
                             result = serializer.Serialize(vi);
                             System.Diagnostics.Debug.WriteLine(result);
                             return result;

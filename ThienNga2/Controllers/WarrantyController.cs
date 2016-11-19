@@ -347,6 +347,7 @@ namespace ThienNga2.Controllers
             {
                 item tbw = am.items.Find(id);
                 tbw.Verified = true;
+                am.SaveChanges();
                 return RedirectToAction("search", new { code = tbw.tb_warranty.First().warrantyID });
             }
             catch (Exception e) { }
@@ -359,6 +360,7 @@ namespace ThienNga2.Controllers
             {
                 item tbw = am.items.Find(id);
                 tbw.Verified = false;
+                am.SaveChanges();
                 return RedirectToAction("search", new { code = tbw.tb_warranty.First().warrantyID });
             }
             catch (Exception e) { }
