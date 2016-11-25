@@ -19,6 +19,7 @@ namespace ThienNga2.Models.Entities
         {
             this.items = new HashSet<item>();
             this.RequestMuons = new HashSet<RequestMuon>();
+            this.tb_warranty_activities = new HashSet<tb_warranty_activities>();
         }
     
         public int id { get; set; }
@@ -35,5 +36,7 @@ namespace ThienNga2.Models.Entities
         public virtual tb_cate tb_cate { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequestMuon> RequestMuons { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tb_warranty_activities> tb_warranty_activities { get; set; }
     }
 }

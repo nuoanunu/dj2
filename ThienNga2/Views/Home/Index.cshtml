@@ -1,4 +1,4 @@
-﻿@using ThienNga2.Models
+﻿@using ThienNga2.Models.Entities
 @{
     ViewBag.Title = "Home Page";
 }
@@ -6,52 +6,77 @@
 @if (User.IsInRole("Admin"))
 {
     <div class="row tile_count">
-        <div class="animated flipInY col-md-2 col-sm-4 col-xs-4 tile_stats_count">
+        <div class="animated flipInY col-md-3 col-sm-4 col-xs-4 tile_stats_count">
             <div class="left"></div>
             <div class="right">
                 <span class="count_top"><i class="fa fa-user"></i> Tổng số lượng khách</span>
-                <div class="count">@ViewData["totalcustomer"] 2500</div>
-                <span class="count_bottom">Tăng <i class="green">4% </i> So với tháng trước</span>
+                <div class="count">@ViewData["totalcustomer"]</div>
+
+                @if (((float)ViewData["customerincrease"]) < 0)
+                {
+                    <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>@ViewData["customerincrease"]% </i> so với tháng trước</span>
+
+                }
+                else
+                {
+                    <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>@ViewData["customerincrease"]% </i> so với tháng trước</span>
+
+                }
             </div>
         </div>
-        <div class="animated flipInY col-md-2 col-sm-4 col-xs-4 tile_stats_count">
+        <div class="animated flipInY col-md-3 col-sm-4 col-xs-4 tile_stats_count">
             <div class="left"></div>
             <div class="right">
                 <span class="count_top"><i class="fa fa-clock-o"></i> Tổng doanh thu tháng</span>
-                <div class="count">@ViewData["Revenue"] 500,000,000</div>
-                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>3% </i> so với tháng trước</span>
+                <div class="count">@(((float)ViewData["Revenue"]).ToString("N0"))</div>
+
+                @if (((float)ViewData["RevenueIncrease"]) < 0)
+                {
+                    <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>@ViewData["RevenueIncrease"]% </i> so với tháng trước</span>
+
+                }
+                else
+                {
+                    <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>@ViewData["chiphisuachuainc"]% </i> so với tháng trước</span>
+
+                }
             </div>
         </div>
-        <div class="animated flipInY col-md-2 col-sm-4 col-xs-4 tile_stats_count">
+
+        <div class="animated flipInY col-md-3 col-sm-4 col-xs-4 tile_stats_count">
             <div class="left"></div>
             <div class="right">
-                <span class="count_top"><i class="fa fa-user"></i> Đại lý mới</span>
-                <div class="count green">@ViewData["TotalDaiLy"] 50</div>
-                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> so với tháng trước</span>
+                <span class="count_top"><i class="fa fa-user"></i>Thiệt bị được bảo hành</span>
+                <div class="count">@ViewData["SoSanPhamBaohanh"]</div>
+
+                @if (((float)ViewData["SoSanPhamBaohanhInc"]) < 0)
+                {
+                    <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>@ViewData["SoSanPhamBaohanhInc"]% </i> so với tháng trước</span>
+
+                }
+                else
+                {
+                    <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>@ViewData["SoSanPhamBaohanhInc"]% </i> so với tháng trước</span>
+
+                }
             </div>
         </div>
-        <div class="animated flipInY col-md-2 col-sm-4 col-xs-4 tile_stats_count">
+        <div class="animated flipInY col-md-3 col-sm-4 col-xs-4 tile_stats_count">
             <div class="left"></div>
             <div class="right">
-                <span class="count_top"><i class="fa fa-user"></i> Khách hàng thường</span>
-                <div class="count">@ViewData["TotalGold"] 60</div>
-                <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>12% </i> so với tháng trước</span>
-            </div>
-        </div>
-        <div class="animated flipInY col-md-2 col-sm-4 col-xs-4 tile_stats_count">
-            <div class="left"></div>
-            <div class="right">
-                <span class="count_top"><i class="fa fa-user"></i> Sản phẩm đang được bảo hành</span>
-                <div class="count">@ViewData["SoSanPhamBaohanh"] 20</div>
-                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> so với tháng trước</span>
-            </div>
-        </div>
-        <div class="animated flipInY col-md-2 col-sm-4 col-xs-4 tile_stats_count">
-            <div class="left"></div>
-            <div class="right">
-                <span class="count_top"><i class="fa fa-user"></i> Sản phẩm mới </span>
-                <div class="count">200</div>
-                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> so với tháng trước</span>
+                <span class="count_top"><i class="fa fa-user"></i> Tổng chi phí sửa chữa </span>
+                <div class="count">@ViewData["SoSanPhamBaohanhInc"]</div>
+
+                @if (((float)ViewData["chiphisuachuainc"]) < 0)
+                {
+                    <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>@ViewData["chiphisuachuainc"]% </i> so với tháng trước</span>
+
+                }
+                else
+                {
+                    <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>@ViewData["chiphisuachuainc"]% </i> so với tháng trước</span>
+
+                }
             </div>
         </div>
     </div>
@@ -61,14 +86,14 @@
             <div class="dashboard_graph">
                 <div class="row x_title">
                     <div class="col-md-6">
-                        <h3>Network Activities <small><input disabled style="width:50px;background-color:rgba(38, 185, 154, 0.38)" />:Doanh Số  <input disabled style="width:50px;background-color:rgba(3, 88, 106, 0.38)" />:Sữa chữa</small></h3>
+                        <h3>Thống kê hoạt động <small><input disabled style="width:50px;background-color:rgba(38, 185, 154, 0.38)" />:Doanh Số  <input disabled style="width:50px;background-color:rgba(3, 88, 106, 0.38)" />:Sữa chữa</small></h3>
                     </div>
-                    <div class="col-md-6">
-                        <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                            <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-                        </div>
-                    </div>
+                    @*<div class="col-md-6">
+                            <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
+                            </div>
+                        </div>*@
                 </div>
                 <div class="col-md-12 col-sm-9 col-xs-12">
                     <div id="placeholder33" style="height: 260px; display: none" class="demo-placeholder"></div>
@@ -76,343 +101,233 @@
                         <div id="canvas_dahs" class="demo-placeholder" style="width: 100%; height:270px;"></div>
                     </div>
                 </div>
-   
+
                 <div class="clearfix"></div>
             </div>
         </div>
     </div>
-                <br />
-                <div class="row">
+    <br />
+    <div class="row">
 
-                    <div class="col-md-4 col-sm-4 col-xs-12">
-                        <div class="x_panel tile fixed_height_320">
-                            <div class="x_title">
-                                <h2>Sản phẩm bảo hành nhiều nhất</h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li>
-                                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li>
-                                                <a href="#">Settings 1</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Settings 2</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a class="close-link"><i class="fa fa-close"></i></a>
-                                    </li>
-                                </ul>
-                                <div class="clearfix"></div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="x_panel tile fixed_height_320">
+                <div class="x_title">
+                    <h2>Sản phẩm bảo hành nhiều nhất</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="#">Settings 1</a>
+                                </li>
+                                <li>
+                                    <a href="#">Settings 2</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <h4>Tính theo số lượng</h4>
+                    @foreach (tb_product_detail sp in (List<tb_product_detail>)ViewData["top5fix"])
+                    {
+                        double totalfix = (int)ViewData["TotalFix"];
+                        <div class="widget_summary">
+                            <div class="w_left w_25">
+                                <span>@sp.productStoreID</span>
                             </div>
-                            <div class="x_content">
-                                <h4>App Usage across versions</h4>
-                                <div class="widget_summary">
-                                    <div class="w_left w_25">
-                                        <span>0.1.5.2</span>
+                            <div class="w_center w_55">
+                                <div class="progress">
+                                    <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: @(100*(sp.tb_warranty_activities.Count()/totalfix))%;">
                                     </div>
-                                    <div class="w_center w_55">
-                                        <div class="progress">
-                                            <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 66%;">
-                                                <span class="sr-only">60% Complete</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="w_right w_20">
-                                        <span>123k</span>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="widget_summary">
-                                    <div class="w_left w_25">
-                                        <span>0.1.5.3</span>
-                                    </div>
-                                    <div class="w_center w_55">
-                                        <div class="progress">
-                                            <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 45%;">
-                                                <span class="sr-only">60% Complete</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="w_right w_20">
-                                        <span>53k</span>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="widget_summary">
-                                    <div class="w_left w_25">
-                                        <span>0.1.5.4</span>
-                                    </div>
-                                    <div class="w_center w_55">
-                                        <div class="progress">
-                                            <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
-                                                <span class="sr-only">60% Complete</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="w_right w_20">
-                                        <span>23k</span>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="widget_summary">
-                                    <div class="w_left w_25">
-                                        <span>0.1.5.5</span>
-                                    </div>
-                                    <div class="w_center w_55">
-                                        <div class="progress">
-                                            <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 5%;">
-                                                <span class="sr-only">60% Complete</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="w_right w_20">
-                                        <span>3k</span>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="widget_summary">
-                                    <div class="w_left w_25">
-                                        <span>0.1.5.6</span>
-                                    </div>
-                                    <div class="w_center w_55">
-                                        <div class="progress">
-                                            <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 2%;">
-                                                <span class="sr-only">60% Complete</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="w_right w_20">
-                                        <span>1k</span>
-                                    </div>
-                                    <div class="clearfix"></div>
                                 </div>
                             </div>
+                            <div class="w_right w_20">
+                                <span>@sp.tb_warranty_activities.Count()</span>
+                            </div>
+                            <div class="clearfix"></div>
                         </div>
-                    </div>
-                    <div class="col-md-4 col-sm-4 col-xs-12">
-                        <div class="x_panel tile fixed_height_320 overflow_hidden">
-                            <div class="x_title">
-                                <h2>Sản phẩm chạy nhất</h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li>
-                                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li>
-                                                <a href="#">Settings 1</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Settings 2</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a class="close-link"><i class="fa fa-close"></i></a>
-                                    </li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <table class="" style="width:100%">
-                                    <tr>
-                                        <th style="width:37%;">
-                                            <p>Top 5</p>
-                                        </th>
-                                        <th>
-                                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
-                                                <p class="">Device</p>
-                                            </div>
-                                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
-                                                <p class="">Progress</p>
-                                            </div>
-                                        </th>
-                                    </tr>
+                    }
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="x_panel tile fixed_height_320 overflow_hidden">
+                <div class="x_title">
+                    <h2>Sản phẩm chạy nhất</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="#">Settings 1</a>
+                                </li>
+                                <li>
+                                    <a href="#">Settings 2</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <table class="" style="width:100%">
+                        <tr>
+                            <th style="width:37%;">
+                                <p>Top 5</p>
+                            </th>
+                            <th>
+                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                                    <p class="">SKU</p>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                                    <p class="">Tỉ trọng</p>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <canvas id="canvas1" height="140" width="140" style="margin: 15px 10px 10px 0"></canvas>
+                            </td>
+                            <td>
+                                <table class="tile_info">
+                                    @foreach (topsell sp in (List<topsell>)ViewData["top5sell"])
+                                    {
+                                        DateTime now = DateTime.Now;
+                                        int totalsell = (int)ViewData["totalsell"];
+                                        <tr>
+                                            <td>
+                                                @if (sp.SKU.Equals("000000"))
+                                                {
+                                                    <p>Sản phẩm chưa lưu </p>
+                                                }
+                                                else
+                                                {
+                                                    <p>@sp.SKU </p>
+                                                }
+                                                
+                                            </td>
+
+                                            <td>@(100 * sp.itemsold / totalsell)%</td>
+                                        </tr>
+                                    }
+
                                     <tr>
                                         <td>
-                                            <canvas id="canvas1" height="140" width="140" style="margin: 15px 10px 10px 0"></canvas>
+                                            <p><i class="fa fa-square red"></i>Others </p>
                                         </td>
-                                        <td>
-                                            <table class="tile_info">
-                                                <tr>
-                                                    <td>
-                                                        <p><i class="fa fa-square blue"></i>IOS </p>
-                                                    </td>
-                                                    <td>30%</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <p><i class="fa fa-square green"></i>Android </p>
-                                                    </td>
-                                                    <td>10%</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <p><i class="fa fa-square purple"></i>Blackberry </p>
-                                                    </td>
-                                                    <td>20%</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <p><i class="fa fa-square aero"></i>Symbian </p>
-                                                    </td>
-                                                    <td>15%</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <p><i class="fa fa-square red"></i>Others </p>
-                                                    </td>
-                                                    <td>30%</td>
-                                                </tr>
-                                            </table>
-                                        </td>
+                                        @if ((int)ViewData["totalsell"] > 0)
+                                        {
+                                            int total = (int)ViewData["totalsell"];
+                                            int rest = total - ((List<topsell>)ViewData["top5sell"]).Sum(u => u.itemsold);
+                                            <td>@(100 * rest / total)%</td>
+                                        }
+                                        else
+                                        {
+                                            <td>0%</td>
+                                        }
                                     </tr>
                                 </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 col-sm-4 col-xs-12">
-                        <div class="x_panel tile fixed_height_320">
-                            <div class="x_title">
-                                <h2>Nhân viên kỹ thuật tích cực nhất</h2>
-                                <ul class="nav navbar-right panel_toolbox">
-                                    <li>
-                                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li>
-                                                <a href="#">Settings 1</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Settings 2</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a class="close-link"><i class="fa fa-close"></i></a>
-                                    </li>
-                                </ul>
-                                <div class="clearfix"></div>
-                            </div>
-                            <div class="x_content">
-                                <h4>App Usage across versions</h4>
-                                <div class="widget_summary">
-                                    <div class="w_left w_25">
-                                        <span>Bill Gates</span>
-                                    </div>
-                                    <div class="w_center w_55">
-                                        <div class="progress">
-                                            <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 66%;">
-                                                <span class="sr-only">60% Complete</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="w_right w_20">
-                                        <span>12 chiếc</span>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="widget_summary">
-                                    <div class="w_left w_25">
-                                        <span>Mark Zuckerberg </span>
-                                    </div>
-                                    <div class="w_center w_55">
-                                        <div class="progress">
-                                            <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 45%;">
-                                                <span class="sr-only">60% Complete</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="w_right w_20">
-                                        <span>11 Chiếc</span>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="widget_summary">
-                                    <div class="w_left w_25">
-                                        <span>Obama</span>
-                                    </div>
-                                    <div class="w_center w_55">
-                                        <div class="progress">
-                                            <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
-                                                <span class="sr-only">60% Complete</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="w_right w_20">
-                                        <span>10 Chiếc</span>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="widget_summary">
-                                    <div class="w_left w_25">
-                                        <span>Putin</span>
-                                    </div>
-                                    <div class="w_center w_55">
-                                        <div class="progress">
-                                            <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 5%;">
-                                                <span class="sr-only">60% Complete</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="w_right w_20">
-                                        <span>9 Chiếc</span>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="widget_summary">
-                                    <div class="w_left w_25">
-                                        <span>Lâm</span>
-                                    </div>
-                                    <div class="w_center w_55">
-                                        <div class="progress">
-                                            <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 2%;">
-                                                <span class="sr-only">60% Complete</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="w_right w_20">
-                                        <span>5 Chiếc</span>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="x_panel tile fixed_height_320">
+                <div class="x_title">
+                    <h2>Nhân viên kỹ thuật tích cực nhất</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="#">Settings 1</a>
+                                </li>
+                                <li>
+                                    <a href="#">Settings 2</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                    <h4>Tính theo thiết bị chịu trách nhiệm</h4>
+                    @foreach (AspNetUser user in (List<AspNetUser>)ViewData["top5active"])
+                    {
+                        int totaldiem = (int)ViewData["totaldiem"];
+                        <div class="widget_summary">
+                            <div class="w_left w_25">
+                                <span>@user.FullName</span>
+                            </div>
+                            <div class="w_center w_55">
+                                <div class="progress">
+                                    <div class="progress-bar bg-green" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: @(100*user.tb_warranty_activities1.Count()/totaldiem)%;">
+                                        <span class="sr-only">60% Complete</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="w_right w_20">
+                                <span>@user.tb_warranty_activities1.Count()</span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var data1 = [];
+        var data2 = [];
+        function gd(year, month, day) {
+            return new Date(year, month - 1, day).getTime();
+        }
+    </script>
+    for (int i = 1; i < 13; i++) {
+        DateTime now = DateTime.Now;
+        double sold= ((List<order>)ViewData["allorder"]).Where(u=>u.date.Month==i && u.date.Year==now.Year).Sum(u=>u.total);
+        double fee = ((List<warrantyActivityFee>)ViewData["warrantyActivityFee"]).Where(u => u.tb_warranty_activities.startDate.Month == i && u.tb_warranty_activities.startDate.Year == now.Year).Sum(u => u.fixingfee);
+        double fee2 = ((List<warrantyActivityFixingFee>)ViewData["warrantyActivityFixingFee"]).Where(u => u.tb_warranty_activities.startDate.Month == i && u.tb_warranty_activities.startDate.Year == now.Year).Sum(u => u.fee);
+        double fee3 = fee + fee2;
+         <script>
+             data1.push([gd(@now.Year, @i, @i), @sold]);
+             data2.push([gd(@now.Year, @i, @i), @fee3]);
+        </script>
+    }
+
 
                 <script>
                     $(document).ready(function () {
                         // [17, 74, 6, 39, 20, 85, 7]
                         //[82, 23, 66, 9, 99, 6, 2]
-                        var data1 = [
-                          [gd(2016, 1, 1), 17],
-                          [gd(2016, 2, 2), 74],
-                          [gd(2016, 3, 3), 6],
-                          [gd(2016, 4, 4), 39],
-                          [gd(2016, 5, 5), 20],
-                          [gd(2016, 6, 6), 85],
-                          [gd(2016, 7, 7), 7]
-                        ];
+                       
 
-                        var data2 = [
-                          [gd(2016, 1, 1), 82],
-                          [gd(2016, 2, 2), 23],
-                          [gd(2016, 3, 3), 66],
-                          [gd(2016, 4, 4), 9],
-                          [gd(2016, 5, 5), 119],
-                          [gd(2016, 6, 6), 6],
-                          [gd(2016, 7, 7), 9]
-                        ];
+                        
                         $("#canvas_dahs").length && $.plot($("#canvas_dahs"), [
                           data1, data2
                         ], {
@@ -457,55 +372,83 @@
                             yaxis: {
                                 ticks: 8,
                                 tickColor: "rgba(51, 51, 51, 0.06)",
+                                labels: {
+                                    formatter: function () {
+                                        return Highcharts.numberFormat(this.value, 0,'','');
+                                    }
+                                }
                             },
                             tooltip: false,
-                      
+
                         });
 
-                        function gd(year, month, day) {
-                            return new Date(year, month - 1, day).getTime();
-                        }
+                   
                     });
                 </script>
                 <script>
-                    Chart.defaults.global.legend = {
-                        enabled: false
-                    };
-
-                    var data = {
-                        labels: [
-                          "Phantom 4",
-                          "Phantom 3",
-                          "Pin DJI 3",
-                          "Camera X899",
-                          "iPhone 6 Plus"
-                        ],
-                        datasets: [{
-                            data: [15, 20, 30, 10, 30],
-                            backgroundColor: [
-                              "#BDC3C7",
-                              "#9B59B6",
-                              "#455C73",
-                              "#26B99A",
-                              "#3498DB"
-                            ],
-                            hoverBackgroundColor: [
-                              "#CFD4D8",
-                              "#B370CF",
-                              "#34495E",
-                              "#36CAAB",
-                              "#49A9EA"
-                            ]
-
-                        }]
-                    };
-
-                    var canvasDoughnut = new Chart(document.getElementById("canvas1"), {
-                        type: 'doughnut',
-                        tooltipFillColor: "rgba(51, 51, 51, 0.55)",
-                        data: data
-                    });
+                    var mlabels = [];
+                    var mdata = [];
                 </script>
+    foreach (topsell ts in (List<topsell>)ViewData["top5sell"])
+    {if (ts.SKU.Contains("00000")) { ts.SKU = "Sản phẩm tạm"; }
+
+        <script>
+            mlabels.push("@ts.SKU");
+        mdata.push(@(100*ts.itemsold/(int)ViewData["totalsell"]));
+        </script>
+    }
+    <script>
+        mlabels.push("Others");
+        mdata.push(@( 100* ((int)ViewData["totalsell"] -((List<topsell>)ViewData["top5sell"]).Sum(u=>u.itemsold)) / (int)ViewData["totalsell"]));
+    </script>
+    <script>
+        Chart.defaults.global.legend = {
+            enabled: false
+        };
+
+        var data = {
+            labels: mlabels,
+            datasets: [{
+                data: mdata,
+                backgroundColor: [
+                  "#BDC3C7",
+                  "#9B59B6",
+                  "#455C73",
+                  "#26B99A",
+                  "#3498DB"
+                ],
+                hoverBackgroundColor: [
+                  "#CFD4D8",
+                  "#B370CF",
+                  "#34495E",
+                  "#36CAAB",
+                  "#49A9EA"
+                ]
+
+            }]
+        };
+
+        var canvasDoughnut = new Chart(document.getElementById("canvas1"), {
+            type: 'doughnut',
+            tooltipFillColor: "rgba(51, 51, 51, 0.55)",
+            data: data
+        });
+    </script>
+    <script>
+        function formatso(){
+            Number.prototype.format = function(n, x) {
+                var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+                return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
+            };
+            $(".tickLabel").each(function(){
+          
+                var value = parseInt($(this).text());
+                $(this).text(value.format());
+            })
+        };
+        window.setTimeout(formatso, 500);
+   
+    </script>
 }
 else
 {

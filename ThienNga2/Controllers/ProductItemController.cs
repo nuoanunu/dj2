@@ -59,7 +59,7 @@ namespace ThienNga2.Controllers
                     cus.cusadd2 = findcus.address2;
                     cus.cusname = findcus.customerName;
                     cus.cussdt = findcus.phonenumber;
-
+                   
                     JavaScriptSerializer serializer = new JavaScriptSerializer();
                     return serializer.Serialize(cus);
                 }
@@ -268,10 +268,11 @@ namespace ThienNga2.Controllers
                 if (tuple.Adress == null) tuple.Adress = "ko co";
                 if (tuple.cusName == null) tuple.cusName = "ko co";
                 if (tuple.Adress2 == null) tuple.Adress2 = "ko co";
-                tb_customer cus = am.ThienNga_TimSDT2(tuple.phoneNumber).FirstOrDefault();
+                tb_customer cus = am.tb_customer.Where(u=>u.phonenumber.Equals(tuple.phoneNumber)).FirstOrDefault();
                 if (cus == null)
                 {
                     cus = new tb_customer();
+                    cus.CreatedDate = DateTime.Now;
                     cus.customerName = tuple.cusName;
                     cus.phonenumber = tuple.phoneNumber;
                     cus.address = tuple.Adress;
@@ -421,7 +422,7 @@ namespace ThienNga2.Controllers
                                         it.customerID = cus.id;
                                         it.orderID = ord.id;
                                         it.inventoryID = inventoryID;
-                                        it.productDetailID = 499;
+                                        it.productDetailID = 481;
                                         it.tempname = ao.newSKU;
                                         it.Verified = true;
                                         String day = DateTime.Today.Day + ""; if (day.Length == 1) day = "0" + day;

@@ -235,6 +235,7 @@
     <Property Name="Type" Type="int" />
     <Property Name="address2" Type="nvarchar" MaxLength="50" />
     <Property Name="Email" Type="varchar" MaxLength="50" />
+    <Property Name="CreatedDate" Type="date" Nullable="false" />
   </EntityType>
   <EntityType Name="tb_inventory_name">
     <Key>
@@ -341,6 +342,24 @@
     <Property Name="fee" Type="float" Nullable="false" />
     <Property Name="activityID" Type="int" Nullable="false" />
     <Property Name="active" Type="bit" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ThienNgaDatabase.sys.database_firewall_rules' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="database_firewall_rules">
+    <Key>
+      <PropertyRef Name="id" />
+      <PropertyRef Name="name" />
+      <PropertyRef Name="start_ip_address" />
+      <PropertyRef Name="end_ip_address" />
+      <PropertyRef Name="create_date" />
+      <PropertyRef Name="modify_date" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="start_ip_address" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="end_ip_address" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="create_date" Type="datetime" Nullable="false" />
+    <Property Name="modify_date" Type="datetime" Nullable="false" />
   </EntityType>
   <Association Name="FK_account_role">
     <End Role="role" Type="Self.role" Multiplicity="1" />
@@ -680,6 +699,18 @@ warning 6035: The relationship 'FK_inventory_tb_product_detail1' has columns tha
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_tb_warranty_activities_tb_product_detail">
+    <End Role="tb_product_detail" Type="Self.tb_product_detail" Multiplicity="0..1" />
+    <End Role="tb_warranty_activities" Type="Self.tb_warranty_activities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_product_detail">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tb_warranty_activities">
+        <PropertyRef Name="productDetailID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_tb_warranty_activities_tb_warranty">
     <End Role="tb_warranty" Type="Self.tb_warranty" Multiplicity="0..1" />
     <End Role="tb_warranty_activities" Type="Self.tb_warranty_activities" Multiplicity="*" />
@@ -852,6 +883,16 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
     <EntitySet Name="ThongBaoMoi" EntityType="Self.ThongBaoMoi" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="warrantyActivityFee" EntityType="Self.warrantyActivityFee" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="warrantyActivityFixingFee" EntityType="Self.warrantyActivityFixingFee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="database_firewall_rules" EntityType="Self.database_firewall_rules" store:Type="Views" store:Schema="sys">
+      <DefiningQuery>SELECT 
+    [database_firewall_rules].[id] AS [id], 
+    [database_firewall_rules].[name] AS [name], 
+    [database_firewall_rules].[start_ip_address] AS [start_ip_address], 
+    [database_firewall_rules].[end_ip_address] AS [end_ip_address], 
+    [database_firewall_rules].[create_date] AS [create_date], 
+    [database_firewall_rules].[modify_date] AS [modify_date]
+    FROM [sys].[database_firewall_rules] AS [database_firewall_rules]</DefiningQuery>
+    </EntitySet>
     <AssociationSet Name="FK_account_role" Association="Self.FK_account_role">
       <End Role="role" EntitySet="role" />
       <End Role="account" EntitySet="account" />
@@ -958,6 +999,10 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
     </AssociationSet>
     <AssociationSet Name="FK_tb_warranty_activities_AspNetUsers1" Association="Self.FK_tb_warranty_activities_AspNetUsers1">
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tb_warranty_activities_tb_product_detail" Association="Self.FK_tb_warranty_activities_tb_product_detail">
+      <End Role="tb_product_detail" EntitySet="tb_product_detail" />
       <End Role="tb_warranty_activities" EntitySet="tb_warranty_activities" />
     </AssociationSet>
     <AssociationSet Name="FK_tb_warranty_activities_tb_warranty" Association="Self.FK_tb_warranty_activities_tb_warranty">

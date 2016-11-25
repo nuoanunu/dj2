@@ -256,6 +256,7 @@ namespace ThienNga2.Controllers
             tb_customer cus = new tb_customer();
             cus.customerName = "ahihi";
             cus.phonenumber = "132123";
+            cus.CreatedDate = DateTime.Now;
             item.tb_customer = cus;
             item.tb_product_detail = detail;
             ViewData["dsnkh"] = am.CustomerTypes.ToList();
@@ -291,7 +292,9 @@ namespace ThienNga2.Controllers
                 tb_product_detail detail = item.tb_product_detail;
                 detail.id = am.tb_product_detail.Where(u => u.productStoreID.Equals(detail.productStoreID)).First().id;
                 item.productDetailID = detail.id;
+
                 tb_customer cus = new tb_customer();
+                
                 cus = item.tb_customer;
                 if (cus.address == null) cus.address = "Không có dữ liệu";
                 if (am.tb_customer.Where(u => u.phonenumber.Equals(cus.phonenumber)).Count() == 0)
@@ -620,6 +623,7 @@ namespace ThienNga2.Controllers
                     cus = new tb_customer();
                     cus.customerName = newName;
                     cus.phonenumber = newSDT;
+                    cus.CreatedDate = DateTime.Now;
                     cus.address = "ko co"; cus.address2 = "ko co"; cus.Email = "ko co";
                     am.tb_customer.Add(cus);
                     am.SaveChanges();

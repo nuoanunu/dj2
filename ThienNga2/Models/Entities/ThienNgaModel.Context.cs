@@ -41,7 +41,6 @@ namespace ThienNga2.Models.Entities
         public virtual DbSet<orderDetail> orderDetails { get; set; }
         public virtual DbSet<role> roles { get; set; }
         public virtual DbSet<tb_cate> tb_cate { get; set; }
-        public virtual DbSet<tb_customer> tb_customer { get; set; }
         public virtual DbSet<tb_inventory_name> tb_inventory_name { get; set; }
         public virtual DbSet<tb_product_detail> tb_product_detail { get; set; }
         public virtual DbSet<tb_warrnaty_status> tb_warrnaty_status { get; set; }
@@ -57,6 +56,8 @@ namespace ThienNga2.Models.Entities
         public virtual DbSet<ThongBaoMoi> ThongBaoMois { get; set; }
         public virtual DbSet<RequestStatu> RequestStatus { get; set; }
         public virtual DbSet<RequestMuon> RequestMuons { get; set; }
+        public virtual DbSet<database_firewall_rules> database_firewall_rules { get; set; }
+        public virtual DbSet<tb_customer> tb_customer { get; set; }
     
         public virtual ObjectResult<ThienNga_checkkho_Result> ThienNga_checkkho(string productcode)
         {
@@ -318,22 +319,13 @@ namespace ThienNga2.Models.Entities
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("ThienNga_FindProductName2", productcodeParameter);
         }
     
-        public virtual ObjectResult<tb_customer> ThienNga_TimSDT2(string phone)
+        public virtual int ThienNga_TimSDT2(string phone)
         {
             var phoneParameter = phone != null ?
                 new ObjectParameter("phone", phone) :
                 new ObjectParameter("phone", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<tb_customer>("ThienNga_TimSDT2", phoneParameter);
-        }
-    
-        public virtual ObjectResult<tb_customer> ThienNga_TimSDT2(string phone, MergeOption mergeOption)
-        {
-            var phoneParameter = phone != null ?
-                new ObjectParameter("phone", phone) :
-                new ObjectParameter("phone", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<tb_customer>("ThienNga_TimSDT2", mergeOption, phoneParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ThienNga_TimSDT2", phoneParameter);
         }
     }
 }
