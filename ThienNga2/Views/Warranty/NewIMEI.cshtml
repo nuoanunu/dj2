@@ -187,7 +187,7 @@
 
                     @for (int i = 0; i < Model.tb_warranty.Count(); i++)
                     {
-                        <tr>
+                        <tr id="trNo@(i)">
                             <td>@Html.TextBoxFor(model => model.tb_warranty[i].warrantyID)</td>
                             <td>@Html.TextBoxFor(model => model.tb_warranty[i].duration, new { type = "number" })</td>
                             <td>@Html.TextBoxFor(model => model.tb_warranty[i].description)</td>
@@ -203,6 +203,19 @@
         </div>
     </div>
 </div>
+    <script>
+        function checkHidden(){
+            for(var i=1 ; i < 20; i++) {
+                if($("#tb_warranty_"+(i-1)+"__warrantyID").val() != "") {
+                    $("#trNo"+i).css("display","");
+                }
+                else{
+                    $("#trNo"+i).css("display","none");
+                }
+            }
+        }
+        setInterval(checkHidden, 100);
+    </script>
     <script>
         $(document).ready(function () {
             $(".select2_single").select2({
