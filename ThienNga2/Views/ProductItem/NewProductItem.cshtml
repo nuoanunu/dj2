@@ -399,10 +399,11 @@
                                 @*<div class="inner-wrap" id="@idd">*@
 
                                 <tr id="@idd">
-                                    <td id="skuu@(i)">
+                                    <td width="10%" id="skuu@(i)">
                                         <label>
-                                           SKU <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
-                                            <select id="items_@(i)__SKU" name="items[(@i)].SKU" class="skuselector select2_single form-control" tabindex="-1">
+                                           SKU  <br/>
+                                            <span style="width:120px !important" role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+                                            <select style="width:120px !important" id="items_@(i)__SKU" name="items[(@i)].SKU" class="skuselector select2_single form-control" tabindex="-1">
                                                 <option selected value=""></option>
                                             </select>
                                          </label>
@@ -444,7 +445,7 @@
                                     </td>
                                     <td>
 
-                                        <label>Có bảo hành @Html.CheckBoxFor(Model => Model.items[i].warrantyAvailable, htmlAttributes: new {  })</label>
+                                        <label>Có bảo hành @Html.CheckBoxFor(Model => Model.items[i].warrantyAvailable)</label>
                                     </td>
                                     @Html.HiddenFor(Model => Model.items[i].thanhTien, new { @class = "form-control", value = "0" })
                                     @*<td align="center">
