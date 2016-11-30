@@ -90,24 +90,24 @@
                                 @if (User.IsInRole("Admin") || User.IsInRole("Hóa đơn bảo hành"))
                                 {
                                     <li>
-                                        <a href="/Warranty/HoaDonBaoHanh"><i class="fa fa-home"></i> Hóa đơn bảo hành </a>
+                                        <a href="/Warranty/HoaDonBaoHanh"><i class="fa fa-money"></i> Hóa đơn bảo hành </a>
                                     </li>
                                 }
                                 @if (User.IsInRole("Admin") || User.IsInRole("Kích  Hoạt bảo Hành"))
                                 {
                                     <li>
-                                        <a href="/KickHoatBaoHanh"><i class="fa fa-edit"></i> Kích hoạt bảo hành <span class="fa fa-chevron-down"></span></a>
+                                        <a href="/KickHoatBaoHanh"><i class="fa fa-edit"></i> Kích hoạt bảo hành </a>
 
                                     </li>
                                 }
                                 @if (User.IsInRole("Admin") || User.IsInRole("Nhân Viên Quản Lý Sửa Chữa") || User.IsInRole("Tạo Hóa Đơn Bảo Hành"))
                                 {
                                     <li>
-                                        <a href="/CreateWarranty/"><i class="fa fa-desktop"></i> Sữa chữa bảo hành<span class="fa fa-chevron-down"></span></a>
+                                        <a href="/CreateWarranty/"><i class="fa fa-gears"></i> Sữa chữa bảo hành</a>
 
                                     </li>
                                     <li>
-                                        <a href="/Request/"><i class="fa fa-desktop"></i> Yêu cầu mượn sản phẩm<span class="fa fa-chevron-down"></span></a>
+                                        <a href="/Request/"><i class="fa fa-desktop"></i> Yêu cầu mượn sản phẩm</a>
 
                                     </li>
                                 }
@@ -121,12 +121,12 @@
                                 @if (User.IsInRole("Admin") || User.IsInRole("Quản lý kho") || User.IsInRole("Xuất Kho") || User.IsInRole("Thêm Kho"))
                                 {
                                     <li>
-                                        <a href="/Inventory"><i class="fa fa-bar-chart-o"></i> Kiểm kho <span class="fa fa-chevron-down"></span></a>
+                                        <a href="/Inventory"><i class="fa fa-bar-chart-o"></i> Kiểm kho </a>
 
                                     </li>
                                 }
                                 <li>
-                                    <a href="/Product"><i class="fa fa-bug"></i> Tra cứu sản phẩm <span class="fa fa-chevron-down"></span></a>
+                                    <a href="/Product"><i class="fa fa-bug"></i> Tra cứu sản phẩm </a>
                                 </li>
                             </ul>
                         </div>

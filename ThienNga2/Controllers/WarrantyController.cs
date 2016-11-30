@@ -914,7 +914,9 @@ namespace ThienNga2.Controllers
 
                 am.HangBaoHanhs.RemoveRange(war.HangBaoHanhs);
                 am.SaveChanges();
-
+                List<log> lstLog = am.logs.Where(u => u.warrantyActivitiesID == war.id).ToList();
+                am.logs.RemoveRange(lstLog);
+                am.SaveChanges();
 
                 am.tb_warranty_activities.Remove(war);
                 am.SaveChanges();
