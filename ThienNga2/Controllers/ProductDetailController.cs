@@ -134,7 +134,8 @@ namespace ThienNga2.Areas.Admin.Controllers
             catch (Exception e) {
                 ViewData["updateResult"] = "Cập nhật thất bại";
             }
-            
+            ViewData["last50"] = am.tb_product_detail.SqlQuery(" select   * from tb_product_detail order by id desc  ").ToList();
+
             return View("NewProduct");
 
         }

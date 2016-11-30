@@ -52,18 +52,18 @@
 </script>
 <script>
     $(document).ready(function(){
-      
+
         $(".tdproductSKU").each(function(){
             var id = $(this).attr('id').replace("sku","");
             $.getJSON("/Warranty/getAllData?name="+$(this).html(), function (result) {
 
                 $.each(result, function (name, value) {
                     if (name == "name") {
-               
+
                         if (value != null) {
-                       
+
                             $("#"+id+"name").html(value);
-              
+
                         }
                     }
                 })
@@ -78,16 +78,16 @@
 
                 $.each(result, function (name, value) {
                     if (name == "name") {
-               
+
                         if (value != null) {
-                       
+
                             $("#newLinhKienName").html(value);
-              
+
                         }
                     }
                 })
             });
-        } 
+        }
     }
     function checkKSU2(){
         $(".skuselector").each(function(){
@@ -97,18 +97,18 @@
 
                     $.each(result, function (name, value) {
                         if (name == "name") {
-               
+
                             if (value != null) {
-                       
+
                                 nexttd.html(value);
-              
+
                             }
                         }
                     })
                 });
-            } 
+            }
         })
-        
+
     }
     setInterval(checkKSU2,200);
     setInterval(checkKSU,100);
@@ -210,7 +210,7 @@
                                 </div>
                                 <div class="x_content">
 
-                                    <table width="90%" id="TableLinhKien" class="table table-striped table-bordered">
+                                    <table width="90%" id="" class="table table-striped table-bordered">
                                         <thead>
                                             <tr>
                                                 <th width="20%">SKU</th>
@@ -227,9 +227,7 @@
                                                 String color = "#ffffff";
                                                 <tr>
                                                     <td class="tdproductSKU" id="@(fee.id +"sku")">@fee.productSKU.Trim()</td>
-                                                    <td id="@(fee.id +"name")">
-                                                  
-                                                    </td>
+                                                    <td id="@(fee.id +"name")"></td>
                                                     <td>
                                                         @fee.quantity
                                                     </td>
@@ -269,9 +267,9 @@
                                                     }
                                                 </tr>
                                             }
-                                            @using (Html.BeginForm("AddFee", "Warranty"))
-                                            {
-                                                <tr>
+
+                                            <tr>
+                                                <form action="/Warranty/AddFee" method="post">
                                                     <td>
                                                         <input type="hidden" name="activitiesID" value="@act.id" />
                                                         <select id="searchID" name="ksu" class="skuselector select2_single form-control" tabindex="-1">
@@ -279,9 +277,7 @@
                                                         </select>
 
                                                     </td>
-                                                    <td id="newLinhKienName">
-                                                        
-                                                    </td>
+                                                    <td id="newLinhKienName"></td>
                                                     <td>
                                                         <input style="width:100%" id="quantitySKU" type="text" name="quantity" />
                                                     </td>
@@ -291,10 +287,12 @@
                                                     <td>
                                                         <input type="submit" name="ThêmS" value="Thêm" />
                                                     </td>
-                                                </tr>
-                                            }
+                                                </form>
+                                            </tr>
+
                                         </tbody>
                                     </table>
+                               
                                 </div>
                             </div>
 
@@ -358,7 +356,7 @@
                                                         <input type="text" name="fixDetail" />
                                                     </td>
                                                     <td>
-                                                        <input type="text" name="price" />
+                                                        <input type="number" name="price" />
                                                     </td>
                                                     <input type="hidden" name="activitiesID" value="@act.id" />
                                                     <td>
@@ -406,16 +404,14 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
-                                                                     
+
                                                                         <select style="width:100%" id="searchID2" name="productSKU[]" class="skuselector select2_single form-control" tabindex="-1">
                                                                             <option selected value=""></option>
                                                                         </select>
                                                                     </td>
+                                                                    <td></td>
                                                                     <td>
-
-                                                                    </td>
-                                                                    <td>
-                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
                                                                     </td>
                                                                     <input type="hidden" name="tempName[]" value="asd" />
                                                                     <input type="hidden" name="description[]" value="asd" />
@@ -430,7 +426,7 @@
                                                                     </td>
                                                                     <td></td>
                                                                     <td>
-                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
                                                                     </td>
                                                                     <input type="hidden" name="tempName[]" value="asd" />
                                                                     <input type="hidden" name="description[]" value="asd" />
@@ -445,7 +441,7 @@
                                                                     </td>
                                                                     <td></td>
                                                                     <td>
-                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
                                                                     </td>
                                                                     <input type="hidden" name="tempName[]" value="asd" />
                                                                     <input type="hidden" name="description[]" value="asd" />
@@ -460,7 +456,7 @@
                                                                     </td>
                                                                     <td></td>
                                                                     <td>
-                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
                                                                     </td>
                                                                     <input type="hidden" name="tempName[]" value="asd" />
                                                                     <input type="hidden" name="description[]" value="asd" />
@@ -475,16 +471,14 @@
                                                                     </td>
                                                                     <td></td>
                                                                     <td>
-                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
                                                                     </td>
                                                                     <input type="hidden" name="tempName[]" value="asd" />
                                                                     <input type="hidden" name="description[]" value="asd" />
                                                                     <td></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>
-
-                                                                    </td>
+                                                                    <td></td>
                                                                     <td></td>
                                                                     <td>
                                                                     <td>
@@ -518,32 +512,13 @@
 
                                                                     <input type="hidden" name="actID" value="@act.id" />
                                                                     <td>
-                                                                        <input style="width:100%"  type="text" name="tempName[]" />
+                                                                        <input style="width:100%" type="text" name="tempName[]" />
                                                                     </td>
                                                                     <td>
-                                                                        <input  type="text" name="description[]" />
+                                                                        <input type="text" name="description[]" />
                                                                     </td>
                                                                     <td>
-                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
-                                                                    </td>
-                                                                    <td>
-                                                                        
-                                                                    </td>
-
-
-
-                                                                </tr>
-                                                                <tr>
-
-                                                                    <input type="hidden" name="actID" value="@act.id" />
-                                                                    <td>
-                                                                        <input style="width:100%"  type="text" name="tempName[]" />
-                                                                    </td>
-                                                                    <td>
-                                                                        <input  type="text" name="description[]" />
-                                                                    </td>
-                                                                    <td>
-                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
                                                                     </td>
                                                                     <td></td>
 
@@ -554,13 +529,13 @@
 
                                                                     <input type="hidden" name="actID" value="@act.id" />
                                                                     <td>
-                                                                        <input style="width:100%"  type="text" name="tempName[]" />
+                                                                        <input style="width:100%" type="text" name="tempName[]" />
                                                                     </td>
                                                                     <td>
-                                                                        <input  type="text" name="description[]" />
+                                                                        <input type="text" name="description[]" />
                                                                     </td>
                                                                     <td>
-                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
                                                                     </td>
                                                                     <td></td>
 
@@ -571,13 +546,13 @@
 
                                                                     <input type="hidden" name="actID" value="@act.id" />
                                                                     <td>
-                                                                        <input style="width:100%"  type="text" name="tempName[]" />
+                                                                        <input style="width:100%" type="text" name="tempName[]" />
                                                                     </td>
                                                                     <td>
-                                                                        <input  type="text" name="description[]" />
+                                                                        <input type="text" name="description[]" />
                                                                     </td>
                                                                     <td>
-                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
                                                                     </td>
                                                                     <td></td>
 
@@ -588,20 +563,40 @@
 
                                                                     <input type="hidden" name="actID" value="@act.id" />
                                                                     <td>
-                                                                        <input style="width:100%"  type="text" name="tempName[]" />
+                                                                        <input style="width:100%" type="text" name="tempName[]" />
                                                                     </td>
                                                                     <td>
-                                                                        <input  type="text" name="description[]" />
+                                                                        <input type="text" name="description[]" />
                                                                     </td>
                                                                     <td>
-                                                                        <input  style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
                                                                     </td>
                                                                     <td></td>
 
 
 
                                                                 </tr>
-                                                                <tr><td></td><td></td><td></td>
+                                                                <tr>
+
+                                                                    <input type="hidden" name="actID" value="@act.id" />
+                                                                    <td>
+                                                                        <input style="width:100%" type="text" name="tempName[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" name="description[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                    </td>
+                                                                    <td></td>
+
+
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
                                                                     <td>
                                                                         <input type="submit" name="ThêmS" value="Tạo yêu cầu" />
                                                                     </td>
@@ -982,68 +977,53 @@
         })
     </script>
     <script>
-          var handleDataTableButtons = function() {
-              "use strict";
-              0 !== $("#TableLinhKien").length && $("#TableLinhKien").DataTable({
+        var handleDataTableButtons = function() {
+            "use strict";
+            0 !== $("#TableLinhKien").length && $("#TableLinhKien").DataTable({
                 dom: "Bfrtip",
-                buttons: [{
-                  extend: "copy",
-                  className: "btn-sm"
-                }, {
-                  extend: "csv",
-                  className: "btn-sm"
-                }, {
-                  extend: "excel",
-                  className: "btn-sm"
-                }, {
-                  extend: "pdf",
-                  className: "btn-sm"
-                }, {
-                  extend: "print",
-                  className: "btn-sm"
-                }],
+                buttons: [],
                 responsive: !0
-              })
-            },
-            TableManageButtons = function() {
-              "use strict";
-              return {
-                init: function() {
-                  handleDataTableButtons()
-                }
-              }
-            }();
-          var handleDataTableButtons2 = function() {
-              "use strict";
-              0 !== $("#tableMuon").length && $("#tableMuon").DataTable({
-                  dom: "Bfrtip",
-                  buttons: [{
-                      extend: "copy",
-                      className: "btn-sm"
-                  }, {
-                      extend: "csv",
-                      className: "btn-sm"
-                  }, {
-                      extend: "excel",
-                      className: "btn-sm"
-                  }, {
-                      extend: "pdf",
-                      className: "btn-sm"
-                  }, {
-                      extend: "print",
-                      className: "btn-sm"
-                  }],
-                  responsive: !0
-              })
-          },
-          TableManageButtons2 = function() {
+            })
+        },
+          TableManageButtons = function() {
               "use strict";
               return {
                   init: function() {
-                      handleDataTableButtons2()
+                      handleDataTableButtons()
                   }
               }
           }();
+        var handleDataTableButtons2 = function() {
+            "use strict";
+            0 !== $("#tableMuon").length && $("#tableMuon").DataTable({
+                dom: "Bfrtip",
+                buttons: [{
+                    extend: "copy",
+                    className: "btn-sm"
+                }, {
+                    extend: "csv",
+                    className: "btn-sm"
+                }, {
+                    extend: "excel",
+                    className: "btn-sm"
+                }, {
+                    extend: "pdf",
+                    className: "btn-sm"
+                }, {
+                    extend: "print",
+                    className: "btn-sm"
+                }],
+                responsive: !0
+            })
+        },
+        TableManageButtons2 = function() {
+            "use strict";
+            return {
+                init: function() {
+                    handleDataTableButtons2()
+                }
+            }
+        }();
     </script>
     <script type="text/javascript">
 

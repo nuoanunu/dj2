@@ -30,16 +30,7 @@
             <h3>Bảo hành và sữa chữa</h3>
         </div>
 
-        <div class="title_right">
-            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">Go!</button>
-                    </span>
-                </div>
-            </div>
-        </div>
+       
     </div>
     <div class="clearfix"></div>
 
@@ -72,7 +63,7 @@
                         <tbody>
                             @foreach (tb_warranty_activities act in (List<tb_warranty_activities>)ViewData["AllWarranty"])
                             {
-                                <tr>
+                                <tr id="@("trid"+act.id)">
                                     <td>@act.startDate.ToShortDateString() </td>
                                     <td>
                                         <a>@act.TenKhach</a>
@@ -141,6 +132,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <button type="button" onclick="DeleteAct(@act.id)" class="btn btn-danger btn-xs"><i class="fa fa-folder"></i> Delete </button>
                                     </td>
                                 </tr>
                             }
@@ -155,6 +147,24 @@
         </div>
     </div>
 </div>
+<script>
+    function DeleteAct(actid) {
+        var r = confirm("Bạn chắc chắn muốn xóa ko?");
+        if (r == true) {
+            $.getJSON("/Warranty/DeleteAct?id=" + actid, function (result) {
+                $.each(result, function (name, value) {
+                    if (name == "done") {
+                        $("#trid" + actid).css("display", "none");
+                        alert("Đã xóa");
+                    }
+                })
+            });
+        } else {
+          
+        }
+   
+    }
+</script>
 <script>
           var handleDataTableButtons = function() {
               "use strict";

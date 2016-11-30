@@ -44,7 +44,8 @@
 
                 if ($('#items_' + (i - 1) + '__SKU').val() != "") {
                     $('#items_' + (i - 1) + '__newSKU').prop('disabled', true);
-
+                    $('#items_' + (i - 1) + '__DonGiaS2').css('display', "none");
+                    
                     $('#items_' + (i - 1) + '__newSKU').css("background-color", "gray");
                 }
                 else {
@@ -270,7 +271,7 @@
             }
         }
         $(document).ready(function () {
-            
+
             var productname =@Html.Raw(ViewData["namelist"]);
 
             $(".skuselector").each(function () {
@@ -279,7 +280,7 @@
                     $(this).append(new Option(productname[i],productname[i]));
                 }
             });
-          
+
             @*for (i = 0; i < 20 ; i++) {
                 $('#items_' + (i ) + '__SKU').autocomplete({
 
@@ -366,21 +367,94 @@
                     }
                 }
 
-
+          
 
                 <div class="form-style-10">
                     @Html.ValidationSummary("", new { @class = "text-danger" })
-                    <form>
+                    <form class="form-horizontal form-label-left">
                         <label>Ngày <input name="date" id="date" value="@DateTime.Today.Day" /> Tháng <input name="month" id="month" value="@DateTime.Today.Month" /> Năm <input name="year" id="year" value="@DateTime.Today.Year" /> </label>
-                      
-                        <div class="inner-wrap">
-                            <label>Nhóm khách hàng @Html.DropDownListFor(Model => Model.custype, ls3, new { @class = "form-control" })</label>
-                            <label>Tên khách hàng @Html.TextBoxFor(Model => Model.cusName, new { @class = "form-control" })</label>
-                            <label>SDT @Html.TextBoxFor(Model => Model.phoneNumber, new { @class = "form-control" })</label>
-                            <label>EMAIL @Html.TextBoxFor(Model => Model.Email, new { @class = "form-control" })</label>
 
-                            <label>Địa chỉ @Html.TextBoxFor(Model => Model.Adress, new { @class = "form-control" })</label>
-                            <label>Ghi chú thêm @Html.TextBoxFor(Model => Model.Adress2, new { @class = "form-control" })</label>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2>Thông Tin Khách Hàng </h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li>
+                                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                            </li>
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li>
+                                                        <a href="#">Settings 1</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Settings 2</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <a class="close-link"><i class="fa fa-close"></i></a>
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <br>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                Nhóm khách <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.DropDownListFor(Model => Model.custype, ls3, new { @class = "form-control col-md-7 col-xs-12" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                Họ tên khách hàng 
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.TextBoxFor(Model => Model.cusName, new { @class = "form-control col-md-7 col-xs-12" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                SDT 
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.TextBoxFor(Model => Model.phoneNumber, new { @class = "form-control col-md-7 col-xs-12" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                Email
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.TextBoxFor(Model => Model.Email, new { @class = "form-control col-md-7 col-xs-12" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                Địa chỉ 
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.TextBoxFor(Model => Model.Adress, new { @class = "form-control col-md-7 col-xs-12" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                Ghi chú 
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.TextBoxFor(Model => Model.Adress2, new { @class = "form-control col-md-7 col-xs-12" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="section"><span></span><h4>Chọn kho</h4></div>
@@ -401,37 +475,41 @@
                                 <tr id="@idd">
                                     <td width="10%" id="skuu@(i)">
                                         <label>
-                                           SKU  <br/>
-                                            <span style="width:120px !important" role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
-                                            <select style="width:120px !important" id="items_@(i)__SKU" name="items[(@i)].SKU" class="skuselector select2_single form-control" tabindex="-1">
+                                            Nhập SKU  <br />
+                                            <span style="width:140px !important" role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+                                            <select style="width:140px !important" id="items_@(i)__SKU" name="items[(@i)].SKU" class="skuselector select2_single form-control" tabindex="-1">
                                                 <option selected value=""></option>
                                             </select>
-                                         </label>
+                                        </label>
                                     </td>
                                     <td id="@("matamm"+i)">
-                                        
-                                        <label>Mã tạm @Html.TextBoxFor(Model => Model.items[i].newSKU, new { @class = "form-control" })</label>
+
+                                        <label>Hoặc nhập Mã tạm @Html.TextBoxFor(Model => Model.items[i].newSKU, new { @class = "form-control" })</label>
                                     </td>
                                     <td id="@("namee"+i)">
 
-                                        <label>Tên Sản phẩm  <label id="@idl"></label> </label>
+                                        <label>Tên Sản phẩm  </label>
+                                        <br/>
+                                        <p id="@idl"></p> 
                                     </td>
                                     <td id="@("dongiaa"+i)">
                                         @Html.HiddenFor(Model => Model.items[i].DonGiaS, new { @class = "form-control", value = "0" })
-                                        <label>Đợn giá <label id="@idp"></label> </label>
+                                        <label>Đơn giá </label>
+                                        <br/>
+                                        <p  id="@idp"></p> 
                                         @Html.TextBoxFor(Model => Model.items[i].DonGiaS2, new { @class = "form-control", style = "display: none;" })
                                     </td>
 
 
-                                    <td id="@("soluongg"+i)">
+                                    <td width="4%" id="@("soluongg"+i)">
 
-                                        <label>Số lượng @Html.TextBoxFor(Model => Model.items[i].quantity, new { @Value = "1", @class = "form-control" })</label>
+                                        <label>Số lượng @Html.TextBoxFor(Model => Model.items[i].quantity, new { @Value = "1", @class = "form-control", @type="number" })</label>
                                     </td>
-                                    <td id="@("quicachh"+i)">
+                                    <td width="4%"  id="@("quicachh"+i)">
 
                                         <label>Qui cách @Html.TextBoxFor(Model => Model.items[i].quicach, new { @Value = "Cái", @class = "form-control" })</label>
                                     </td>
-                                    <td id="@("ckptt"+i)">
+                                    <td width="3%"  id="@("ckptt"+i)">
 
                                         <label>CK % @Html.TextBoxFor(Model => Model.items[i].chietKhauPhanTram, new { @class = "form-control", value = "0" })</label>
                                     </td>

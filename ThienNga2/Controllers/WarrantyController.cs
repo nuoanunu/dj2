@@ -52,10 +52,10 @@ namespace ThienNga2.Controllers
         }
         public ActionResult HoaDonBaoHanh()
         {
-           
-                ViewData["AllWarranty"] = am.tb_warranty_activities.Where(u=>u.status==6).OrderByDescending(u=>u.finishFixingDate).ToList();
 
-            
+            ViewData["AllWarranty"] = am.tb_warranty_activities.Where(u => u.status == 6).OrderByDescending(u => u.finishFixingDate).ToList();
+
+
             return View("HoaDonBaoHanh");
         }
         public ActionResult HoaDonDetail(int id)
@@ -294,7 +294,7 @@ namespace ThienNga2.Controllers
                 item.productDetailID = detail.id;
 
                 tb_customer cus = new tb_customer();
-                
+
                 cus = item.tb_customer;
                 if (cus.address == null) cus.address = "Không có dữ liệu";
                 if (am.tb_customer.Where(u => u.phonenumber.Equals(cus.phonenumber)).Count() == 0)
@@ -896,6 +896,31 @@ namespace ThienNga2.Controllers
                 }
             }
             return RedirectToAction("ActivityDetail", new { id = activitiesID });
+        }
+        [Authorize(Roles = "Admin,Bán hàng,Admin Hà Nội,Nhân Viên Quản Lý Sửa Chữa")]
+        public JsonResult DeleteAct(int id)
+        {
+            tb_warranty_activities war = am.tb_warranty_activities.Find(id);
+            if (war.id != null)
+            {
+
+                am.warrantyActivityFees.RemoveRange(war.warrantyActivityFees);
+                am.SaveChanges();
+
+
+                am.warrantyActivityFixingFees.RemoveRange(war.warrantyActivityFixingFees);
+                am.SaveChanges();
+
+
+                am.HangBaoHanhs.RemoveRange(war.HangBaoHanhs);
+                am.SaveChanges();
+
+
+                am.tb_warranty_activities.Remove(war);
+                am.SaveChanges();
+                return Json(new { done = "true" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { fail = "true" }, JsonRequestBehavior.AllowGet);
         }
         [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult ActivityDetail(int id)
