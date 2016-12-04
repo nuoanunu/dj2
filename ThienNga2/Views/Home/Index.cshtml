@@ -48,7 +48,7 @@
             <div class="right">
                 <span class="count_top"><i class="fa fa-user"></i>Thiệt bị được bảo hành</span>
                 <div class="count">@ViewData["SoSanPhamBaohanh"]</div>
-
+              
                 @if (((float)ViewData["SoSanPhamBaohanhInc"]) < 0)
                 {
                     <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>@ViewData["SoSanPhamBaohanhInc"]% </i> so với tháng trước</span>
@@ -66,15 +66,22 @@
             <div class="right">
                 <span class="count_top"><i class="fa fa-user"></i> Tổng chi phí sửa chữa </span>
                 <div class="count">@ViewData["SoSanPhamBaohanhInc"]</div>
-
-                @if (((float)ViewData["chiphisuachuainc"]) < 0)
+           
+                @if ((ViewData["chiphisuachuainc"]) != null)
                 {
-                    <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>@ViewData["chiphisuachuainc"]% </i> so với tháng trước</span>
+                    if ((float)ViewData["chiphisuachuainc"] > 0)
+                    {
+                         <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>@ViewData["chiphisuachuainc"]% </i> so với tháng trước</span>
+                    }
+                    else
+                    {
+                        <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>@ViewData["chiphisuachuainc"]% </i> so với tháng trước</span>
 
+                    }
                 }
                 else
                 {
-                    <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>@ViewData["chiphisuachuainc"]% </i> so với tháng trước</span>
+                   <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>@ViewData["chiphisuachuainc"]% </i> so với tháng trước</span>
 
                 }
             </div>

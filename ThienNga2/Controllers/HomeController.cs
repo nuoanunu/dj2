@@ -25,7 +25,7 @@ namespace ThienNga2.Controllers
 
             float customerincrease = (float)(100f *Math.Floor(temp));
             ViewData["totalcustomer"] = am.tb_customer.Count();
-            ViewData["customerincrease"] = customerincrease;
+            ViewData["customerincrease"] = (float)customerincrease;
             
             float temptotalrevenue = (float) am.orders.Where(u => u.date.Month == now.Month && u.date.Year == now.Year && u.aftervat==null).Sum(u => u.total);
             temptotalrevenue = temptotalrevenue+(float)am.orders.Where(u => u.date.Month == now.Month && u.date.Year == now.Year && u.aftervat != null).Select(u => u.aftervat).DefaultIfEmpty(0).Sum();
@@ -34,7 +34,7 @@ namespace ThienNga2.Controllers
             ViewData["Revenue"] = temptotalrevenue;
             if (temptotalrevenuelastmonth == 0)
             {
-               ViewData["RevenueIncrease"] = 100 ;
+               ViewData["RevenueIncrease"] = (float)100;
 
             }
             else {
@@ -48,24 +48,41 @@ namespace ThienNga2.Controllers
             if (spdangduocsuatt == 0) { ViewData["SoSanPhamBaohanhInc"] = (float)100f; }
             else
             {
-                ViewData["SoSanPhamBaohanhInc"] = 100 * (spdangduocsua - spdangduocsuatt) / spdangduocsuatt;
+                ViewData["SoSanPhamBaohanhInc"] = (float) 100 * (spdangduocsua - spdangduocsuatt) / spdangduocsuatt;
             }
+
 
             double chiphisuachua = am.warrantyActivityFees.Where(u => u.tb_warranty_activities.startDate.Month == now.Month && u.tb_warranty_activities.startDate.Year == now.Year && u.fixingfee != null).Select(u => u.fixingfee).DefaultIfEmpty(0).Sum();
             chiphisuachua = chiphisuachua+ am.warrantyActivityFixingFees.Where(u => u.tb_warranty_activities.startDate.Month == now.Month && u.tb_warranty_activities.startDate.Year == now.Year && u.fee != null).Select(u=>u.fee).DefaultIfEmpty(0).Sum();
-            double chiphisuachuatt = am.warrantyActivityFees.Where(u => u.tb_warranty_activities.startDate.Month == lastmonth.Month && u.tb_warranty_activities.startDate.Year == lastmonth.Year && u.fixingfee != null).Select(u => u.fixingfee).DefaultIfEmpty(0).Sum();
-            chiphisuachuatt = chiphisuachuatt + am.warrantyActivityFixingFees.Where(u => u.tb_warranty_activities.startDate.Month == lastmonth.Month && u.tb_warranty_activities.startDate.Year == lastmonth.Year && u.fee != null).Select(u => u.fee).DefaultIfEmpty(0).Sum();
-            if (chiphisuachuatt == 0)
+            System.Diagnostics.Debug.WriteLine("CzxdczxcC " + chiphisuachua);
+            if (chiphisuachua == 0) {
+                ViewData["chiphisuachua"] = 0f;
+                ViewData["chiphisuachuainc"] = -100f;
+            }
+            else
             {
-                ViewData["chiphisuachuainc"] = (float)100;
+                try
+                {
+                    double chiphisuachuatt = am.warrantyActivityFees.Where(u => u.tb_warranty_activities.startDate.Month == lastmonth.Month && u.tb_warranty_activities.startDate.Year == lastmonth.Year && u.fixingfee != null).Select(u => u.fixingfee).DefaultIfEmpty(0).Sum();
+                chiphisuachuatt = chiphisuachuatt + am.warrantyActivityFixingFees.Where(u => u.tb_warranty_activities.startDate.Month == lastmonth.Month && u.tb_warranty_activities.startDate.Year == lastmonth.Year && u.fee != null).Select(u => u.fee).DefaultIfEmpty(0).Sum();
+               
+                    if (chiphisuachuatt == 0)
+                    {
+                        ViewData["chiphisuachuainc"] = (float)100;
 
+                    }
+                    else
+                    {
+                        ViewData["chiphisuachuainc"] = (float)(100 * (chiphisuachua - chiphisuachuatt) / chiphisuachuatt);
+
+                    }
+                }
+                catch (Exception e) {
+                    ViewData["chiphisuachuainc"] = -100f;
+                }
+            
+                ViewData["chiphisuachua"] = chiphisuachua;
             }
-            else {
-                ViewData["chiphisuachuainc"] = 100 * (chiphisuachua - chiphisuachuatt) / chiphisuachuatt;
-
-            }
-            ViewData["chiphisuachua"] = chiphisuachua;
-
             List<tb_product_detail> top5fix = am.tb_product_detail.OrderByDescending(u => u.tb_warranty_activities.Where(uu => uu.startDate.Year == now.Year && uu.startDate.Month == now.Month).Count()).Take(5).ToList();
             List<tb_product_detail> top5sell = am.tb_product_detail.OrderByDescending(u => u.items.Where(uu=>uu.order.date.Year==now.Year && uu.order.date.Month == now.Month).Count()).Take(4).ToList();
             List<topsell> top4sold = new List<topsell>();
