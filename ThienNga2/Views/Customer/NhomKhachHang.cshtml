@@ -24,7 +24,7 @@
                     <th>Chính sách bảo hành</th>
                     <th>Số khách thuộc nhóm này</th>
                     <th>Số sản phẩm thuộc nhóm này</th>
-                   
+                    <th>Tác vụ</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,24 +33,29 @@
                     //   String linkEdit = "Customer/Search?code=" + wact.id;
                     String linkEdit = "Customer/deletethisid?id=" + @wact.id;
                     <tr>
-                        <td>
-                            @wact.GroupName
-                        </td>
-                        <td  bgcolor="@wact.Color">
-                            @wact.Color
-                        </td>
-                        <td>
-                            @wact.MoTaChinhSach
-                        </td>
-                        <td>
-                            @wact.tb_customer.ToList().Count()
-                        </td>
-                        <td>
-                            @wact.items.ToList().Count()
-                        </td>
-                        <td>
-                            <a href="@linkEdit">Xóa</a>
-                        </td>
+                        <form id="formNo@(wact.id)" action="/Customer/EditGroup" method="post">
+
+                            <input type="hidden" value="@wact.id" name="groupID"  />
+                            <td>
+
+                                <input type="text" name="newname" value="@wact.GroupName" />
+                            </td>
+                            <td bgcolor="">
+                                <input value="@wact.Color" name="newcolor" type="color" />
+                            </td>
+                            <td>
+                                @wact.MoTaChinhSach
+                            </td>
+                            <td>
+                                @wact.tb_customer.ToList().Count()
+                            </td>
+                            <td>
+                                @wact.items.ToList().Count()
+                            </td>
+                            <td>
+                                <button class="btn btn-warning">Edit</button>
+                            </td>
+                        </form>
                     </tr>
                 }
 

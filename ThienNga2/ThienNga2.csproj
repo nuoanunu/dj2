@@ -804,6 +804,8 @@
     <Content Include="Views\Warranty\HoaDonBaoHanh.cshtml" />
     <Content Include="Views\Warranty\HoaDonDetail.cshtml" />
     <Content Include="Views\ProductDetail\UpdateConfirm.cshtml" />
+    <Content Include="Views\Customer\Danhsachkhachhang.cshtml" />
+    <Content Include="Views\Customer\DetailKH.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
