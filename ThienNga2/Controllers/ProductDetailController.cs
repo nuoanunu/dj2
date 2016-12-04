@@ -156,6 +156,7 @@ namespace ThienNga2.Areas.Admin.Controllers
                 System.Diagnostics.Debug.WriteLine("here 22 " + result.Count());
                 ViewData["TotalAdd"] = result.ElementAt(0);
                 ViewData["TotalUpdate"] = result.ElementAt(1);
+                
                 return View("UpdateConfirm");
             }
             catch (Exception e)

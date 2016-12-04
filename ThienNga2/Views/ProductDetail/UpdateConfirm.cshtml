@@ -76,11 +76,7 @@
     <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"> </script>
     <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"> </script>
     <script>
-        $(document).ready(function () {
-            $('#tableadd').dataTable({
-                "aaSorting": [[0, "desc"]]
-            });
-        });
+     
         $(document).ready(function () {
             $('#tableupdate').dataTable({
               
@@ -116,7 +112,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Danh sách sản phẩm vừa được thêm mới</h2>
+                        <h2>Danh sách sản phẩm vừa được thêm mới: <a class="btn btn-success">@(((List<tb_product_detail>)ViewData["TotalAdd"]).Count()) sản phẩm</a></h2>
 
                         <div class="clearfix"></div>
                     </div>
@@ -174,7 +170,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Danh sách sản phẩm vừa được cập nhật</h2>
+                        <h2>Danh sách sản phẩm vừa được cập nhật: <a class="btn btn-success"> @(((List<tb_product_detail>)ViewData["TotalUpdate"]).Count()) sản phẩm</a></h2>
                         <div>
                             @if (ViewData["TotalUpdate"] != null)
                             {
