@@ -134,12 +134,38 @@ namespace ThienNga2.Areas.Admin.Controllers
             catch (Exception e) {
                 ViewData["updateResult"] = "Cập nhật thất bại";
             }
-            ViewData["last50"] = am.tb_product_detail.SqlQuery(" select   * from tb_product_detail order by id desc  ").ToList();
-
-            return View("NewProduct");
+           
+            return View("UpdateConfirm");
 
         }
 
+        [HttpPost]
+        public ActionResult UpdateFromXML2(HttpPostedFileBase file)
+        {
+          
+
+
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("AAAAAA " + file.ContentLength);
+                var document = new XmlDocument();
+                document.Load(file.InputStream);
+                System.Diagnostics.Debug.WriteLine("here 11" + file.ContentLength);
+
+                List<List<tb_product_detail>> result = XMLReader.reader(document);
+                System.Diagnostics.Debug.WriteLine("here 22 " + result.Count());
+                ViewData["TotalAdd"] = result.ElementAt(0);
+                ViewData["TotalUpdate"] = result.ElementAt(1);
+                return View("UpdateConfirm");
+            }
+            catch (Exception e)
+            {
+                ViewData["updateResult"] = null;
+            }
+            return View("UpdateConfirm");
+
+
+        }
 
 
         [HttpPost]

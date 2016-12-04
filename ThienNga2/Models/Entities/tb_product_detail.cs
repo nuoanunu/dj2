@@ -30,6 +30,8 @@ namespace ThienNga2.Models.Entities
         public Nullable<int> cateID { get; set; }
         public string description { get; set; }
         public Nullable<int> minThresHold { get; set; }
+        public Nullable<System.DateTime> addedDate { get; set; }
+        public Nullable<System.DateTime> lastUpdate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<item> items { get; set; }

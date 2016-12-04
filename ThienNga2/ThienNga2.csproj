@@ -803,6 +803,7 @@
     <Content Include="Views\Warranty\NewIMEI.cshtml" />
     <Content Include="Views\Warranty\HoaDonBaoHanh.cshtml" />
     <Content Include="Views\Warranty\HoaDonDetail.cshtml" />
+    <Content Include="Views\ProductDetail\UpdateConfirm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

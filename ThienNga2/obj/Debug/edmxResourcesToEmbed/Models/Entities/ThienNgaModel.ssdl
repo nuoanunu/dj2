@@ -256,6 +256,8 @@
     <Property Name="cateID" Type="int" />
     <Property Name="description" Type="nvarchar(max)" />
     <Property Name="minThresHold" Type="int" />
+    <Property Name="addedDate" Type="datetime" />
+    <Property Name="lastUpdate" Type="datetime" />
   </EntityType>
   <EntityType Name="tb_warranty">
     <Key>

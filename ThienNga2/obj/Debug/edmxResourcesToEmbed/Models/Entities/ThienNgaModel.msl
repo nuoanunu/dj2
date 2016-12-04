@@ -314,6 +314,8 @@
     <EntitySetMapping Name="tb_product_detail">
       <EntityTypeMapping TypeName="ThienNgaDatabaseModel.tb_product_detail">
         <MappingFragment StoreEntitySet="tb_product_detail">
+          <ScalarProperty Name="lastUpdate" ColumnName="lastUpdate" />
+          <ScalarProperty Name="addedDate" ColumnName="addedDate" />
           <ScalarProperty Name="minThresHold" ColumnName="minThresHold" />
           <ScalarProperty Name="description" ColumnName="description" />
           <ScalarProperty Name="cateID" ColumnName="cateID" />

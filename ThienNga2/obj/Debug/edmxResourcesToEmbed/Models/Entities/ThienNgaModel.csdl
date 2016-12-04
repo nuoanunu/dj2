@@ -561,6 +561,8 @@
     <NavigationProperty Name="tb_cate" Relationship="ThienNgaDatabaseModel.FK_tb_product_detail_tb_cate" FromRole="tb_product_detail" ToRole="tb_cate" />
     <NavigationProperty Name="RequestMuons" Relationship="ThienNgaDatabaseModel.FK_RequestMuon_tb_product_detail" FromRole="tb_product_detail" ToRole="RequestMuon" />
     <NavigationProperty Name="tb_warranty_activities" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_tb_product_detail" FromRole="tb_product_detail" ToRole="tb_warranty_activities" />
+    <Property Name="addedDate" Type="DateTime" Precision="3" />
+    <Property Name="lastUpdate" Type="DateTime" Precision="3" />
   </EntityType>
   <EntityType Name="tb_warrnaty_status">
     <Key>

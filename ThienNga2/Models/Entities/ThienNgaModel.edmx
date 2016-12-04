@@ -261,6 +261,8 @@
           <Property Name="cateID" Type="int" />
           <Property Name="description" Type="nvarchar(max)" />
           <Property Name="minThresHold" Type="int" />
+          <Property Name="addedDate" Type="datetime" />
+          <Property Name="lastUpdate" Type="datetime" />
         </EntityType>
         <EntityType Name="tb_warranty">
           <Key>
@@ -1600,6 +1602,8 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <NavigationProperty Name="tb_cate" Relationship="ThienNgaDatabaseModel.FK_tb_product_detail_tb_cate" FromRole="tb_product_detail" ToRole="tb_cate" />
           <NavigationProperty Name="RequestMuons" Relationship="ThienNgaDatabaseModel.FK_RequestMuon_tb_product_detail" FromRole="tb_product_detail" ToRole="RequestMuon" />
           <NavigationProperty Name="tb_warranty_activities" Relationship="ThienNgaDatabaseModel.FK_tb_warranty_activities_tb_product_detail" FromRole="tb_product_detail" ToRole="tb_warranty_activities" />
+          <Property Name="addedDate" Type="DateTime" Precision="3" />
+          <Property Name="lastUpdate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="tb_warrnaty_status">
           <Key>
@@ -2520,6 +2524,8 @@ warning 6035: The relationship 'key_auto_update' has columns that are not part o
           <EntitySetMapping Name="tb_product_detail">
             <EntityTypeMapping TypeName="ThienNgaDatabaseModel.tb_product_detail">
               <MappingFragment StoreEntitySet="tb_product_detail">
+                <ScalarProperty Name="lastUpdate" ColumnName="lastUpdate" />
+                <ScalarProperty Name="addedDate" ColumnName="addedDate" />
                 <ScalarProperty Name="minThresHold" ColumnName="minThresHold" />
                 <ScalarProperty Name="description" ColumnName="description" />
                 <ScalarProperty Name="cateID" ColumnName="cateID" />
