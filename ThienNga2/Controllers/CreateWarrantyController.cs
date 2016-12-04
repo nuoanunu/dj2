@@ -392,7 +392,7 @@ namespace ThienNga2.Controllers
 
                         //Generate Invoice (Bill) Header.
                         sb.Append("<table width='100%' cellspacing='0' cellpadding='2'>");
-                        sb.Append("<tr><td align='center' style='background-color: #18B5F0' colspan = '2'><b>BIÊN NHẬN DỊCH VỤ</b></td></tr>");
+                        sb.Append("<tr><td align='center' style='background-color: #000000' colspan = '2'><b>BIÊN NHẬN DỊCH VỤ</b></td></tr>");
                         sb.Append("<tr><td colspan = '2'></td></tr>");
                         sb.Append("<tr><td><b>Mã số: </b>");
                         sb.Append(MaBill);
