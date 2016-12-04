@@ -27,7 +27,8 @@ namespace ThienNga2.Controllers
                     int month = selecteddatetime.Month;
                     int year = selecteddatetime.Year;
                     int day = selecteddatetime.Day;
-                    ViewData["dspspgd"] = am.items.Where(u => u.DateOfSold.Day == day && u.DateOfSold.Month == month && u.DateOfSold.Year == year && u.productID.Equals(msk) && u.tb_product_detail.productStoreID.Equals(sku) && u.tb_customer.phonenumber.Equals(sdt)).ToList();
+                    System.Diagnostics.Debug.WriteLine(" m " + month + " d " + day + " y " + year);
+                    ViewData["dspspgd"] = am.items.Where(u => u.DateOfSold.Day == day && u.DateOfSold.Month == month && u.DateOfSold.Year == year && (u.productID.Equals(msk) || msk.Equals("")) && (u.tb_product_detail.productStoreID.Equals(sku) || sku.Equals("")) && (u.tb_customer.phonenumber.Equals(sdt) || sdt.Equals(""))).ToList();
 
                 }
                 catch (Exception e) {
