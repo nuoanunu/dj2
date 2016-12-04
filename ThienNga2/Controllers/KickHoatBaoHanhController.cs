@@ -20,10 +20,23 @@ namespace ThienNga2.Controllers
             return View(model);
         }
         public ActionResult FindByFilter(String msk, String sku,DateTime? date, String sdt) {
-            if(date != null)
-            ViewData["dspspgd"] = am.items.Where(u => u.DateOfSold.ToShortDateString().Equals( ((DateTime)date).ToShortDateString()) && u.productID.Equals(msk) && u.tb_product_detail.productStoreID.Equals(sku) && u.tb_customer.phonenumber.Equals(sdt)).ToList();
+            if (date != null)
+            {
+                try {
+                    DateTime selecteddatetime = (DateTime)date;
+                    int month = selecteddatetime.Month;
+                    int year = selecteddatetime.Year;
+                    int day = selecteddatetime.Day;
+                    ViewData["dspspgd"] = am.items.Where(u => u.DateOfSold.Day == day && u.DateOfSold.Month == month && u.DateOfSold.Year == year && u.productID.Equals(msk) && u.tb_product_detail.productStoreID.Equals(sku) && u.tb_customer.phonenumber.Equals(sdt)).ToList();
+
+                }
+                catch (Exception e) {
+                    ViewData["dspspgd"] = am.items.Where(u => (u.productID.Equals(msk) || msk.Equals("")) && (u.tb_product_detail.productStoreID.Equals(sku) || sku.Equals("")) && (u.tb_customer.phonenumber.Equals(sdt) || sdt.Equals(""))).ToList();
+
+                }
+            }
             else
-                ViewData["dspspgd"] = am.items.Where(u =>  (u.productID.Equals(msk)|| msk.Equals("") ) && (u.tb_product_detail.productStoreID.Equals(sku)|| sku.Equals("")) && (u.tb_customer.phonenumber.Equals(sdt) || sdt.Equals(""))).ToList();
+                ViewData["dspspgd"] = am.items.Where(u => (u.productID.Equals(msk) || msk.Equals("")) && (u.tb_product_detail.productStoreID.Equals(sku) || sku.Equals("")) && (u.tb_customer.phonenumber.Equals(sdt) || sdt.Equals(""))).ToList();
 
             var model = new KichHoatBaoHanh();
             return View("index",model);
