@@ -291,6 +291,7 @@ namespace ThienNga2.Controllers
 
                 foreach (AnOrderDetail ao in tuple.items)
                 {
+                    System.Diagnostics.Debug.WriteLine("hang ne: " + ao.SKU);
                     if (ao != null)
                     {
                         total = total + (float)Math.Floor(ao.thanhTien);

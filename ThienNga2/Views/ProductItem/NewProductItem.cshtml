@@ -45,7 +45,7 @@
                 if ($('#items_' + (i - 1) + '__SKU').val() != "") {
                     $('#items_' + (i - 1) + '__newSKU').prop('disabled', true);
                     $('#items_' + (i - 1) + '__DonGiaS2').css('display', "none");
-                    
+
                     $('#items_' + (i - 1) + '__newSKU').css("background-color", "gray");
                 }
                 else {
@@ -281,6 +281,15 @@
                 }
             });
 
+            $(".skuselector").each(function () {
+
+
+                $(this).change(function(){
+                    alert($("#items_0__SKU").val());
+                });
+
+            });
+
             @*for (i = 0; i < 20 ; i++) {
                 $('#items_' + (i ) + '__SKU').autocomplete({
 
@@ -477,7 +486,8 @@
                                         <label>
                                             Nhập SKU  <br />
                                             <span style="width:140px !important" role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
-                                            <select style="width:140px !important" id="items_@(i)__SKU" name="items[(@i)].SKU" class="skuselector select2_single form-control" tabindex="-1">
+                                   
+                                             <select style="width:140px !important" id="items_@(i)__SKU" name="items[@i].SKU" class="skuselector select2_single form-control" tabindex="-1">
                                                 <option selected value=""></option>
                                             </select>
                                         </label>
@@ -697,7 +707,7 @@
                 }
             }
             $("#dataString").val(all);
-            alert($("#dataString").val());
+
             $("#baogiaform").submit();
         }
 
