@@ -281,14 +281,7 @@
                 }
             });
 
-            $(".skuselector").each(function () {
 
-
-                $(this).change(function(){
-                    alert($("#items_0__SKU").val());
-                });
-
-            });
 
             @*for (i = 0; i < 20 ; i++) {
                 $('#items_' + (i ) + '__SKU').autocomplete({
@@ -328,7 +321,44 @@
             }
         }
     </script>
+    <style>
+        
+        .ui-autocomplete {
+            border:thin;
+            background-color:lightgray;
+            max-height: 300px;
+            max-width:400px;
+            overflow-y: auto;
+            /* prevent horizontal scrollbar */
+            overflow-x: hidden;
+        }
+        /* IE 6 doesn't support max-height
+        * we use height instead, but this forces the menu to always be this tall
+        */
+        * html .ui-autocomplete {
+            height: 100px;
+        }
 
+      
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            $('#searchbox').autocomplete({
+                source: '@Url.Action("Autocomplete")'
+
+            })
+                .data("ui-autocomplete")._renderItem = function (ul, item) {
+                    return $('<li class="">')
+                      .data("ui-autocomplete-item", item)
+
+                      .append('<a>' + item.label + "</a>")
+                      .appendTo(ul);
+                };
+
+
+        });
+    </script>
 </head>
 <body>
 
@@ -376,18 +406,87 @@
                     }
                 }
 
-          
 
                 <div class="form-style-10">
                     @Html.ValidationSummary("", new { @class = "text-danger" })
                     <form class="form-horizontal form-label-left">
-                        <label>Ngày <input name="date" id="date" value="@DateTime.Today.Day" /> Tháng <input name="month" id="month" value="@DateTime.Today.Month" /> Năm <input name="year" id="year" value="@DateTime.Today.Year" /> </label>
 
                         <div class="row">
-                            <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-6 col-sm-12 col-xs-12">
                                 <div class="x_panel">
                                     <div class="x_title">
-                                        <h2>Thông Tin Khách Hàng </h2>
+                                        <h2>Tra cứu sản phẩm </h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li>
+                                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                            </li>
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li>
+                                                        <a href="#">Settings 1</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Settings 2</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <a class="close-link"><i class="fa fa-close"></i></a>
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <br>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                Tên sản phẩm
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" id="searchbox" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        @if (ViewData["productdetail"] != null)
+                                        {
+                                            tb_product_detail detail = (tb_product_detail)ViewData["productdetail"];
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                    SKU
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" id="resultSKU" name="searchbox" class="form-control" value="@detail.productStoreID" />
+                                                </div>
+                                            </div>
+                                        }
+                                        @if (ViewData["dsspdt"] != null)
+                                        {
+                                            foreach (var item in (List<inventory>)ViewData["dsspdt"])
+                                            {
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                        @item.tb_inventory_name.InventoryName
+                                                    </label>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <input type="text" class="form-control" disabled value="@item.quantity" />
+                                                    </div>
+                                                </div>
+                                            }
+
+                                        }
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2>Thông Tin Khách Hàng </h2><label>Ngày <input name="date" id="date" value="@DateTime.Today.Day" /> Tháng <input name="month" id="month" value="@DateTime.Today.Month" /> Năm <input name="year" id="year" value="@DateTime.Today.Year" /> </label>
+
                                         <ul class="nav navbar-right panel_toolbox">
                                             <li>
                                                 <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -422,7 +521,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
-                                                Họ tên khách hàng 
+                                                Họ tên khách hàng
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 @Html.TextBoxFor(Model => Model.cusName, new { @class = "form-control col-md-7 col-xs-12" })
@@ -430,7 +529,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
-                                                SDT 
+                                                SDT
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 @Html.TextBoxFor(Model => Model.phoneNumber, new { @class = "form-control col-md-7 col-xs-12" })
@@ -446,7 +545,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
-                                                Địa chỉ 
+                                                Địa chỉ
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 @Html.TextBoxFor(Model => Model.Adress, new { @class = "form-control col-md-7 col-xs-12" })
@@ -454,7 +553,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
-                                                Ghi chú 
+                                                Ghi chú
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
                                                 @Html.TextBoxFor(Model => Model.Adress2, new { @class = "form-control col-md-7 col-xs-12" })
@@ -464,6 +563,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
                         <div class="section"><span></span><h4>Chọn kho</h4></div>
@@ -486,8 +586,8 @@
                                         <label>
                                             Nhập SKU  <br />
                                             <span style="width:140px !important" role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
-                                   
-                                             <select style="width:140px !important" id="items_@(i)__SKU" name="items[@i].SKU" class="skuselector select2_single form-control" tabindex="-1">
+
+                                            <select style="width:140px !important" id="items_@(i)__SKU" name="items[@i].SKU" class="skuselector select2_single form-control" tabindex="-1">
                                                 <option selected value=""></option>
                                             </select>
                                         </label>
@@ -499,27 +599,27 @@
                                     <td id="@("namee"+i)">
 
                                         <label>Tên Sản phẩm  </label>
-                                        <br/>
-                                        <p id="@idl"></p> 
+                                        <br />
+                                        <p id="@idl"></p>
                                     </td>
                                     <td id="@("dongiaa"+i)">
                                         @Html.HiddenFor(Model => Model.items[i].DonGiaS, new { @class = "form-control", value = "0" })
                                         <label>Đơn giá </label>
-                                        <br/>
-                                        <p  id="@idp"></p> 
+                                        <br />
+                                        <p id="@idp"></p>
                                         @Html.TextBoxFor(Model => Model.items[i].DonGiaS2, new { @class = "form-control", style = "display: none;" })
                                     </td>
 
 
                                     <td width="4%" id="@("soluongg"+i)">
 
-                                        <label>Số lượng @Html.TextBoxFor(Model => Model.items[i].quantity, new { @Value = "1", @class = "form-control", @type="number" })</label>
+                                        <label>Số lượng @Html.TextBoxFor(Model => Model.items[i].quantity, new { @Value = "1", @class = "form-control", @type = "number" })</label>
                                     </td>
-                                    <td width="4%"  id="@("quicachh"+i)">
+                                    <td width="4%" id="@("quicachh"+i)">
 
                                         <label>Qui cách @Html.TextBoxFor(Model => Model.items[i].quicach, new { @Value = "Cái", @class = "form-control" })</label>
                                     </td>
-                                    <td width="4%"  id="@("ckptt"+i)">
+                                    <td width="4%" id="@("ckptt"+i)">
 
                                         <label>CK % @Html.TextBoxFor(Model => Model.items[i].chietKhauPhanTram, new { @class = "form-control", value = "0" })</label>
                                     </td>
@@ -529,7 +629,7 @@
                                     </td>
                                     <td id="@("thanhtienn"+i)">
 
-                                        <label>Thành tiền @Html.TextBoxFor(Model => Model.items[i].thanhTienS, new { @class = "form-control", value = "0" })</label>
+                                        <label>Thành tiền @Html.TextBoxFor(Model => Model.items[i].thanhTienS, new { @class = "form-control", value = "0", disabled = "true" })</label>
                                     </td>
                                     <td>
 
@@ -547,16 +647,16 @@
                                 @*</div>*@
                             }
                             <tr id="trVAT" style="display:none">
-                                <td colspan="9" align="right">VAT 10%</td>
-                                <td id="TotalVAT">  </td>
+                                <td colspan="8" align="right">VAT 10%</td>
+                                <td colspan="2" id="TotalVAT">  </td>
                             </tr>
                             <tr>
-                                <td colspan="9" align="right">Tổng</td>
-                                <td id="Totalb4VAT">  </td>
+                                <td colspan="8" align="right">Tổng</td>
+                                <td colspan="2" id="Totalb4VAT">  </td>
                             </tr>
                             <tr id="trTT" style="display:none">
-                                <td colspan="9" align="right">Thành tiền</td>
-                                <td id="TotalAterVAT">  </td>
+                                <td colspan="8" align="right">Thành tiền</td>
+                                <td colspan="2" id="TotalAterVAT">  </td>
                             </tr>
                             <tr> <td align="right" colspan="10"> <button onclick="removeAll()">Xóa hết</button></td></tr>
                         </table>
@@ -712,6 +812,38 @@
         }
 
     </script>
+    <script>
+        $(document).ready(function () {
+            $('#mysearchForm').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url : "/ProductItem/Search",
+                    type: "GET",
+                    data: $(this).serialize(),
+                    success: function (data) {
+                        alert("lay");
+                    },
+                    error: function (jXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <form action="/ProductItem/Search" id="mysearchForm" hidden>
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                Họ tên khách hàng
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" id="searchbox2" name="code" class="form-control" />
+                <button class="btn btn-success">Tìm</button>
+            </div>
+        </div>
+    </form>
+
+
 
 </body>
 </html>

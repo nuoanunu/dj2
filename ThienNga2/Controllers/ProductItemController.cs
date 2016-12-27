@@ -44,9 +44,56 @@ namespace ThienNga2.Controllers
             ViewData["dsk"] = am.tb_inventory_name.ToList();
             ViewData["namelist"] = namelist;
             ViewData["sdct"] = am.CustomerTypes.ToList();
+            ViewData["dssp"] = am.tb_product_detail.ToList();
             return View("NewProductItem", new NewItemViewModel());
 
         }
+        public ActionResult Autocomplete(string term)
+        {
+            List<tb_product_detail> lst = am.tb_product_detail.ToList();
+            System.Diagnostics.Debug.WriteLine("SIZE " + allname.Count());
+
+            List<String> result = new List<string>();
+            foreach (tb_product_detail e in lst)
+            {
+                if (e.productName.IndexOf(term, StringComparison.InvariantCultureIgnoreCase) >= 0)
+                {
+                    result.Add("Tên: "+e.productName + " | " + " SKU: " + e.productStoreID);
+                }
+            }
+            //  return Json(result);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Search(string code)
+        {
+            try
+            {
+                if (code.Trim().Length > 0)
+                {
+                    ViewData["allInvenName"] = am.tb_inventory_name.ToList();
+                    if (code == null || code.Equals("")) return View("Inventory");
+                    if (code.IndexOf("StoreSKU") > 0)
+                    {
+                        code = code.Substring(code.IndexOf("StoreSKU") + 10, code.Length - code.IndexOf("StoreSKU") - 10);
+                    }
+                    tb_product_detail t = am.ThienNga_FindProduct2(code).FirstOrDefault();
+                    if (t == null)
+                    {
+                        ViewData["allInvenName"] = am.tb_inventory_name.ToList();
+                        return View("NewProductItem");
+                    }
+                    ViewData["productdetail"] = am.ThienNga_FindProduct2(code).FirstOrDefault();
+                    ViewData["dsspdt"] = am.ThienNga_checkkho2(t.productStoreID).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+            }
+
+            //  ViewData["dsspdt"] = am.inventories.ToList();
+            return View("NewProductItem");
+        }
+
         public String getdataKhachHang(String sdt)
         {
             cusInfo cus = new cusInfo();
@@ -159,34 +206,7 @@ namespace ThienNga2.Controllers
             catch (Exception e) { }
             return "tyetetetet";
         }
-        public ActionResult Autocomplete(string term)
-        {
-            List<String> result = new List<string>();
-            try
-            {
-                allname = am.ThienNga_FindProductName2("").ToList();
 
-                foreach (tb_product_detail a in am.tb_product_detail.ToList())
-                {
-                    if (!a.productStoreID.Contains("NULL"))
-                        allname.Add(a.producFactoryID);
-                    allname.Add(a.productStoreID);
-                }
-
-               
-                foreach (String e in allname)
-                {
-                    if (e.IndexOf(term, StringComparison.InvariantCultureIgnoreCase) >= 0)
-                    {
-                        result.Add(e);
-                    }
-                }
-                //  return Json(result);
-                return Json(result, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception e) { }
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
         // GET: ProductItem/Details/5
         public ActionResult Details(int id)
         {

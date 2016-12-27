@@ -396,6 +396,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ViewModel\NewItemViewModel.cs" />
+    <Compile Include="Models\ViewModel\PosModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -806,6 +807,7 @@
     <Content Include="Views\ProductDetail\UpdateConfirm.cshtml" />
     <Content Include="Views\Customer\Danhsachkhachhang.cshtml" />
     <Content Include="Views\Customer\DetailKH.cshtml" />
+    <Content Include="Views\ProductItem\POS.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
