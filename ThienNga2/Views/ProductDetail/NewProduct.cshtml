@@ -413,8 +413,10 @@
                                         <th>Mã nhà máy</th>
                                         <th>Giá</th>
                                         <th>Tên</th>
+                                        <th>Ngày tạo</th>
+                                        <th>Ngày cập nhật</th>
                                         <th>Số lượng báo động giới hạn</th>
-                                        <th>Lần cập nhật gần đây</th>
+                                       
                                         <th>Chỉnh sửa</th>
                                     </tr>
                                 </thead>
@@ -441,6 +443,16 @@
                                                 @dt.productName
                                                 <input type="text" id="@(dt.id+"NAME")" value="@dt.productName" hidden disabled="disabled" />
                                             </td>
+                                            @if (dt.addedDate != null)
+                                            {
+                                                <td>
+                                                    @( ((DateTime)dt.addedDate).ToShortDateString()  )
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
                                             @if (dt.lastUpdate != null) {
                                                 <td>
                                                     @( ((DateTime) dt.lastUpdate).ToShortDateString()  )
