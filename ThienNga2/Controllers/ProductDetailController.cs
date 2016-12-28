@@ -154,7 +154,9 @@ namespace ThienNga2.Areas.Admin.Controllers
 
                 List<List<tb_product_detail>> result = XMLReader.reader(document);
                 System.Diagnostics.Debug.WriteLine("here 22 " + result.Count());
+                if (result.ElementAt(0) == null) ViewData["TotalAdd"] = 0;
                 ViewData["TotalAdd"] = result.ElementAt(0);
+                if (result.ElementAt(1) == null) ViewData["TotalUpdate"] = 0;
                 ViewData["TotalUpdate"] = result.ElementAt(1);
                 
                 return View("UpdateConfirm");
