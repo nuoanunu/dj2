@@ -404,6 +404,7 @@
                                         <th>Giá</th>
                                         <th>Tên</th>
                                         <th>Số lượng báo động giới hạn</th>
+                                        <th>Lần cập nhật gần đây</th>
                                         <th>Chỉnh sửa</th>
                                     </tr>
                                 </thead>
@@ -416,24 +417,28 @@
                                                 <input type="hidden" id="@(dt.id+"ID")" value="@dt.id" />
                                             </td>
                                             <td>
-                                                <input type="text" id="@(dt.id+"SKU")" value="@dt.productStoreID" disabled="disabled" />
+                                                @dt.productStoreID
+                                                <input type="text" id="@(dt.id+"SKU")" value="@dt.productStoreID" disabled="disabled" hidden/>
+                                            </td>
+                                            <td>@dt.producFactoryID
+                                                <input type="text" id="@(dt.id+"FAC")" value="@dt.producFactoryID" disabled="disabled" hidden/>
                                             </td>
                                             <td>
-                                                <input type="text" id="@(dt.id+"FAC")" value="@dt.producFactoryID" disabled="disabled" />
+                                                @(Convert.ToDecimal(dt.price).ToString("#,##0"))
+                                                <input class="pricee" type="text" id="@(dt.id+"PRICE")" hidden value="@(Convert.ToDecimal(dt.price).ToString("#,##0"))" disabled="disabled" />
                                             </td>
                                             <td>
-                                                <input class="pricee" type="text" id="@(dt.id+"PRICE")" value="@(Convert.ToDecimal(dt.price).ToString("#,##0"))" disabled="disabled" />
-                                            </td>
-                                            <td>
-                                                <input type="text" id="@(dt.id+"NAME")" value="@dt.productName" disabled="disabled" />
+                                                @dt.productName
+                                                <input type="text" id="@(dt.id+"NAME")" value="@dt.productName" hidden disabled="disabled" />
                                             </td>
                                             @if (dt.minThresHold == null)
                                             {
-                                                <td><input type="number" id="@(dt.id+"MIN")" value="0" disabled="disabled" /></td>
+
+                                                <td>0<input type="number" id="@(dt.id+"MIN")" value="0" hidden disabled="disabled" /></td>
                                             }
                                             else
                                             {
-                                                <td><input type="number" id="@(dt.id+"MIN")" value="@dt.minThresHold" disabled="disabled" /></td>
+                                                <td>@dt.minThresHold <input type="number" id="@(dt.id+"MIN")" hidden value="@dt.minThresHold" disabled="disabled" /></td>
                                             }
                    
                                             <td>
