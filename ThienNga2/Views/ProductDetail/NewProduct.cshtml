@@ -208,6 +208,11 @@
             $("#" + index + "NAME").prop("disabled", "");
             $("#" + index + "PRICE").prop("disabled", "");
             $("#" + index + "MIN").prop("disabled", "");
+            $("#" + index + "SKU").show();
+            $("#" + index + "FAC").show();
+            $("#" + index + "NAME").show();
+            $("#" + index + "PRICE").show();
+            $("#" + index + "MIN").show();
             $("#" + index + "btn2").show();
             $("#" + index + "btn3").show();
             $("#" + index + "btn1").hide();
@@ -218,6 +223,11 @@
             $("#" + index + "NAME").prop("disabled", "disabled");
             $("#" + index + "PRICE").prop("disabled", "disabled");
             $("#" + index + "MIN").prop("disabled", "disabled");
+            $("#" + index + "SKU").hide();
+            $("#" + index + "FAC").hide();
+            $("#" + index + "NAME").hide();
+            $("#" + index + "PRICE").hide();
+            $("#" + index + "MIN").hide();
             $("#" + index + "btn1").show();
             $("#" + index + "btn2").hide();
             $("#" + index + "btn3").hide();
@@ -430,6 +440,19 @@
                                             <td>
                                                 @dt.productName
                                                 <input type="text" id="@(dt.id+"NAME")" value="@dt.productName" hidden disabled="disabled" />
+                                            </td>
+                                            @if (dt.lastUpdate != null) {
+                                                <td>
+                                                    @( ((DateTime) dt.lastUpdate).ToShortDateString()  )
+                                                </td>
+                                            }
+                                            else {
+                                                <td>
+                                                   
+                                                </td>
+                                            }
+                                            <td>
+                                                
                                             </td>
                                             @if (dt.minThresHold == null)
                                             {
