@@ -263,10 +263,10 @@
                             <h3>@thisuser.FullName</h3>
                             <ul class="list-unstyled user_data">
                                 <li>
-                                    <i class="fa fa-map-marker user-profile-icon"></i> Thiên Nga
+                                    <i class="fa fa-map-marker user-profile-icon"></i> @thisuser.PhoneNumber
                                 </li>
                                 <li>
-                                    <i class="fa fa-briefcase user-profile-icon"></i> Nhân viên kỹ thuật
+                                    <i class="fa fa-briefcase user-profile-icon"></i> @thisuser.Email
                                 </li>
                                 <form action="/Account/ChangePassword" method="post">
                                     @if (ViewData["error"] != null)
