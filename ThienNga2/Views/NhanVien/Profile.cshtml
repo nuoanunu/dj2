@@ -134,14 +134,33 @@
             <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">Go!</button>
-                        </span>
+                        @if (thisuser.UserName.Contains("removedAccount"))
+                        {
+                            <button onclick="ReactiveAccount()" class="btn btn-success confirmaction">Mở lại account này</button>
+                            <form id="Reactive" action="/NhanVien/ReactiveAccount">
+                                <input type="hidden" name="id" value="@thisuser.Id"/>
+                            </form>
+                        }
+                        else
+                        {
+                            <button onclick="DeactiveAccount()" class="btn btn-danger confirmaction">Xóa account này</button>
+                            <form id="Deactive" action="/NhanVien/DeactiveAccount">
+                                <input type="hidden" name="id" value="@thisuser.Id" />
+                            </form>
+                        }
+                
                     </div>
                 </div>
             </div>
         </div>
+        <script>
+            function DeactiveAccount (){
+                $("#Deactive").submit();
+            }
+            function ReactiveAccount() {
+                $("#Reactive").submit();
+            }
+        </script>
         <div class="clearfix"></div>
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
