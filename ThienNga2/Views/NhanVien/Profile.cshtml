@@ -326,9 +326,19 @@
 
                             </div>
                             <!-- start of user-activity-graph -->
-                            <div id="graph_bar" style="width:100%; height:280px;">
+                            @if (thisuser.UserName.Contains("removedAccount"))
+                            {
+                                <div style="width:100%; height:280px;">
+                                    <h1 style="font-size:100px"> Người dùng đã bị xóa</h1>
+                                </div>
+                            }
+                            else
+                            {
+                                <div id="graph_bar" style="width:100%; height:280px;">
 
-                            </div>
+                                </div>
+                            }
+  
                             <!-- end of user-activity-graph -->
                             <div class="" role="tabpanel" data-example-id="togglable-tabs">
                                 <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
