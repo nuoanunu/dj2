@@ -38,8 +38,15 @@ namespace ThienNga2.Controllers
 
             }
             else {
-                ViewData["RevenueIncrease"] = 100 * (temptotalrevenue - temptotalrevenuelastmonth) / temptotalrevenuelastmonth;
+                try
+                {
 
+
+                    ViewData["RevenueIncrease"] = 100 * (temptotalrevenue - temptotalrevenuelastmonth) / temptotalrevenuelastmonth;
+                }
+                catch (Exception e) {
+                    ViewData["RevenueIncrease"] = 100f;
+                }
             }
 
             int spdangduocsua = am.tb_warranty_activities.Where(u=>u.startDate.Month == now.Month && u.startDate.Year == now.Year).Count();
@@ -48,7 +55,9 @@ namespace ThienNga2.Controllers
             if (spdangduocsuatt == 0) { ViewData["SoSanPhamBaohanhInc"] = (float)100f; }
             else
             {
+             
                 ViewData["SoSanPhamBaohanhInc"] = (float) 100 * (spdangduocsua - spdangduocsuatt) / spdangduocsuatt;
+                
             }
 
 

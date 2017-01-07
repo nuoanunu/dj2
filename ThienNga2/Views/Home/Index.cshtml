@@ -11,17 +11,25 @@
             <div class="right">
                 <span class="count_top"><i class="fa fa-user"></i> Tổng số lượng khách</span>
                 <div class="count">@ViewData["totalcustomer"]</div>
-
-                @if (((float)ViewData["customerincrease"]) < 0)
+                @try
                 {
-                    <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>@ViewData["customerincrease"]% </i> so với tháng trước</span>
+                    if (((float)ViewData["customerincrease"]) < 0)
+                    {
+                        <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>@ViewData["customerincrease"]% </i> so với tháng trước</span>
+
+                    }
+                    else
+                    {
+                        <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>@ViewData["customerincrease"]% </i> so với tháng trước</span>
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>0% </i> so với tháng trước</span>
 
                 }
-                else
-                {
-                    <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>@ViewData["customerincrease"]% </i> so với tháng trước</span>
 
-                }
             </div>
         </div>
         <div class="animated flipInY col-md-3 col-sm-4 col-xs-4 tile_stats_count">
@@ -29,17 +37,25 @@
             <div class="right">
                 <span class="count_top"><i class="fa fa-clock-o"></i> Tổng doanh thu tháng</span>
                 <div class="count">@(((float)ViewData["Revenue"]).ToString("N0"))</div>
-
-                @if (((float)ViewData["RevenueIncrease"]) < 0)
+                @try
                 {
-                    <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>@ViewData["RevenueIncrease"]% </i> so với tháng trước</span>
+                    if (((float)ViewData["RevenueIncrease"]) < 0)
+                    {
+                        <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>@ViewData["RevenueIncrease"]% </i> so với tháng trước</span>
+
+                    }
+                    else
+                    {
+                        <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>@ViewData["chiphisuachuainc"]% </i> so với tháng trước</span>
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>0% </i> so với tháng trước</span>
 
                 }
-                else
-                {
-                    <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>@ViewData["chiphisuachuainc"]% </i> so với tháng trước</span>
 
-                }
             </div>
         </div>
 
@@ -48,17 +64,26 @@
             <div class="right">
                 <span class="count_top"><i class="fa fa-user"></i>Thiệt bị được bảo hành</span>
                 <div class="count">@ViewData["SoSanPhamBaohanh"]</div>
-              
-                @if (((float)ViewData["SoSanPhamBaohanhInc"]) < 0)
+
+                @try
                 {
-                    <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>@ViewData["SoSanPhamBaohanhInc"]% </i> so với tháng trước</span>
+                    if (((float)ViewData["SoSanPhamBaohanhInc"]) < 0)
+                    {
+                        <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>@ViewData["SoSanPhamBaohanhInc"]% </i> so với tháng trước</span>
+
+                    }
+                    else
+                    {
+                        <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>@ViewData["SoSanPhamBaohanhInc"]% </i> so với tháng trước</span>
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>0% </i> so với tháng trước</span>
 
                 }
-                else
-                {
-                    <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>@ViewData["SoSanPhamBaohanhInc"]% </i> so với tháng trước</span>
 
-                }
             </div>
         </div>
         <div class="animated flipInY col-md-3 col-sm-4 col-xs-4 tile_stats_count">
@@ -66,12 +91,19 @@
             <div class="right">
                 <span class="count_top"><i class="fa fa-user"></i> Tổng chi phí sửa chữa </span>
                 <div class="count">@ViewData["chiphisuachua"]</div>
-           
-                @if ((ViewData["chiphisuachuainc"]) != null)
+                @try
                 {
-                    if ((float)ViewData["chiphisuachuainc"] > 0)
+                    if ((ViewData["chiphisuachuainc"]) != null)
                     {
-                         <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>@ViewData["chiphisuachuainc"]% </i> so với tháng trước</span>
+                        if ((float)ViewData["chiphisuachuainc"] > 0)
+                        {
+                            <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>@ViewData["chiphisuachuainc"]% </i> so với tháng trước</span>
+                        }
+                        else
+                        {
+                            <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>@ViewData["chiphisuachuainc"]% </i> so với tháng trước</span>
+
+                        }
                     }
                     else
                     {
@@ -79,11 +111,11 @@
 
                     }
                 }
-                else
+                catch (Exception e)
                 {
-                   <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>@ViewData["chiphisuachuainc"]% </i> so với tháng trước</span>
-
+                    <span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>0% </i> so với tháng trước</span>
                 }
+
             </div>
         </div>
     </div>
@@ -226,7 +258,7 @@
                                                 {
                                                     <p>@sp.SKU </p>
                                                 }
-                                                
+
                                             </td>
 
                                             <td>@(100 * sp.itemsold / totalsell)%</td>
@@ -315,93 +347,95 @@
             return new Date(year, month - 1, day).getTime();
         }
     </script>
-    for (int i = 1; i < 13; i++) {
+    for (int i = 1; i < 13; i++)
+    {
         DateTime now = DateTime.Now;
-        double sold= ((List<order>)ViewData["allorder"]).Where(u=>u.date.Month==i && u.date.Year==now.Year).Sum(u=>u.total);
+        double sold = ((List<order>)ViewData["allorder"]).Where(u => u.date.Month == i && u.date.Year == now.Year).Sum(u => u.total);
         double fee = ((List<warrantyActivityFee>)ViewData["warrantyActivityFee"]).Where(u => u.tb_warranty_activities.startDate.Month == i && u.tb_warranty_activities.startDate.Year == now.Year).Sum(u => u.fixingfee);
         double fee2 = ((List<warrantyActivityFixingFee>)ViewData["warrantyActivityFixingFee"]).Where(u => u.tb_warranty_activities.startDate.Month == i && u.tb_warranty_activities.startDate.Year == now.Year).Sum(u => u.fee);
         double fee3 = fee + fee2;
-         <script>
-             data1.push([gd(@now.Year, @i, @i), @sold]);
-             data2.push([gd(@now.Year, @i, @i), @fee3]);
+        <script>
+            data1.push([gd(@now.Year, @i, @i), @sold]);
+            data2.push([gd(@now.Year, @i, @i), @fee3]);
         </script>
     }
 
 
-                <script>
-                    $(document).ready(function () {
-                        // [17, 74, 6, 39, 20, 85, 7]
-                        //[82, 23, 66, 9, 99, 6, 2]
-                       
+    <script>
+        $(document).ready(function () {
+            // [17, 74, 6, 39, 20, 85, 7]
+            //[82, 23, 66, 9, 99, 6, 2]
 
-                        
-                        $("#canvas_dahs").length && $.plot($("#canvas_dahs"), [
-                          data1, data2
-                        ], {
-                            series: {
-                                lines: {
-                                    show: false,
-                                    fill: true
-                                },
-                                splines: {
-                                    show: true,
-                                    tension: 0.4,
-                                    lineWidth: 1,
-                                    fill: 0.4
-                                },
-                                points: {
-                                    radius: 0,
-                                    show: true
-                                },
-                                shadowSize: 2
-                            },
-                            grid: {
-                                verticalLines: true,
-                                hoverable: true,
-                                clickable: true,
-                                tickColor: "#d5d5d5",
-                                borderWidth: 1,
-                                color: '#fff'
-                            },
-                            colors: ["rgba(38, 185, 154, 0.38)", "rgba(3, 88, 106, 0.38)"],
-                            xaxis: {
-                                tickColor: "rgba(51, 51, 51, 0.06)",
-                                mode: "time",
-                                tickSize: [1, "month"],
-                                //tickLength: 10,
-                                axisLabel: "Date",
-                                axisLabelUseCanvas: true,
-                                axisLabelFontSizePixels: 12,
-                                axisLabelFontFamily: 'Verdana, Arial',
-                                axisLabelPadding: 10,
-                                mode: "time", timeformat: "%m/%y", minTickSize: [1, "month"]
-                            },
-                            yaxis: {
-                                ticks: 8,
-                                tickColor: "rgba(51, 51, 51, 0.06)",
-                                labels: {
-                                    formatter: function () {
-                                        return Highcharts.numberFormat(this.value, 0,'','');
-                                    }
-                                }
-                            },
-                            tooltip: false,
 
-                        });
 
-                   
-                    });
-                </script>
+            $("#canvas_dahs").length && $.plot($("#canvas_dahs"), [
+              data1, data2
+            ], {
+                series: {
+                    lines: {
+                        show: false,
+                        fill: true
+                    },
+                    splines: {
+                        show: true,
+                        tension: 0.4,
+                        lineWidth: 1,
+                        fill: 0.4
+                    },
+                    points: {
+                        radius: 0,
+                        show: true
+                    },
+                    shadowSize: 2
+                },
+                grid: {
+                    verticalLines: true,
+                    hoverable: true,
+                    clickable: true,
+                    tickColor: "#d5d5d5",
+                    borderWidth: 1,
+                    color: '#fff'
+                },
+                colors: ["rgba(38, 185, 154, 0.38)", "rgba(3, 88, 106, 0.38)"],
+                xaxis: {
+                    tickColor: "rgba(51, 51, 51, 0.06)",
+                    mode: "time",
+                    tickSize: [1, "month"],
+                    //tickLength: 10,
+                    axisLabel: "Date",
+                    axisLabelUseCanvas: true,
+                    axisLabelFontSizePixels: 12,
+                    axisLabelFontFamily: 'Verdana, Arial',
+                    axisLabelPadding: 10,
+                    mode: "time", timeformat: "%m/%y", minTickSize: [1, "month"]
+                },
+                yaxis: {
+                    ticks: 8,
+                    tickColor: "rgba(51, 51, 51, 0.06)",
+                    labels: {
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.value, 0,'','');
+                        }
+                    }
+                },
+                tooltip: false,
+
+            });
+
+
+        });
+    </script>
                 <script>
                     var mlabels = [];
                     var mdata = [];
                 </script>
     foreach (topsell ts in (List<topsell>)ViewData["top5sell"])
-    {if (ts.SKU.Contains("00000")) { ts.SKU = "Sản phẩm tạm"; }
+    {
+        if (ts.SKU.Contains("00000")) { ts.SKU = "Sản phẩm tạm"; }
 
         <script>
             mlabels.push("@ts.SKU");
-        mdata.push(@(100*ts.itemsold/(int)ViewData["totalsell"]));
+            mdata.push(@(100*ts.itemsold/(int)ViewData["totalsell"]));
         </script>
     }
     <script>
@@ -448,13 +482,13 @@
                 return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
             };
             $(".tickLabel").each(function(){
-          
+
                 var value = parseInt($(this).text());
                 $(this).text(value.format());
             })
         };
         window.setTimeout(formatso, 500);
-   
+
     </script>
 }
 else
