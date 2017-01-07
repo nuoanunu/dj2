@@ -128,6 +128,12 @@
                         </div>
                     </div>
                     <div class="form-group">
+                       <label>Quy định password:</label>
+                        <div class="col-md-10">
+                           password phải có ít nhất 6 ký tự và: 1 ký tự  đặc biệt(@@,!), 1 chữ thường, 1 chữa hoa, 1 số
+                        </div>
+                    </div>
+                    <div class="form-group">
                         @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
                         <div class="col-md-10">
                             @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
