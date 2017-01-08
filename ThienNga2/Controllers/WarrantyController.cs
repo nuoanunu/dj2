@@ -284,6 +284,18 @@ namespace ThienNga2.Controllers
             ViewData["dsnkh"] = am.CustomerTypes.ToList();
             return View("allIMEI");
         }
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
+        public ActionResult recentIMEILIST()
+        {
+            
+            ViewData["allwar"] = (from e in am.tb_warranty
+                                  orderby e.id descending
+                                  select e)
+             .Take(100);
+
+            ViewData["dsnkh"] = am.CustomerTypes.ToList();
+            return View("allIMEI");
+        }
         [Authorize(Roles = "Admin,Kích Hoạt bảo Hành")]
         public ActionResult CreateNewIMEI(item item)
         {
