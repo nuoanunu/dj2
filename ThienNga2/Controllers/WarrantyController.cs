@@ -296,12 +296,15 @@ namespace ThienNga2.Controllers
                 tb_customer cus = new tb_customer();
 
                 cus = item.tb_customer;
-                if (cus.address == null) cus.address = "Không có dữ liệu";
+                if (cus.address == null) { cus.address = "Không có dữ liệu"; item.tb_customer.address = "Không có dữ liệu"; }
                 if (am.tb_customer.Where(u => u.phonenumber.Equals(cus.phonenumber)).Count() == 0)
                     am.tb_customer.Add(cus);
                 else
                 {
                     cus = am.tb_customer.Where(u => u.phonenumber.Equals(cus.phonenumber)).First();
+                    cus.customerName = item.tb_customer.customerName;
+                    cus.address = item.tb_customer.address;
+                    am.SaveChanges();
                 }
                 List<tb_warranty> list = new List<tb_warranty>();
                 foreach (tb_warranty tb in item.tb_warranty)
