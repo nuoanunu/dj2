@@ -930,7 +930,7 @@ namespace ThienNga2.Controllers
             }
             return Json(new { fail = "true" }, JsonRequestBehavior.AllowGet);
         }
-        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội,Nhân Viên Quản Lý Sửa Chữa")]
         public ActionResult ActivityDetail(int id)
         {
             tb_warranty_activities act = am.tb_warranty_activities.Find(id);
