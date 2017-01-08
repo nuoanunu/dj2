@@ -62,6 +62,7 @@ namespace ThienNga2.Controllers
         public ActionResult DanhSachKhachHang()
         {
             ViewData["dskh"] = am.tb_customer.ToList();
+            ViewData["dsnkh"] = am.CustomerTypes.ToList();
             return View("Danhsachkhachhang");
         }
         public ActionResult KhachHangDetail(int id)
