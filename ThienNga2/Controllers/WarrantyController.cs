@@ -447,6 +447,22 @@ namespace ThienNga2.Controllers
             return View("ChinhSuaIMEI");
         }
         [Authorize(Roles = "Admin,Kích Hoạt bảo Hành")]
+        public ActionResult disableIMEI(int id)
+        {
+            tb_warranty imei = am.tb_warranty.Find(id);
+            imei.Special = 2;
+            am.SaveChanges();
+            return RedirectToAction("search", new { code = imei.warrantyID});
+        }
+        [Authorize(Roles = "Admin,Kích Hoạt bảo Hành")]
+        public ActionResult enableIMEI(int id)
+        {
+            tb_warranty imei = am.tb_warranty.Find(id);
+            imei.Special = 1;
+            am.SaveChanges();
+            return RedirectToAction("search", new { code = imei.warrantyID });
+        }
+        [Authorize(Roles = "Admin,Kích Hoạt bảo Hành")]
         public ActionResult DeleteIMEI(int id)
         {
             tb_warranty tb = am.tb_warranty.Find(id);

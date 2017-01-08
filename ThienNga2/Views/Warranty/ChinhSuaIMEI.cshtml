@@ -97,7 +97,7 @@
                     {
                         <a href="/Warranty/ApproveIMEI?id=@thisitem.id" class="btn btn-success">Xác nhận thông tin các IMEI</a>
                     }
-                    <a href="/Warranty/DisapproveIMEI?id=@thisitem.id" class="btn btn-danger">Tạm ngưng các IMEI</a>
+                    <a href="/Warranty/DisapproveIMEI?id=@thisitem.id" class="btn btn-danger">Kết thúc bảo hành sản phẩm này</a>
                 </div>
             </div>
         </div>
@@ -285,6 +285,7 @@
                             {
                                 <tr>
                                     <form action="/Warranty/EditIMEI" method="post">
+                                      
                                         <input type="hidden" value="@war.id" name="warrantyID" />
                                         <td><input disabled id="@(war.id + "imei")" type="text" name="IMEI" value="@war.warrantyID" /> </td>
                                         <td><input disabled id="@(war.id + "duration")" type="text" name="duration" value="@war.duration" /> </td>
@@ -308,6 +309,17 @@
                                                 <a onclick="edit(@(war.id))" id="edit@(war.id)" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
                                                 <a onclick="unedit(@(war.id))" id="unedit@(war.id)" style="display:none" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i> Cancel </a>
                                                 <a href="/Warranty/DeleteIMEI?id=@war.id" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+                                                if (war.Special != 2)
+                                                {
+                                                    <a href="/Warranty/disableIMEI?id=@war.id" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Ngưng sử dụng IMEI này </a>
+
+                                                }
+                                                else
+                                                {
+                                                    <a href="/Warranty/enableIMEI?id=@war.id" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Tái sử dụng IMEI này </a>
+
+                                                }
+
                                             }
                                         </td>
                                     </form>
