@@ -65,7 +65,7 @@ namespace ThienNga2.Controllers
             ViewData["dsnkh"] = am.CustomerTypes.ToList();
             return View("Danhsachkhachhang");
         }
-        public ActionResult EditCustomer(String cusID,String customerName, String phonenumber, String address, String address2,  String Email, int Type) {
+        public ActionResult EditCustomer(int cusID,String customerName, String phonenumber, String address, String address2,  String Email, int Type) {
             tb_customer cus = am.tb_customer.Find(cusID);
             cus.address = address;
             cus.address2 = address2;

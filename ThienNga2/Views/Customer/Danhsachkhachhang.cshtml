@@ -62,7 +62,7 @@
                         <tbody>
                             @foreach (tb_customer cus in (List<tb_customer>)ViewData["dskh"])
                             {
-                                <form action="/Customer/EditCustomer">
+                                <form action="/Customer/EditCustomer" method="post">
                                     <tr>
                                         <td>
                                             <input type="hide" name="cusID" value="@cus.id"/>
