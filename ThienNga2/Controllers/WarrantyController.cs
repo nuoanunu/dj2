@@ -400,6 +400,7 @@ namespace ThienNga2.Controllers
 
             return "";
         }
+
         public ActionResult DanhSachIMEI()
         {
 
@@ -430,7 +431,7 @@ namespace ThienNga2.Controllers
 
             return View("ChinhSuaIMEI");
         }
-
+        [Authorize(Roles = "Admin,Kích Hoạt bảo Hành")]
         public ActionResult DeleteIMEI(int id)
         {
             tb_warranty tb = am.tb_warranty.Find(id);
@@ -452,6 +453,7 @@ namespace ThienNga2.Controllers
             catch (Exception e) { }
             return RedirectToAction("DanhSachIMEI");
         }
+        [Authorize(Roles = "Admin,Kích Hoạt bảo Hành")]
         public ActionResult Fixitem(int itemid, String itemname, String sku, String dos, int grroup)
         {
             try
@@ -480,6 +482,7 @@ namespace ThienNga2.Controllers
 
             return View("ChinhSuaIMEI");
         }
+        [Authorize(Roles = "Admin,Kích Hoạt bảo Hành")]
         public ActionResult FixKhach(int itemid, int cusID, String cusname, String sdt, int nhomkhach)
         {
             try
