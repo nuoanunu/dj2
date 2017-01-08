@@ -279,7 +279,7 @@ namespace ThienNga2.Controllers
         [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult IMEILIST()
         {
-            ViewData["allwar"] = am.tb_warranty.SqlQuery("select top 100 * from [tb_warranty] order by newid()").ToList();
+            ViewData["allwar"] = am.tb_warranty.ToList();
 
             ViewData["dsnkh"] = am.CustomerTypes.ToList();
             return View("allIMEI");
@@ -424,7 +424,35 @@ namespace ThienNga2.Controllers
                 else if (searchType == 5) { }
                 ViewData["dsnkh"] = am.CustomerTypes.ToList();
             }
-            catch (Exception e) { }
+            catch (Exception e) {
+
+            }
+
+            return View("ChinhSuaIMEI");
+        }
+        public ActionResult ListAll()
+        {
+            try
+            {
+                int searchType = 1;
+                if (searchType == 1)
+                {
+                    tb_warranty war = am.tb_warranty.SqlQuery("SELECT * FROM tb_warranty where warrantyID='" + code + "'").FirstOrDefault();
+                    ViewData["item"] = war.item;
+                }
+                else if (searchType == 2)
+                {
+
+                }
+                else if (searchType == 3) { }
+                else if (searchType == 4) { }
+                else if (searchType == 5) { }
+                ViewData["dsnkh"] = am.CustomerTypes.ToList();
+            }
+            catch (Exception e)
+            {
+
+            }
 
             return View("ChinhSuaIMEI");
         }
