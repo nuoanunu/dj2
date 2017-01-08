@@ -151,7 +151,7 @@
             var quantity = $('#items_' + (index - 1) + '__quantity').val();
             var CKTT = $('#items_' + (index - 1) + '__chietKhauTrucTiep').val();
             var CKPT = $('#items_' + (index - 1) + '__chietKhauPhanTram').val();
-            var temp3 = temp * quantity * (100 - CKPT) / 100 - CKTT;
+            var temp3 = (temp * quantity - CKTT) * (100 - CKPT) / 100 ;
             temp3 = Math.floor(temp3);
             $('#items_' + (index - 1) + '__thanhTienS').val(numberWithCommas(temp3));
             $('#items_' + (index - 1) + '__thanhTien').val(temp3);
