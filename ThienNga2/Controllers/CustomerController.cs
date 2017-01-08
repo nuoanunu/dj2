@@ -16,11 +16,12 @@ namespace ThienNga2.Controllers
             ViewData["typleList"] = am.CustomerTypes.ToList();
             return View("NhomKhachHang");
         }
-        public ActionResult EditGroup( int groupID, String newname, String newcolor) {
+        public ActionResult EditGroup( int groupID, String newname, String newcolor,String newchinhsach) {
             CustomerType type = am.CustomerTypes.Find(groupID);
             if (type != null) {
                 type.GroupName = newname;
                 type.Color = newcolor;
+                type.MoTaChinhSach = newchinhsach;
                 am.SaveChanges();
             }
             return RedirectToAction("Index");

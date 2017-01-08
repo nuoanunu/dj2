@@ -44,7 +44,8 @@
                                 <input value="@wact.Color" name="newcolor" type="color" />
                             </td>
                             <td>
-                                @wact.MoTaChinhSach
+                               
+                                <input name="newchinhsach" type="text" value="@wact.MoTaChinhSach" />
                             </td>
                             <td>
                                 @wact.tb_customer.ToList().Count()
@@ -53,7 +54,8 @@
                                 @wact.items.ToList().Count()
                             </td>
                             <td>
-                                <button class="btn btn-warning">Edit</button>
+                                <button class="btn btn-warning">Cập nhật</button>
+                                <button type="reset" class="btn btn-primary">Reset</button>
                             </td>
                         </form>
                     </tr>
