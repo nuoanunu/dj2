@@ -28,7 +28,7 @@ namespace ThienNga2.Controllers
         [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Admin Hà Nội,Nhân Viên Quản Lý Sửa Chữa")]
         public ActionResult Index()
         {
-            if (User.IsInRole("Nhân Viên kỹ thuật"))
+            if (User.IsInRole("Nhân Viên kỹ thuật") && !User.IsInRole("Nhân Viên Quản Lý Sửa Chữa"))
             {
                 String uid = User.Identity.GetUserId();
                 ViewData["AllWarranty"] = am.tb_warranty_activities.Where(ui => ui.empFixer.Equals(uid)).ToList();
