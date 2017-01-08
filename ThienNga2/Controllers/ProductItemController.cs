@@ -301,8 +301,19 @@ namespace ThienNga2.Controllers
                         cus.Email = tuple.Email;
                     am.tb_customer.Add(cus);
                     am.SaveChanges();
-
-
+                }
+                else {
+                    if (tuple.cusName != null)
+                        cus.customerName = tuple.cusName;
+                    if (tuple.phoneNumber != null)
+                        cus.phonenumber = tuple.phoneNumber;
+                    if (tuple.Adress != null)
+                        cus.address = tuple.Adress;
+                    if (tuple.Adress2 != null)
+                        cus.address2 = tuple.Adress2;
+                    if (tuple.Email != null)
+                        cus.Email = tuple.Email;
+                    am.SaveChanges();
                 }
                 ord.date = soldDate;
                 System.Diagnostics.Debug.WriteLine("HAHAHA 2 " + ord.date.ToString());
