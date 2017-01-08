@@ -87,13 +87,13 @@
                                         <a href="/ProductItem"><i class="fa fa-home"></i> Bán hàng </a>
                                     </li>
                                 }
-                                @if (User.IsInRole("Admin") || User.IsInRole("Hóa đơn bảo hành"))
+                                @if (User.IsInRole("Admin") || User.IsInRole("Hóa đơn bảo hành") || User.IsInRole("Nhân Viên Quản Lý Sửa Chữa"))
                                 {
                                     <li>
                                         <a href="/Warranty/HoaDonBaoHanh"><i class="fa fa-money"></i> Hóa đơn bảo hành </a>
                                     </li>
                                 }
-                                @if (User.IsInRole("Admin") || User.IsInRole("Kích  Hoạt bảo Hành"))
+                                @if (User.IsInRole("Admin") || User.IsInRole("Kích Hoạt bảo Hành") || User.IsInRole("Nhân Viên Quản Lý Sửa Chữa"))
                                 {
                                     <li>
                                         <a href="/KickHoatBaoHanh"><i class="fa fa-edit"></i> Kích hoạt bảo hành </a>
@@ -118,7 +118,7 @@
 
                                     </li>
                                 }
-                                @if (User.IsInRole("Admin") || User.IsInRole("Quản lý kho") || User.IsInRole("Xuất Kho") || User.IsInRole("Thêm Kho"))
+                                @if (User.IsInRole("Admin") || User.IsInRole("Quản lý kho") || User.IsInRole("Kiểm kho") || User.IsInRole("Xuất Kho") || User.IsInRole("Thêm Kho"))
                                 {
                                     <li>
                                         <a href="/Inventory"><i class="fa fa-bar-chart-o"></i> Kiểm kho </a>
