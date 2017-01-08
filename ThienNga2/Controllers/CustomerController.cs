@@ -11,30 +11,17 @@ namespace ThienNga2.Controllers
     public class CustomerController : EntitiesAM
     {
         // GET: Customer
-        public String removeSpace() {
-         
-            foreach (tb_customer cus in am.tb_customer) {
-                try {
-                    if (cus.phonenumber.Contains(" ")) {
-                        while (cus.phonenumber.IndexOf(' ') >= 0) {
-                            cus.phonenumber = cus.phonenumber.Replace(" ", "");
-                            am.SaveChanges();
-                        }
-                    }
-                }
-                catch (Exception e) { }
-               
-            }
-            return "yay";
-        }
+
         public ActionResult Index()
         {
             ViewData["typleList"] = am.CustomerTypes.ToList();
             return View("NhomKhachHang");
         }
-        public ActionResult EditGroup( int groupID, String newname, String newcolor,String newchinhsach) {
+        public ActionResult EditGroup(int groupID, String newname, String newcolor, String newchinhsach)
+        {
             CustomerType type = am.CustomerTypes.Find(groupID);
-            if (type != null) {
+            if (type != null)
+            {
                 type.GroupName = newname;
                 type.Color = newcolor;
                 type.MoTaChinhSach = newchinhsach;
@@ -42,8 +29,10 @@ namespace ThienNga2.Controllers
             }
             return RedirectToAction("Index");
         }
-        public ActionResult CreateGroup(String name, String color ,String thongtinbaohanh) {
-            try {
+        public ActionResult CreateGroup(String name, String color, String thongtinbaohanh)
+        {
+            try
+            {
                 CustomerType ct = new CustomerType();
                 ct.Color = color;
                 ct.GroupName = name;
@@ -51,15 +40,17 @@ namespace ThienNga2.Controllers
                 am.CustomerTypes.Add(ct);
                 am.SaveChanges();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
 
             }
-         
-            
-            ViewData["typleList"] =am.CustomerTypes.ToList();
-            return RedirectToAction("Index","Customer");
+
+
+            ViewData["typleList"] = am.CustomerTypes.ToList();
+            return RedirectToAction("Index", "Customer");
         }
-        public ActionResult deletethisid(String id) {
+        public ActionResult deletethisid(String id)
+        {
             try
             {
                 am.CustomerTypes.Remove(am.CustomerTypes.Find(int.Parse(id)));
@@ -68,7 +59,8 @@ namespace ThienNga2.Controllers
             catch (Exception e) { }
             return RedirectToAction("Index");
         }
-        public ActionResult DanhSachKhachHang() {
+        public ActionResult DanhSachKhachHang()
+        {
             ViewData["dskh"] = am.tb_customer.ToList();
             return View("Danhsachkhachhang");
         }
