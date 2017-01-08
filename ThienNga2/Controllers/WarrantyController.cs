@@ -292,7 +292,7 @@ namespace ThienNga2.Controllers
                 tb_product_detail detail = item.tb_product_detail;
                 detail.id = am.tb_product_detail.Where(u => u.productStoreID.Equals(detail.productStoreID)).First().id;
                 item.productDetailID = detail.id;
-
+                item.Verified = true;
                 tb_customer cus = new tb_customer();
 
                 cus = item.tb_customer;
