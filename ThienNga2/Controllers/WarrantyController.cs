@@ -291,7 +291,7 @@ namespace ThienNga2.Controllers
             ViewData["allwar"] = (from e in am.tb_warranty
                                   orderby e.id descending
                                   select e)
-             .Take(100);
+             .Take(100).ToList();
 
             ViewData["dsnkh"] = am.CustomerTypes.ToList();
             return View("allIMEI");
