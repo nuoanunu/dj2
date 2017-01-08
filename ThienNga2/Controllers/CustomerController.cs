@@ -17,7 +17,7 @@ namespace ThienNga2.Controllers
                 try {
                     if (cus.phonenumber.Contains(" ")) {
                         while (cus.phonenumber.IndexOf(' ') >= 0) {
-                            cus.phonenumber = cus.phonenumber.Replace(' ', '');
+                            cus.phonenumber = cus.phonenumber.Replace(" ", "");
                             am.SaveChanges();
                         }
                     }
