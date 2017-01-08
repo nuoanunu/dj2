@@ -1,4 +1,5 @@
 ﻿@using ThienNga2.Models.Entities
+@using Microsoft.AspNet.Identity
 <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"> </script>
 <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"> </script>
 <script>
@@ -74,16 +75,19 @@
         <div class="title_left">
             <h3>
                 Thông tin chi tiết của mã bảo hành
-                @if (!(bool)thisitem.Verified)
+                @if (User.IsInRole("Admin") || User.IsInRole("Kích Hoạt bảo Hành"))
                 {
-                    <small style="color:red">Các imei này chưa được xác nhận</small>
-                }
-                else
-                {
-                    <small style="color:green">Các imei này đã được xác nhận</small>
+                    if (!(bool)thisitem.Verified)
+                    {
+                        <small style="color:red">Các imei này chưa được xác nhận</small>
+                    }
+                    else
+                    {
+                        <small style="color:green">Các imei này đã được xác nhận</small>
+                    }
                 }
             </h3>
-           
+
         </div>
 
         <div class="title_right">
@@ -162,8 +166,9 @@
                         <div class="ln_solid"></div>
                         <div class="form-group">
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                @if (User.IsInRole("Admin") || User.IsInRole("Kích Hoạt bảo Hành"))
+                                {  <button type="submit" class="btn btn-success">Chỉnh sữa</button> }
 
-                                <button type="submit" class="btn btn-success">Chỉnh sữa</button>
                             </div>
                         </div>
 
@@ -236,8 +241,10 @@
                         <div class="ln_solid"></div>
                         <div class="form-group">
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-
-                                <button type="submit" class="btn btn-success">Chỉnh sữa</button>
+                                @if (User.IsInRole("Admin") || User.IsInRole("Kích Hoạt bảo Hành"))
+                                {
+                                    <button type="submit" class="btn btn-success">Chỉnh sữa</button>
+                                }
                             </div>
                         </div>
 
@@ -246,117 +253,120 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="x_panel">
-                <div class="x_title">
-                    <h2>Danh sách IMEI</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Danh sách IMEI</h2>
 
-                    <div class="clearfix"></div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+
+                <div class="x_content">
+
+
+                    <!-- start project list -->
+                    <table class="table table-striped projects">
+                        <thead>
+                            <tr>
+
+                                <th style="width: 20%">IMEI</th>
+                                <th>Thời hạn bảo hành (tháng)</th>
+                                <th>Thông tin mô tả</th>
+
+                                <th style="width: 20%">Loại IMEI</th>
+                                <th>Tác vụ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (tb_warranty war in thisitem.tb_warranty.OrderBy(u => u.id))
+                            {
+                                <tr>
+                                    <form action="/Warranty/EditIMEI" method="post">
+                                        <input type="hidden" value="@war.id" name="warrantyID" />
+                                        <td><input disabled id="@(war.id + "imei")" type="text" name="IMEI" value="@war.warrantyID" /> </td>
+                                        <td><input disabled id="@(war.id + "duration")" type="text" name="duration" value="@war.duration" /> </td>
+                                        <td><input disabled id="@(war.id + "des")" type="text" name="description" value="@war.description" /> </td>
+                                        <td>
+                                            @if (war.MaChinh)
+                                            {
+                                                <input style="display:none" id="@(war.id + "checkbox")" value="true" type="checkbox" name="machinh" checked />
+                                                <a id="labelchinhphu@(war.id)" class="btn btn-success btn-xs">Mã chính</a>
+                                            }
+                                            else
+                                            {  <input id="@(war.id + "checkbox")" style="display:none" value="true" type="checkbox" name="machinh" />
+                                            <a id="labelchinhphu@(war.id)" class="btn btn-warning btn-xs">Mã phụ</a>
+                                            }
+
+                                        </td>
+                                        <td>
+                                            @if (User.IsInRole("Admin") || User.IsInRole("Kích Hoạt bảo Hành"))
+                                            {
+                                                <button id="@(war.id + "cbtn")" style="display:none" class="btn btn-success btn-xs"><i class="fa fa-hand-o-right"></i> Xác nhận </button>
+                                                <a onclick="edit(@(war.id))" id="edit@(war.id)" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                                                <a onclick="unedit(@(war.id))" id="unedit@(war.id)" style="display:none" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i> Cancel </a>
+                                                <a href="/Warranty/DeleteIMEI?id=@war.id" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+                                            }
+                                        </td>
+                                    </form>
+
+                                </tr>
+                            }@if (User.IsInRole("Admin") || User.IsInRole("Kích Hoạt bảo Hành"))
+                            {
+                                <tr>
+                                    <form action="/Warranty/AddMoreImei">
+                                        <input type="hidden" value="@thisitem.tb_warranty.First().itemID" name="itemID" />
+                                        <td>
+                                            <input name="IMEI" type="text" placeholder="Mã IMEI" />
+                                        </td>
+                                        <td>
+                                            <input name="duration" type="text" placeholder="Thời hạn(tháng)" />
+                                        </td>
+                                        <td>
+                                            <input name="des" type="text" placeholder="Mô tả" />
+                                        </td>
+                                        <td>
+                                            <input name="machinh" type="checkbox" value="true" />
+                                        </td>
+                                        <td>
+                                            <button type="submit" class="btn btn-success">Thêm</button>
+                                        </td>
+                                    </form>
+                                </tr>
+                                <script>
+                                    function edit(id) {
+                                        $("#" + id + "imei").prop('disabled', false);
+                                        $("#" + id + "duration").prop('disabled', false);
+                                        $("#" + id + "des").prop('disabled', false);
+                                        $("#labelchinhphu" + id).css("display", "none");
+                                        $("#" + id + "checkbox").css("display", "");
+                                        $("#" + id + "cbtn").css("display", "");
+                                        $("#unedit" + id).css("display", "");
+                                        $("#edit" + id).css("display", "none");
+                                    }
+                                    function unedit(id) {
+                                        $("#" + id + "imei").prop('disabled', true);
+                                        $("#" + id + "duration").prop('disabled', true);
+                                        $("#" + id + "des").prop('disabled', true);
+                                        $("#labelchinhphu" + id).css("display", "");
+                                        $("#" + id + "checkbox").css("display", "none");
+                                        $("#" + id + "cbtn").css("display", "none");
+                                        $("#unedit" + id).css("display", "none");
+                                        $("#edit" + id).css("display", "");
+                                    }
+                                </script>
+                            }
+                        </tbody>
+                    </table>
+                    <!-- end project list -->
+
                 </div>
             </div>
-
-            <div class="x_content">
-
-
-                <!-- start project list -->
-                <table class="table table-striped projects">
-                    <thead>
-                        <tr>
-
-                            <th style="width: 20%">IMEI</th>
-                            <th>Thời hạn bảo hành (tháng)</th>
-                            <th>Thông tin mô tả</th>
-
-                            <th style="width: 20%">Loại IMEI</th>
-                            <th>Tác vụ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        @foreach (tb_warranty war in thisitem.tb_warranty.OrderBy(u=>u.id))
-                        {
-                            <tr>
-                                <form action="/Warranty/EditIMEI" method="post">
-                                    <input type="hidden" value="@war.id" name="warrantyID" />
-                                    <td><input disabled id="@(war.id + "imei")" type="text" name="IMEI" value="@war.warrantyID" /> </td>
-                                    <td><input disabled id="@(war.id + "duration")" type="text" name="duration" value="@war.duration" /> </td>
-                                    <td><input disabled id="@(war.id + "des")" type="text" name="description" value="@war.description" /> </td>
-                                    <td>
-                                        @if (war.MaChinh)
-                                                            {
-                                                            <input style="display:none" id="@(war.id + "checkbox")" value="true" type="checkbox" name="machinh" checked />
-                                                            <a id="labelchinhphu@(war.id)" class="btn btn-success btn-xs">Mã chính</a>
-                                                            }
-                                                            else
-                                                            {  <input id="@(war.id + "checkbox")" style="display:none" value="true" type="checkbox" name="machinh" />
-                                                            <a id="labelchinhphu@(war.id)" class="btn btn-warning btn-xs">Mã phụ</a>
-                                                            }
-
-                                    </td>
-                                    <td>
-                                        <button id="@(war.id + "cbtn")" style="display:none" class="btn btn-success btn-xs"><i class="fa fa-hand-o-right"></i> Xác nhận </button>
-                                        <a onclick="edit(@(war.id))" id="edit@(war.id)" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
-                                        <a onclick="unedit(@(war.id))" id="unedit@(war.id)" style="display:none" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i> Cancel </a>
-                                        <a href="/Warranty/DeleteIMEI?id=@war.id" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
-                                    </td>
-                                </form>
-
-                            </tr>
-                        }
-                        <tr>
-                            <form action="/Warranty/AddMoreImei">
-                                <input type="hidden" value="@thisitem.tb_warranty.First().itemID" name="itemID" />
-                                <td>
-                                    <input name="IMEI" type="text" placeholder="Mã IMEI" />
-                                </td>
-                                <td>
-                                    <input name="duration" type="text" placeholder="Thời hạn(tháng)" />
-                                </td>
-                                <td>
-                                    <input name="des" type="text" placeholder="Mô tả" />
-                                </td>
-                                <td>
-                                    <input name="machinh" type="checkbox" value="true" />
-                                </td>
-                                <td>
-                                    <button type="submit" class="btn btn-success">Thêm</button>
-                                </td>
-                            </form>
-                        </tr>
-                        <script>
-                            function edit(id) {
-                                $("#" + id + "imei").prop('disabled', false);
-                                $("#" + id + "duration").prop('disabled', false);
-                                $("#" + id + "des").prop('disabled', false);
-                                $("#labelchinhphu" + id).css("display", "none");
-                                $("#" + id + "checkbox").css("display", "");
-                                $("#" + id + "cbtn").css("display", "");
-                                $("#unedit" + id).css("display", "");
-                                $("#edit" + id).css("display", "none");
-                            }
-                            function unedit(id) {
-                                $("#" + id + "imei").prop('disabled', true);
-                                $("#" + id + "duration").prop('disabled', true);
-                                $("#" + id + "des").prop('disabled', true);
-                                $("#labelchinhphu" + id).css("display", "");
-                                $("#" + id + "checkbox").css("display", "none");
-                                $("#" + id + "cbtn").css("display", "none");
-                                $("#unedit" + id).css("display", "none");
-                                $("#edit" + id).css("display", "");
-                            }
-                        </script>
-
-                    </tbody>
-                </table>
-                <!-- end project list -->
-
-            </div>
         </div>
-    </div>
 
 
 
 
 }
-
