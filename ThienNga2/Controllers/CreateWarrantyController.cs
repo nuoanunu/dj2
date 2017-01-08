@@ -17,7 +17,7 @@ using Microsoft.AspNet.Identity;
 namespace ThienNga2.Controllers
 {
 
-    [Authorize(Roles = "Admin,Tạo Hóa Đơn Bảo Hành")]
+    [Authorize(Roles = "Admin,Tạo Hóa Đơn Bảo Hành,Nhân Viên Quản Lý Sửa Chữa")]
     public class CreateWarrantyController : EntitiesAM
     {
 
