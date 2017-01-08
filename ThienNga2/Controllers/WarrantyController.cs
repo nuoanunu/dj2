@@ -661,7 +661,7 @@ namespace ThienNga2.Controllers
         }
 
         // GET: Warranty/Details/5
-        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội,Nhân Viên Quản Lý Sửa Chữa")]
         public ActionResult Details(int id)
         {
             return View();
