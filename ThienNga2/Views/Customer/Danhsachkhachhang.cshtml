@@ -62,41 +62,63 @@
                         <tbody>
                             @foreach (tb_customer cus in (List<tb_customer>)ViewData["dskh"])
                             {
-                                <tr >
-                                    <td>
-                                        @cus.CreatedDate.ToShortDateString()
-                                    </td>
-                                    <td>
-                                        @cus.customerName
-                                    </td>
-                                    <td>
-                                        @cus.phonenumber
-                                    </td>
-                                    <td>
-                                        @cus.address
-                                    </td>
-                                    <td>
-                                        @cus.address2
-                                    </td>
-                                    <td>
-                                        @cus.Email
-                                    </td>
-                                    @if (cus.CustomerType != null)
-                                    {
-                                        <td style="background-color:@cus.CustomerType.Color">
-                                            <font color="black">@cus.CustomerType.GroupName </font> 
+                                <form action="/Customer/EditCustomer">
+                                    <tr>
+                                        <td>
+                                            
+                                            @cus.CreatedDate.ToShortDateString()
                                         </td>
-                                    }
-                                    else
-                                    {
-                                        <td></td>
-                                    }
-                                  <td>
-                                      <a href="/Customer/KhachHangDetail?id=@cus.id" class="btn btn-primary">Sản phẩm đã mua</a>
-                                      <button class="btn btn-warning">Cập nhập</button>
+                                        <td>
+                                            <input name="customerName" type="text" value="@cus.customerName" />
+                                           
+                                        </td>
+                                        <td>
+                                            <input name="phonenumber" type="text" value="@cus.phonenumber" />
                                    
-                                  </td>
-                                </tr>
+                                        </td>
+                                        <td>
+                                            <input name="address" type="text" value="@cus.address" />
+                            
+                                        </td>
+                                        <td>
+                                            <input name="address2" type="text" value="@cus.address2" />
+                                     
+                                        </td>
+                                        <td>
+                                            <input name="Email" type="text" value="@cus.Email" />
+
+                                        </td>
+                                        @if (cus.CustomerType != null)
+                                        {
+                                            <td style="background-color:@cus.CustomerType.Color">
+                                                <font color="black">@cus.CustomerType.GroupName </font>
+                                                <select name="Type" id="tb_customer_Type">
+                                                    @foreach (CustomerType type in (List<CustomerType>)ViewData["dsnkh"])
+                                                    {
+                                                        if (type.id == cus.Type)
+                                                        {
+                                                            <option selected style="background:@(type.Color);" value="@type.id"> @type.GroupName </option>
+
+                                                        }
+                                                        else
+                                                        {
+                                                        }
+                                                    }
+
+                                                </select>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+                                        <td>
+                                            <a href="/Customer/KhachHangDetail?id=@cus.id" class="btn btn-primary">Sản phẩm đã mua</a>
+                                            <button type="submit" class="btn btn-warning">Cập nhập</button>
+
+                                        </td>
+                                    </tr>
+                                </form>
                             }
 
 
