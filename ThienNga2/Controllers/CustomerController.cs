@@ -11,6 +11,22 @@ namespace ThienNga2.Controllers
     public class CustomerController : EntitiesAM
     {
         // GET: Customer
+        public String removeSpace() {
+         
+            foreach (tb_customer cus in am.tb_customer) {
+                try {
+                    if (cus.phonenumber.Contains(" ")) {
+                        while (cus.phonenumber.IndexOf(' ') >= 0) {
+                            cus.phonenumber = cus.phonenumber.Replace(' ', '');
+                            am.SaveChanges();
+                        }
+                    }
+                }
+                catch (Exception e) { }
+               
+            }
+            return "yay";
+        }
         public ActionResult Index()
         {
             ViewData["typleList"] = am.CustomerTypes.ToList();
