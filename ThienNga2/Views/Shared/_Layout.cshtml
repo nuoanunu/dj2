@@ -93,7 +93,7 @@
                                         <a href="/Warranty/HoaDonBaoHanh"><i class="fa fa-money"></i> Hóa đơn bảo hành </a>
                                     </li>
                                 }
-                                @if (User.IsInRole("Admin") || User.IsInRole("Kích Hoạt bảo Hành") || User.IsInRole("Nhân Viên Quản Lý Sửa Chữa"))
+                                @if (User.IsInRole("Admin") || User.IsInRole("Kích Hoạt bảo Hành") )
                                 {
                                     <li>
                                         <a href="/KickHoatBaoHanh"><i class="fa fa-edit"></i> Kích hoạt bảo hành </a>
