@@ -430,32 +430,7 @@ namespace ThienNga2.Controllers
 
             return View("ChinhSuaIMEI");
         }
-        public ActionResult ListAll()
-        {
-            try
-            {
-                int searchType = 1;
-                if (searchType == 1)
-                {
-                    tb_warranty war = am.tb_warranty.SqlQuery("SELECT * FROM tb_warranty where warrantyID='" + code + "'").FirstOrDefault();
-                    ViewData["item"] = war.item;
-                }
-                else if (searchType == 2)
-                {
 
-                }
-                else if (searchType == 3) { }
-                else if (searchType == 4) { }
-                else if (searchType == 5) { }
-                ViewData["dsnkh"] = am.CustomerTypes.ToList();
-            }
-            catch (Exception e)
-            {
-
-            }
-
-            return View("ChinhSuaIMEI");
-        }
         public ActionResult DeleteIMEI(int id)
         {
             tb_warranty tb = am.tb_warranty.Find(id);
