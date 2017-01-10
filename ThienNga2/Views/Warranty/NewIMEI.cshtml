@@ -101,38 +101,38 @@
             <div class="x_content">
                 <br>
                 <div class="form-group">
-                    <label class="control-label col-md-4 col-sm-3 col-xs-12" for="first-name">
+                    <label class="control-label col-md-6 col-sm-3 col-xs-12" for="first-name">
                         Tên
                     </label>
-                    <div class="col-md-8 col-sm-6 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
                         @Html.TextBoxFor(model => model.tb_customer.customerName)
                     </div>
                 </div>
                 <br/>
                 <div class="form-group">
-                    <label class="control-label col-md-4 col-sm-3 col-xs-12" for="last-name">
-                        Số điện thoại(ko có dấu "." và khoảng trắng) <span class="required">*</span>
+                    <label class="control-label col-md-6 col-sm-3 col-xs-12" for="last-name">
+                        Số điện thoại <small>(ko có dấu "." và khoảng trắng)</small> <span class="required">*</span>
                     </label>
-                    <div class="col-md-8 col-sm-6 col-xs-12">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
                         @Html.TextBoxFor(model => model.tb_customer.phonenumber )
                     </div>
                 </div>
                 <br/>
                 <div class="form-group">
-                    <label class="control-label col-md-4 col-sm-3 col-xs-12" for="last-name">
+                    <label class="control-label col-md-6 col-sm-3 col-xs-12" for="last-name">
                         Địa chỉ giao hàng <span class="required">*</span>
                     </label>
-                    <div class="col-md-8 col-sm-6 col-xs-12">
+                    <div class="col-md-6 col-sm-9 col-xs-12">
                         @Html.TextBoxFor(model => model.tb_customer.address)
                     </div>
                 </div>
 
                 <br />
                 <div class="form-group">
-                    <label class="control-label col-md-4 col-sm-3 col-xs-12" for="last-name">
+                    <label class="control-label col-md-6 col-sm-3 col-xs-12" for="last-name">
                         Nhóm khách <span class="required">*</span>
                     </label>
-                    <div class="col-md-8 col-sm-6 col-xs-12">
+                    <div class="col-md-6 col-sm-9 col-xs-12">
                 
                         <select name="tb_customer.Type" id="tb_customer_Type">
                             @foreach (CustomerType type in (List<CustomerType>)ViewData["dsnkh"])
