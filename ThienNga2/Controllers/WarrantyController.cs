@@ -347,6 +347,11 @@ namespace ThienNga2.Controllers
 
                     list[i].itemID = item.id;
                     if (list[i].description == null) list[i].description = " ";
+                    String tempIMEI = list[i].warrantyID.Trim();
+                    while (tempIMEI.IndexOf(' ') >= 0) {
+                        tempIMEI = tempIMEI.Replace(" ", "");
+                    }
+                    list[i].warrantyID = tempIMEI;
                     am.tb_warranty.Add(list[i]);
                     am.SaveChanges();
                 }
