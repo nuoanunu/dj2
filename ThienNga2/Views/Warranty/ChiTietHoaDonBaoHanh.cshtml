@@ -227,47 +227,47 @@
                                                 if ((Boolean)fee.active)
                                                 {
                                                     String color = "#ffffff";
-                                                <tr>
-                                                    <td class="tdproductSKU" id="@(fee.id + "sku")">@fee.productSKU.Trim()</td>
-                                                    <td id="@(fee.id + "name")"></td>
-                                                    <td>
-                                                        @fee.quantity
-                                                    </td>
-                                                    <td>
-                                                        @fee.fixingfee.ToString("N")
-                                                    </td>
-                                                    @if (fee.active != null)
-                                                    {
-                                                        if ((Boolean)fee.active)
+                                                    <tr>
+                                                        <td class="tdproductSKU" id="@(fee.id + "sku")">@fee.productSKU.Trim()</td>
+                                                        <td id="@(fee.id + "name")"></td>
+                                                        <td>
+                                                            @fee.quantity
+                                                        </td>
+                                                        <td>
+                                                            @fee.fixingfee.ToString("N")
+                                                        </td>
+                                                        @if (fee.active != null)
                                                         {
+                                                            if ((Boolean)fee.active)
+                                                            {
 
-                                                            <td align="left">
+                                                                <td align="left">
+                                                                    @using (Html.BeginForm("XoaFee", "Warranty"))
+                                                                    {
+                                                                        <input type="hidden" name="feeID" value="@fee.id" />
+                                                                        <input type="hidden" name="activitiesID" value="@act.id" />
+                                                                        <input type="submit" name="Xóa" value="Xóa" />
+                                                                    }
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td bgcolor="@color"> Đã xóa</td>
+                                                            }
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="text-left">
                                                                 @using (Html.BeginForm("XoaFee", "Warranty"))
                                                                 {
                                                                     <input type="hidden" name="feeID" value="@fee.id" />
-                                                                    <input type="hidden" name="activitiesID" value="@act.id" />
+                                                                    <input type="hidden" name="activitiesID" value="@fee.tb_warranty_activities.id" />
                                                                     <input type="submit" name="Xóa" value="Xóa" />
                                                                 }
                                                             </td>
                                                         }
-                                                        else
-                                                        {
-                                                            <td bgcolor="@color"> Đã xóa</td>
-                                                        }
-
-                                                    }
-                                                    else
-                                                    {
-                                                        <td class="text-left">
-                                                            @using (Html.BeginForm("XoaFee", "Warranty"))
-                                                            {
-                                                                <input type="hidden" name="feeID" value="@fee.id" />
-                                                                <input type="hidden" name="activitiesID" value="@fee.tb_warranty_activities.id" />
-                                                                <input type="submit" name="Xóa" value="Xóa" />
-                                                            }
-                                                        </td>
-                                                    }
-                                                </tr>
+                                                    </tr>
                                                 }
                                             }
 
@@ -295,7 +295,7 @@
 
                                         </tbody>
                                     </table>
-                               
+
                                 </div>
                             </div>
 
@@ -324,32 +324,35 @@
                                         <tbody>
                                             @foreach (warrantyActivityFixingFee fee in act.warrantyActivityFixingFees)
                                             {
-                                                <tr>
-                                                    <td>
-                                                        @fee.FixDetail
-                                                    </td>
-                                                    <td>
-                                                        @fee.fee.ToString("N")
-                                                    </td>
-                                                    @if ((bool)fee.active)
-                                                    {
+                                                if ((bool)fee.active)
+                                                {
+                                                    <tr>
                                                         <td>
+                                                            @fee.FixDetail
+                                                        </td>
+                                                        <td>
+                                                            @fee.fee.ToString("N")
+                                                        </td>
+                                                        @if ((bool)fee.active)
+                                                        {
+                                                            <td>
 
-                                                            @using (Html.BeginForm("XoaFixingFee", "Warranty"))
-                                                            {
-                                                                <input type="hidden" name="feeID" value="@fee.id" />
-                                                                <input type="hidden" name="activitiesID" value="@fee.tb_warranty_activities.id" />
-                                                                <input type="submit" name="Xóa" value="Xóa" />
-                                                            }
-                                                        </td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td>
-                                                            Đã Xóa
-                                                        </td>
-                                                    }
-                                                </tr>
+                                                                @using (Html.BeginForm("XoaFixingFee", "Warranty"))
+                                                                {
+                                                                    <input type="hidden" name="feeID" value="@fee.id" />
+                                                                    <input type="hidden" name="activitiesID" value="@fee.tb_warranty_activities.id" />
+                                                                    <input type="submit" name="Xóa" value="Xóa" />
+                                                                }
+                                                            </td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>
+                                                                Đã Xóa
+                                                            </td>
+                                                        }
+                                                    </tr>
+                                                }
                                             }
                                             @using (Html.BeginForm("AddFixingFee", "Warranty"))
                                             {
