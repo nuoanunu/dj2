@@ -94,19 +94,14 @@
                                     </td>
                                     @if (request.status == 1) {
                                         <td>
-                                            <a class="btn btn-warning" href="/Request/AllowRequest?id=@request.id"> Cho phép mượn</a>
+                                            <a class="btn btn-warning" href="/Request/AllowRequest?id=@request.id"> Xác nhận đã giao</a>
                                         </td>
                                     }
-                                    else if (request.status == 2)
+                               
+                                    else if (request.status == 3)
                                     {
                                         <td>
-                                            <a class="btn btn-danger" href="/Request/Given?id=@request.id"> Xác nhận đã giao</a>
-                                        </td>
-                                    }
-                                    else if (request.status == 4)
-                                    {
-                                        <td>
-                                            <a class="btn btn-success" href="/Request/ItemBack?id=@request.id"> Xác nhận đã về kho</a>
+                                            <a class="btn btn-success" href="/Request/returned?id=@request.id"> Xác nhận đã về kho</a>
                                         </td>
                                     }
                                 </tr>
