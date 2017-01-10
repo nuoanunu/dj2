@@ -189,7 +189,7 @@
                     {
                         <tr id="trNo@(i)">
                             <td>@Html.TextBoxFor(model => model.tb_warranty[i].warrantyID)</td>
-                            <td>@Html.TextBoxFor(model => model.tb_warranty[i].duration, new { type = "number" })</td>
+                            <td>@Html.TextBoxFor(model => model.tb_warranty[i].duration, new { type = "number"; @Min= "0" })</td>
                             <td>@Html.TextBoxFor(model => model.tb_warranty[i].description)</td>
                             <td>@Html.CheckBoxFor(model => model.tb_warranty[i].MaChinh)</td>
                         </tr>
