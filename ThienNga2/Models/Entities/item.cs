@@ -35,9 +35,9 @@ namespace ThienNga2.Models.Entities
         public virtual CustomerType CustomerType1 { get; set; }
         public virtual order order { get; set; }
         public virtual tb_inventory_name tb_inventory_name { get; set; }
-        public virtual tb_product_detail tb_product_detail { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual List<tb_warranty> tb_warranty { get; set; }
+        public virtual tb_product_detail tb_product_detail { get; set; }
         public virtual tb_customer tb_customer { get; set; }
     }
 }

@@ -54,7 +54,7 @@ namespace ThienNga2.Controllers
                     {
                         tuple.items[index].chietKhauPhanTram = float.Parse(orddetail.ChietKhauPhanTram);
                         tuple.items[index].chietKhauTrucTiepS =(orddetail.ChietKhauTrucTiep);
-                        tb_product_detail dt = am.ThienNga_FindProduct2(orddetail.productDetailID).First();
+                        tb_product_detail dt = am.tb_product_detail.Where(u => u.producFactoryID.Equals(orddetail.productDetailID) || u.productStoreID.Equals(orddetail.productDetailID)).FirstOrDefault();
                         tuple.items[index].chietKhauTrucTiepS = Convert.ToDecimal(tuple.items[index].chietKhauTrucTiep).ToString("#,##0");
                         tuple.items[index].SKU = orddetail.productDetailID;
                         if (orddetail.QuiCach != null)
@@ -202,7 +202,7 @@ namespace ThienNga2.Controllers
 
                     //Generate Invoice (Bill) Header.
                     sb.Append("<table width='100%' cellspacing='0' cellpadding='2'>");
-                    sb.Append("<tr><td align='center'  colspan = '2'><b>PHIẾU BÁO GIÁ</b></td></tr>");
+                    sb.Append("<tr><td align='center'  colspan = '2'><b style='font-size:30px'>PHIẾU BÁO GIÁ</b></td></tr>");
                     sb.Append("<tr><td colspan = '2'></td></tr>");
                     sb.Append("<tr><td><b>Mã bill: </b>");
                     sb.Append(MaBill);
@@ -210,6 +210,9 @@ namespace ThienNga2.Controllers
                     sb.Append(DateTime.Now.AddHours(7));
                     sb.Append(" </td></tr>");
                     sb.Append("<tr><td colspan = '2'><b>Tên khách </b>");
+                    sb.Append(cusname);
+                    sb.Append("</td></tr>");
+                    sb.Append("<tr><td colspan = '2'><b>Mã số thuế(nếu có) </b>");
                     sb.Append(cusname);
                     sb.Append("</td></tr>");
                     sb.Append("<tr><td colspan = '2'><b>SDT </b>");

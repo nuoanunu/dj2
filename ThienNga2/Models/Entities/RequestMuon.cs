@@ -28,7 +28,7 @@ namespace ThienNga2.Models.Entities
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual RequestStatu RequestStatu { get; set; }
-        public virtual tb_product_detail tb_product_detail { get; set; }
         public virtual tb_warranty_activities tb_warranty_activities { get; set; }
+        public virtual tb_product_detail tb_product_detail { get; set; }
     }
 }

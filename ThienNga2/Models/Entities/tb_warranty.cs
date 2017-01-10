@@ -17,7 +17,7 @@ namespace ThienNga2.Models.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tb_warranty()
         {
-            this.tb_warranty_activities = new HashSet<tb_warranty_activities>();
+            this.tb_warranty_activities = new List<tb_warranty_activities>();
         }
     
         public int id { get; set; }
@@ -31,6 +31,6 @@ namespace ThienNga2.Models.Entities
     
         public virtual item item { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tb_warranty_activities> tb_warranty_activities { get; set; }
+        public virtual List<tb_warranty_activities> tb_warranty_activities { get; set; }
     }
 }

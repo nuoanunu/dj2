@@ -258,6 +258,11 @@
     <Property Name="minThresHold" Type="int" />
     <Property Name="addedDate" Type="datetime" />
     <Property Name="lastUpdate" Type="datetime" />
+    <Property Name="Quicach" Type="nvarchar" MaxLength="30" />
+    <Property Name="ExtraField1" Type="nvarchar" MaxLength="128" />
+    <Property Name="ExtraField2" Type="nvarchar" MaxLength="128" />
+    <Property Name="ExtraField3" Type="nvarchar" MaxLength="128" />
+    <Property Name="ExtraField4" Type="nvarchar" MaxLength="128" />
   </EntityType>
   <EntityType Name="tb_warranty">
     <Key>

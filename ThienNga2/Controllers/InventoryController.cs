@@ -63,9 +63,9 @@ namespace ThienNga2.Areas.Admin.Controllers
                     {
                         code = code.Substring(code.IndexOf("StoreSKU") + 10, code.Length - code.IndexOf("StoreSKU") - 10);
                     }
-                    tb_product_detail t = am.ThienNga_FindProduct2(code).FirstOrDefault();
+                    tb_product_detail t = am.tb_product_detail.Where(u=>u.productStoreID.Equals(code) || u.producFactoryID.Equals(code)).FirstOrDefault();
                     if (t == null) return View("Inventory");
-                    ViewData["productdetail"] = am.ThienNga_FindProduct2(code).FirstOrDefault();
+                    ViewData["productdetail"] = t;
                     ViewData["dsspdt"] = am.ThienNga_checkkho2(t.productStoreID).ToList();
                 }
             }
@@ -103,7 +103,7 @@ namespace ThienNga2.Areas.Admin.Controllers
              
             System.Diagnostics.Debug.WriteLine(" no dayu ne " + invID);
 
-            ViewData["productdetail"] = am.ThienNga_FindProduct2(code).FirstOrDefault();
+            ViewData["productdetail"] = am.tb_product_detail.Where(u => u.productStoreID.Equals(code) || u.producFactoryID.Equals(code)).FirstOrDefault();
 
             List<inventory> lst = am.ThienNga_checkkho2(code).ToList();
             System.Diagnostics.Debug.WriteLine(" no day ne " + invID + " no day ne" + code + "SIZE NE " + lst.Count() ) ;
@@ -124,7 +124,7 @@ namespace ThienNga2.Areas.Admin.Controllers
                 code = code.Substring(code.IndexOf("StoreSKU") + 10, code.Length - code.IndexOf("StoreSKU") - 10);
             }
 
-            ViewData["productdetail"] = am.ThienNga_FindProduct2(code).FirstOrDefault();
+            ViewData["productdetail"] = am.tb_product_detail.Where(u => u.productStoreID.Equals(code) || u.producFactoryID.Equals(code)).FirstOrDefault();
             List<inventory> lst = am.ThienNga_checkkho2(code).ToList();
             foreach (inventory i in lst)
             {
@@ -166,7 +166,7 @@ namespace ThienNga2.Areas.Admin.Controllers
                 t.quantity = t.quantity + fixkho.newadd;
                 am.SaveChanges();
             }
-            ViewData["productdetail"] = am.ThienNga_FindProduct2(fixkho.inven.productFactoryCode).FirstOrDefault();
+            ViewData["productdetail"] = am.tb_product_detail.Where(u=>u.productStoreID.Equals(fixkho.inven.productFactoryCode)).FirstOrDefault();
             ViewData["inventoryDetail"] = am.ThienNga_checkkho2(fixkho.inven.productFactoryCode).ToList();
             return RedirectToAction("Search", "Inventory", new { code = t.productStoreCode+"" });
           
@@ -183,7 +183,8 @@ namespace ThienNga2.Areas.Admin.Controllers
                 t.DateOrdered = date;
                 am.SaveChanges();
             }
-            ViewData["productdetail"] = am.ThienNga_FindProduct2(fixkho.inven.productFactoryCode).FirstOrDefault();
+           
+            ViewData["productdetail"] = am.tb_product_detail.Where(u => u.productStoreID.Equals(fixkho.inven.productFactoryCode) || u.producFactoryID.Equals(fixkho.inven.productFactoryCode)).FirstOrDefault();
             ViewData["inventoryDetail"] = am.ThienNga_checkkho2(fixkho.inven.productFactoryCode).ToList();
             return RedirectToAction("Search", "Inventory", new { code = t.productStoreCode + "" });
 
@@ -196,7 +197,7 @@ namespace ThienNga2.Areas.Admin.Controllers
             if (fixkho.newadd > t.quantity) return RedirectToAction("Search", "Inventory", new { code = t.productStoreCode + "" });
             t.quantity = t.quantity - fixkho.newadd;
             am.SaveChanges();
-            ViewData["productdetail"] = am.ThienNga_FindProduct2(fixkho.inven.productFactoryCode).FirstOrDefault();
+            ViewData["productdetail"] = am.tb_product_detail.Where(u => u.productStoreID.Equals(fixkho.inven.productFactoryCode) || u.producFactoryID.Equals(fixkho.inven.productFactoryCode)).FirstOrDefault();
             ViewData["inventoryDetail"] = am.ThienNga_checkkho2(fixkho.inven.productFactoryCode).ToList();
             return RedirectToAction("Search", "Inventory", new { code = t.productStoreCode + "" });
         }
@@ -212,7 +213,7 @@ namespace ThienNga2.Areas.Admin.Controllers
             t.quantity = t.quantity - fixkho.newadd;
             t2.quantity = t2.quantity + fixkho.newadd;
             am.SaveChanges();
-            ViewData["productdetail"] = am.ThienNga_FindProduct2(fixkho.inven.productFactoryCode).FirstOrDefault();
+            ViewData["productdetail"] = am.tb_product_detail.Where(u => u.productStoreID.Equals(fixkho.inven.productFactoryCode) || u.producFactoryID.Equals(fixkho.inven.productFactoryCode)).FirstOrDefault();
             ViewData["inventoryDetail"] = am.ThienNga_checkkho2(fixkho.inven.productFactoryCode).ToList();
             return RedirectToAction("Search", "Inventory", new { code = t.productStoreCode + "" });
         }

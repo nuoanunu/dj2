@@ -311,22 +311,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="tb_product_detail">
-      <EntityTypeMapping TypeName="ThienNgaDatabaseModel.tb_product_detail">
-        <MappingFragment StoreEntitySet="tb_product_detail">
-          <ScalarProperty Name="lastUpdate" ColumnName="lastUpdate" />
-          <ScalarProperty Name="addedDate" ColumnName="addedDate" />
-          <ScalarProperty Name="minThresHold" ColumnName="minThresHold" />
-          <ScalarProperty Name="description" ColumnName="description" />
-          <ScalarProperty Name="cateID" ColumnName="cateID" />
-          <ScalarProperty Name="price" ColumnName="price" />
-          <ScalarProperty Name="productName" ColumnName="productName" />
-          <ScalarProperty Name="productStoreID" ColumnName="productStoreID" />
-          <ScalarProperty Name="producFactoryID" ColumnName="producFactoryID" />
-          <ScalarProperty Name="id" ColumnName="id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="tb_warrnaty_status">
       <EntityTypeMapping TypeName="ThienNgaDatabaseModel.tb_warrnaty_status">
         <MappingFragment StoreEntitySet="tb_warrnaty_status">
@@ -510,6 +494,27 @@
           <ScalarProperty Name="end_ip_address" ColumnName="end_ip_address" />
           <ScalarProperty Name="start_ip_address" ColumnName="start_ip_address" />
           <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_product_detail">
+      <EntityTypeMapping TypeName="ThienNgaDatabaseModel.tb_product_detail">
+        <MappingFragment StoreEntitySet="tb_product_detail">
+          <ScalarProperty Name="ExtraField4" ColumnName="ExtraField4" />
+          <ScalarProperty Name="ExtraField3" ColumnName="ExtraField3" />
+          <ScalarProperty Name="ExtraField2" ColumnName="ExtraField2" />
+          <ScalarProperty Name="ExtraField1" ColumnName="ExtraField1" />
+          <ScalarProperty Name="Quicach" ColumnName="Quicach" />
+          <ScalarProperty Name="lastUpdate" ColumnName="lastUpdate" />
+          <ScalarProperty Name="addedDate" ColumnName="addedDate" />
+          <ScalarProperty Name="minThresHold" ColumnName="minThresHold" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="cateID" ColumnName="cateID" />
+          <ScalarProperty Name="price" ColumnName="price" />
+          <ScalarProperty Name="productName" ColumnName="productName" />
+          <ScalarProperty Name="productStoreID" ColumnName="productStoreID" />
+          <ScalarProperty Name="producFactoryID" ColumnName="producFactoryID" />
           <ScalarProperty Name="id" ColumnName="id" />
         </MappingFragment>
       </EntityTypeMapping>

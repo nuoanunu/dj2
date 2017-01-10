@@ -32,12 +32,17 @@ namespace ThienNga2.Models.Entities
         public Nullable<int> minThresHold { get; set; }
         public Nullable<System.DateTime> addedDate { get; set; }
         public Nullable<System.DateTime> lastUpdate { get; set; }
+        public string Quicach { get; set; }
+        public string ExtraField1 { get; set; }
+        public string ExtraField2 { get; set; }
+        public string ExtraField3 { get; set; }
+        public string ExtraField4 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<item> items { get; set; }
-        public virtual tb_cate tb_cate { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequestMuon> RequestMuons { get; set; }
+        public virtual tb_cate tb_cate { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tb_warranty_activities> tb_warranty_activities { get; set; }
     }

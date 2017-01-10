@@ -76,13 +76,13 @@ namespace ThienNga2.Controllers
                     {
                         code = code.Substring(code.IndexOf("StoreSKU") + 10, code.Length - code.IndexOf("StoreSKU") - 10);
                     }
-                    tb_product_detail t = am.ThienNga_FindProduct2(code).FirstOrDefault();
+                    tb_product_detail t = am.tb_product_detail.Where(u => u.productStoreID.Equals(code) || u.producFactoryID.Equals(code)).FirstOrDefault();
                     if (t == null)
                     {
                         ViewData["allInvenName"] = am.tb_inventory_name.ToList();
                         return View("NewProductItem");
                     }
-                    ViewData["productdetail"] = am.ThienNga_FindProduct2(code).FirstOrDefault();
+                    ViewData["productdetail"] = am.tb_product_detail.Where(u => u.productStoreID.Equals(code) || u.producFactoryID.Equals(code)).FirstOrDefault();
                     ViewData["dsspdt"] = am.ThienNga_checkkho2(t.productStoreID).ToList();
                 }
             }
@@ -156,7 +156,7 @@ namespace ThienNga2.Controllers
             allname = am.ThienNga_FindProductName2("").ToList();
             foreach (String e in allname)
             {
-                tb_product_detail t = am.ThienNga_FindProduct2(e).FirstOrDefault();
+                tb_product_detail t = am.tb_product_detail.Where(u => u.productStoreID.Equals(e) || u.producFactoryID.Equals(e)).FirstOrDefault();
 
                 allname.Add(t.productStoreID);
             }
@@ -167,7 +167,7 @@ namespace ThienNga2.Controllers
             {
                 if (code.Length > 0)
                 {
-                    tb_product_detail detail = am.ThienNga_FindProduct2(code).FirstOrDefault();
+                    tb_product_detail detail = am.tb_product_detail.Where(u => u.productStoreID.Equals(code) || u.producFactoryID.Equals(code)).FirstOrDefault();
                     if (detail != null)
                     {
                         productView vi = new productView();
@@ -361,7 +361,7 @@ namespace ThienNga2.Controllers
                         if (ao.SKU != null)
                         {
                             if (ao.SKU.Trim().Length > 0)
-                                pd = am.ThienNga_FindProduct2(ao.SKU).FirstOrDefault();
+                                pd = am.tb_product_detail.Where(u => u.productStoreID.Equals(ao.SKU) || u.producFactoryID.Equals(ao.SKU)).FirstOrDefault();
                         }
 
                         if (pd != null)

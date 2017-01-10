@@ -169,12 +169,12 @@ namespace ThienNga2.Controllers
                     {
                         code = code.Substring(code.IndexOf("StoreSKU") + 10, code.Length - code.IndexOf("StoreSKU") - 10);
                     }
-                    tb_product_detail t = am.ThienNga_FindProduct2(code).FirstOrDefault();
+                    tb_product_detail t = am.tb_product_detail.Where(u=>u.producFactoryID.Equals(code) || u.productStoreID.Equals(code)) .FirstOrDefault();
                     if (t == null) {
                         ViewData["allInvenName"] = am.tb_inventory_name.ToList();
                         return View("XemThongTin");
                     } 
-                    ViewData["productdetail"] = am.ThienNga_FindProduct2(code).FirstOrDefault();
+                    ViewData["productdetail"] = am.tb_product_detail.Where(u => u.producFactoryID.Equals(code) || u.productStoreID.Equals(code)).FirstOrDefault();
                     ViewData["dsspdt"] = am.ThienNga_checkkho2(t.productStoreID).ToList();
                 }
             }

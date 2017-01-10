@@ -20,7 +20,6 @@
         <EntityTypeShape EntityType="ThienNgaDatabaseModel.role" Width="1.5" PointX="0.75" PointY="2" />
         <EntityTypeShape EntityType="ThienNgaDatabaseModel.tb_cate" Width="1.5" PointX="3" PointY="6" />
         <EntityTypeShape EntityType="ThienNgaDatabaseModel.tb_inventory_name" Width="1.5" PointX="5.25" PointY="9.125" />
-        <EntityTypeShape EntityType="ThienNgaDatabaseModel.tb_product_detail" Width="1.5" PointX="5.25" PointY="5.375" />
         <EntityTypeShape EntityType="ThienNgaDatabaseModel.tb_warrnaty_status" Width="1.5" PointX="9.75" PointY="11" />
         <EntityTypeShape EntityType="ThienNgaDatabaseModel.temp" Width="1.5" PointX="9.75" PointY="15.625" />
         <EntityTypeShape EntityType="ThienNgaDatabaseModel.warrantyActivityFee" Width="1.5" PointX="14.25" PointY="9.875" />
@@ -32,9 +31,7 @@
         <AssociationConnector Association="ThienNgaDatabaseModel.FK_inventory_tb_inventory_name" />
         <AssociationConnector Association="ThienNgaDatabaseModel.FK_item_order" />
         <AssociationConnector Association="ThienNgaDatabaseModel.FK_item_tb_inventory_name" />
-        <AssociationConnector Association="ThienNgaDatabaseModel.FK_item_tb_product_detail" />
         <AssociationConnector Association="ThienNgaDatabaseModel.FK_orderDetail_order" />
-        <AssociationConnector Association="ThienNgaDatabaseModel.FK_tb_product_detail_tb_cate" />
         <AssociationConnector Association="ThienNgaDatabaseModel.AspNetUserRoles" />
         <AssociationConnector Association="ThienNgaDatabaseModel.FK_log_AspNetUsers" />
         <EntityTypeShape EntityType="ThienNgaDatabaseModel.NhanVien" Width="1.5" PointX="12" PointY="0.75" />
@@ -61,14 +58,17 @@
         <EntityTypeShape EntityType="ThienNgaDatabaseModel.RequestMuon" Width="1.5" PointX="20.875" PointY="4.125" />
         <AssociationConnector Association="ThienNgaDatabaseModel.FK_RequestMuon_AspNetUsers" />
         <AssociationConnector Association="ThienNgaDatabaseModel.FK_RequestMuon_RequestStatus1" />
-        <AssociationConnector Association="ThienNgaDatabaseModel.FK_RequestMuon_tb_product_detail" />
         <AssociationConnector Association="ThienNgaDatabaseModel.FK_RequestMuon_tb_warranty_activities" />
         <EntityTypeShape EntityType="ThienNgaDatabaseModel.database_firewall_rules" Width="1.5" PointX="3.375" PointY="15.75" />
+        <EntityTypeShape EntityType="ThienNgaDatabaseModel.tb_product_detail" Width="1.5" PointX="5.25" PointY="3.5" />
+        <AssociationConnector Association="ThienNgaDatabaseModel.FK_item_tb_product_detail" />
+        <AssociationConnector Association="ThienNgaDatabaseModel.FK_RequestMuon_tb_product_detail" />
+        <AssociationConnector Association="ThienNgaDatabaseModel.FK_tb_product_detail_tb_cate" />
+        <AssociationConnector Association="ThienNgaDatabaseModel.FK_tb_warranty_activities_tb_product_detail" />
         <EntityTypeShape EntityType="ThienNgaDatabaseModel.tb_customer" Width="1.5" PointX="3" PointY="9" />
         <AssociationConnector Association="ThienNgaDatabaseModel.FK_tb_customer_CustomerType" />
         <AssociationConnector Association="ThienNgaDatabaseModel.FK_item_tb_customer" />
         <AssociationConnector Association="ThienNgaDatabaseModel.FK_order_tb_customer" />
-        <AssociationConnector Association="ThienNgaDatabaseModel.FK_tb_warranty_activities_tb_product_detail" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
