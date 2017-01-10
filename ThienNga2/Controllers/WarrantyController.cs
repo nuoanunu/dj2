@@ -339,6 +339,7 @@ namespace ThienNga2.Controllers
                 item.orderID = order.id;
                 item.inventoryID = 1;
                 item.tb_warranty = null;
+                item.Verified = true;
                 am.items.Add(item);
                 am.SaveChanges();
                 for (int i = 0; i < list.Count(); i++)
