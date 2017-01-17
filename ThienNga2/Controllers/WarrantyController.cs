@@ -215,15 +215,15 @@ namespace ThienNga2.Controllers
 
                     if (role != null)
                     {
-                        user.AspNetRoles.ToList().Remove(role);
+                        user.AspNetRoles.Remove(role);
                         am.SaveChanges();
-                        return Json(new { result = "success" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { result = "Bỏ quyền thành công" }, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
                         user.AspNetRoles.Add(rolee);
                         am.SaveChanges();
-                        return Json(new { result = "success" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { result = "Gán quyền thành công" }, JsonRequestBehavior.AllowGet);
                     }
 
 
