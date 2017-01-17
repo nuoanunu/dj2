@@ -51,9 +51,15 @@ namespace ThienNga2.Controllers
             }
             return View("WarrantyCheck");
         }
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Admin Hà Nội,Nhân Viên Quản Lý Sửa Chữa")]
         public ActionResult HoaDonBaoHanh()
         {
+            if (User.IsInRole("Nhân Viên kỹ thuật")) {
+                String userID = User.Identity.GetUserId();
+                ViewData["AllWarranty"] = am.tb_warranty_activities.Where(u => u.status == 6 && u.empFixer.Equals(userID) ).OrderByDescending(u => u.finishFixingDate).ToList();
 
+            }
+            else
             ViewData["AllWarranty"] = am.tb_warranty_activities.Where(u => u.status == 6).OrderByDescending(u => u.finishFixingDate).ToList();
 
 
