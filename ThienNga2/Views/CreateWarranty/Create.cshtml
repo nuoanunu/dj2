@@ -278,7 +278,7 @@
 
                                     </td>
                                     <td>
-                                        @Html.EditorFor(model => model.HangBaoHanhs[i].Quantity, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                                        @Html.EditorFor(model => model.HangBaoHanhs[i].Quantity, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" ,@Min=0 } })
 
                                     </td>
                                     <td>
