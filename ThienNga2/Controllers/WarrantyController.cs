@@ -31,7 +31,7 @@ namespace ThienNga2.Controllers
             if (User.IsInRole("Nhân Viên kỹ thuật") && !User.IsInRole("Nhân Viên Quản Lý Sửa Chữa"))
             {
                 String uid = User.Identity.GetUserId();
-                ViewData["AllWarranty"] = am.tb_warranty_activities.Where(ui => ui.empFixer.Equals(uid)).ToList();
+                ViewData["AllWarranty"] = am.tb_warranty_activities.Where(ui => ui.empFixer.Equals(uid) || ui.empFixer == null).ToList();
                 System.Diagnostics.Debug.WriteLine("CC gi vay : " + uid);
                 System.Diagnostics.Debug.WriteLine("CC gi vay : " + am.tb_warranty_activities.Where(ui => ui.empFixer.Equals(uid) || ui.empFixer==null).ToList().Count());
                 List<SelectListItem> list = new List<SelectListItem>();
