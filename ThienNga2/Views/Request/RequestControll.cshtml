@@ -84,7 +84,7 @@
                                         <a href="/Warranty/ActivityDetail?id=@request.warrantyID"> @request.tb_warranty_activities.CodeBaoHanh</a>
                                     </td>
                                     <td>
-                                       @request.RequestStatu.name
+                                        @request.RequestStatu.name
                                     </td>
                                     <td>
                                         @request.recieveDate
@@ -92,17 +92,31 @@
                                     <td>
                                         @request.returnDate
                                     </td>
-                                    @if (request.status == 1) {
+                                    @if (request.status == 1)
+                                    {
                                         <td>
-                                            <a class="btn btn-warning" href="/Request/AllowRequest?id=@request.id"> Xác nhận đã giao</a>
+                                            <form class="allowForm" action="/Request/AllowRequest">
+                                                <input type="hidden" name="id" value="@request.id" />
+                                                <button class="btn btn-warning" type="submit">Xác nhận đã giao</button>
+                                            </form>
+                                            <form id="allowForm" action="/Request/DeleteRequest">
+                                                <input type="hidden"  name="id"value="@request.id" />
+                                                <button class="btn btn-warning" type="submit">Xác nhận đã giao</button>
+                                            </form>
                                         </td>
+
                                     }
-                               
+
                                     else if (request.status == 3)
                                     {
                                         <td>
-                                            <a class="btn btn-success" href="/Request/returned?id=@request.id"> Xác nhận đã về kho</a>
+                                            <form class="returnForm" action="/Request/returned">
+                                                <input type="hidden" name="id" value="@request.id" />
+                                                <button class="btn btn-success" type="submit">Xác nhận đã về kho</button>
+                                            </form>
+
                                         </td>
+                                 
                                     }
                                 </tr>
                             }
@@ -117,4 +131,14 @@
         </div>
     </div>
 </div>
+<script>
+    $('.allowForm').submit(function () {
+        var c = confirm("Bạn chắc chứ?");
+        return c; //you can just return c because it will be true or false
+    });
+    $('.returnForm').submit(function () {
+        var c = confirm("Bạn chắc chứ?");
+        return c; //you can just return c because it will be true or false
+    });
+</script>
 </html>

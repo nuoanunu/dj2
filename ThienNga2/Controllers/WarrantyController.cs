@@ -32,7 +32,8 @@ namespace ThienNga2.Controllers
             {
                 String uid = User.Identity.GetUserId();
                 ViewData["AllWarranty"] = am.tb_warranty_activities.Where(ui => ui.empFixer.Equals(uid)).ToList();
-
+                System.Diagnostics.Debug.WriteLine("CC gi vay : " + uid);
+                System.Diagnostics.Debug.WriteLine("CC gi vay : " + am.tb_warranty_activities.Where(ui => ui.empFixer.Equals(uid)).ToList().Count());
                 List<SelectListItem> list = new List<SelectListItem>();
                 AspNetRole role = am.AspNetRoles.SqlQuery("SELECT * FROM AspNetRoles where  id='c58194a2-1502-4623-b549-00cea9250711'").FirstOrDefault();
                 List<AspNetUser> nhanviens = role.AspNetUsers.ToList();
@@ -242,6 +243,8 @@ namespace ThienNga2.Controllers
                 allname.Add(t.productStoreID);
             }
         }
+ 
+        [Authorize(Roles = "Admin,Tạo IMEI mới")]
         public ActionResult newImeiHand()
         {
             item item = new item();
@@ -1225,7 +1228,7 @@ namespace ThienNga2.Controllers
                         AspNetUser user = am.AspNetUsers.Find(User.Identity.GetUserId());
                         log.account = User.Identity.GetUserId();
                         log.date = DateTime.Now;
-                        log.action = user.FullName + " đã gửi yêu cầu mượn " + quantity + " sản phẩm " + productSKU[i];
+                        log.action = user.FullName + " đã gửi yêu cầu mượn " + quantity[i] + " sản phẩm " + productSKU[i];
                         log.warrantyActivitiesID = actID;
                         am.logs.Add(log);
                         am.SaveChanges();

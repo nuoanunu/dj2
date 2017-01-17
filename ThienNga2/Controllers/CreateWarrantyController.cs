@@ -90,15 +90,15 @@ namespace ThienNga2.Controllers
             if (name != null)
                 if (name.Trim().Length >= 1)
                 {
+                    name = name.Trim();
+                    tb_warranty lst = am.tb_warranty.Where(u => u.warrantyID.Equals(name)).FirstOrDefault();
                     System.Diagnostics.Debug.WriteLine("AAAAAAA " + name);
-                    List<tb_warranty> lst = am.tb_warranty.SqlQuery("SELECT * FROM dbo.tb_warranty WHERE warrantyID='" + name + "'").ToList();
                     JavaScriptSerializer serializer = new JavaScriptSerializer();
                     string result = "";
-                    System.Diagnostics.Debug.WriteLine("AAAAAAA " + lst.Count());
                     HoaDonBaoHanhCheck vi = new HoaDonBaoHanhCheck();
-                    if (lst.Count == 1)
+                    if (lst != null)
                     {
-                        tb_warranty war = lst.ElementAt(0);
+                        tb_warranty war = lst;
 
                         item detail = am.items.SqlQuery("SELECT * FROM dbo.item WHERE id=" + war.itemID ).FirstOrDefault();
                         if (detail != null)
@@ -112,8 +112,15 @@ namespace ThienNga2.Controllers
                             {
                                 vi.sepcial = 1;
                             }
-                            vi.nhomkhach = war.item.CustomerType1.GroupName;
-                            vi.maukhach = war.item.CustomerType1.Color;
+                            try {
+                                vi.nhomkhach = war.item.CustomerType1.GroupName;
+                                vi.maukhach = war.item.CustomerType1.Color;
+                            }
+                            catch (Exception e) {
+                                vi.nhomkhach = "GOLD MEMBER";
+                                vi.maukhach = "#fc8f02";
+                            }
+           
                             if (war.item.Verified != null) {
                                 if ((bool)war.item.Verified)
                                 {

@@ -54,9 +54,13 @@ namespace ThienNga2.Controllers
         public ActionResult DeactiveAccount(String id) {
             AspNetUser user =am.AspNetUsers.Find(id);
             user.UserName = user.UserName + "removedAccount";
+            foreach (AspNetRole role in am.AspNetRoles) {
+                role.AspNetUsers.Remove(user);
+            }
             am.SaveChanges();
             return RedirectToAction("Detail", new { id = id}) ;
         }
+
         public ActionResult ReactiveAccount(String id)
         {
             AspNetUser user = am.AspNetUsers.Find(id);

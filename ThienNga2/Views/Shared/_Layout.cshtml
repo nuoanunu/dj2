@@ -107,7 +107,7 @@
 
                                     </li>
                                     <li>
-                                        <a href="/Request/"><i class="fa fa-desktop"></i> Yêu cầu mượn sản phẩm</a>
+                                        <a href="/Request/"><i class="fa fa-shopping-bag"></i> Yêu cầu mượn sản phẩm</a>
 
                                     </li>
                                 }
@@ -125,6 +125,13 @@
 
                                     </li>
                                 }
+                                @if (User.IsInRole("Admin") || User.IsInRole("Tạo IMEI mới"))
+                                {
+                                    <li>
+                                        <a href="/Warranty/newImeiHand"><i class="fa fa-plus"></i> Tạo IMEI mới</a>
+                                    </li>
+                                }
+                         
                                 <li>
                                     <a href="/Product"><i class="fa fa-bug"></i> Tra cứu sản phẩm </a>
                                 </li>
