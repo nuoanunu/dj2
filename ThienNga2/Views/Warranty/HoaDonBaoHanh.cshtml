@@ -99,6 +99,12 @@
                                     <td>
                                         <a href="/Warranty/ActivityDetail?id=@(act.id)" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> Chi tiết </a>
                                         <a href="/Warranty/HoaDonDetail?id=@(act.id)" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> Xem hóa đơn </a>
+                                        <form action="/Warranty/ChangeStatus">
+                                            <input type="hidden" name="actid" value="@act.id" />
+                                            <input type="hidden" name="newstatus" value="7" />
+                                            <button class="btn btn-success no-print"> Hoàn tất hóa đơn </button>
+
+                                        </form>
                                     </td>
                                 </tr>
                             }

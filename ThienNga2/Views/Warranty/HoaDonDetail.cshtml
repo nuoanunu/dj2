@@ -72,9 +72,10 @@
             <script type="text/javascript" src="~/Content/js/flot/curvedLines.js"></script>
             <script type="text/javascript" src="~/Content/js/flot/jquery.flot.resize.js"></script>
             <style>
-                body {
+                body * {
                     background: white !important;
                     color: black;
+                    visibility: hidden;
                 }
 
                 table {
@@ -84,11 +85,27 @@
                 table, th {
                     border: 1px solid black;
                 }
+
+                #toPrintArea, #toPrintArea * {
+                    visibility: visible;
+                }
+
+                #toPrintArea {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                }
+
+                @@media print {
+                    .no-print, .no-print * {
+                        display: none !important;
+                    }
+                }
             </style>
         </head>
     </head>
     <body>
-        <div>
+        <div id="toPrintArea">
             <h1>Hóa đơn bảo hành</h1>
             <table border="0">
                 <tr>
@@ -106,7 +123,7 @@
                     </td>
                 </tr>
             </table>
-            <br/>
+            <br />
             <table>
                 <thead>
                     <tr>
@@ -140,8 +157,8 @@
                     @foreach (warrantyActivityFixingFee fee in act.warrantyActivityFixingFees)
                     {
                         <tr>
-                            
-                            <td colspan="3" >@fee.FixDetail</td>
+
+                            <td colspan="3">@fee.FixDetail</td>
                         </tr>
                         <tr>
                             <td align="right" colspan="3">
@@ -151,8 +168,14 @@
                     }
                 </tbody>
             </table>
+            <button class="btn btn-default no-print" onclick="window.print();"><i class="fa fa-print"></i> In </button>
+          <form action="/Warranty/ChangeStatus">
+              <input type="hidden" name="actid" value="@act.id" />
+              <input type="hidden" name="newstatus" value="7" />
+              <button class="btn btn-default no-print"> Hoàn tất hóa đơn </button>
+
+          </form>
         </div>
-        <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
 
     </body>
 </html>

@@ -26,28 +26,32 @@ namespace ThienNga2.Controllers
             float customerincrease = (float)(100f *Math.Floor(temp));
             ViewData["totalcustomer"] = am.tb_customer.Count();
             ViewData["customerincrease"] = (float)customerincrease;
-            
-            float temptotalrevenue = (float) am.orders.Where(u => u.date.Month == now.Month && u.date.Year == now.Year && u.aftervat==null).Sum(u => u.total);
-            temptotalrevenue = temptotalrevenue+(float)am.orders.Where(u => u.date.Month == now.Month && u.date.Year == now.Year && u.aftervat != null).Select(u => u.aftervat).DefaultIfEmpty(0).Sum();
-            float temptotalrevenuelastmonth = (float)am.orders.Where(u => u.date.Month == lastmonth.Month && u.date.Year == lastmonth.Year && u.aftervat == null).Sum(u => u.total);
-            temptotalrevenuelastmonth = temptotalrevenuelastmonth+(float)am.orders.Where(u => u.date.Month == lastmonth.Month && u.date.Year == lastmonth.Year && u.aftervat != null && u.aftervat > 0).Select(u => u.aftervat).DefaultIfEmpty(0).Sum();
-            ViewData["Revenue"] = temptotalrevenue;
-            if (temptotalrevenuelastmonth == 0)
-            {
-               ViewData["RevenueIncrease"] = (float)100;
-
-            }
-            else {
-                try
+        
+                float temptotalrevenue = (float) am.orders.Where(u => u.date.Month == now.Month && u.date.Year == now.Year && u.aftervat == null).Select(u=> u.total).DefaultIfEmpty(0) .Sum( );
+                temptotalrevenue = temptotalrevenue + (float)am.orders.Where(u => u.date.Month == now.Month && u.date.Year == now.Year && u.aftervat != null).Select(u => u.aftervat).DefaultIfEmpty(0).Sum();
+                float temptotalrevenuelastmonth = (float)am.orders.Where(u => u.date.Month == lastmonth.Month && u.date.Year == lastmonth.Year && u.aftervat == null).Sum(u => u.total);
+                temptotalrevenuelastmonth = temptotalrevenuelastmonth + (float)am.orders.Where(u => u.date.Month == lastmonth.Month && u.date.Year == lastmonth.Year && u.aftervat != null && u.aftervat > 0).Select(u => u.aftervat).DefaultIfEmpty(0).Sum();
+                ViewData["Revenue"] = temptotalrevenue;
+                if (temptotalrevenuelastmonth == 0)
                 {
+                    ViewData["RevenueIncrease"] = (float)100;
+
+                }
+                else
+                {
+                    try
+                    {
 
 
-                    ViewData["RevenueIncrease"] = 100 * (temptotalrevenue - temptotalrevenuelastmonth) / temptotalrevenuelastmonth;
+                        ViewData["RevenueIncrease"] = 100 * (temptotalrevenue - temptotalrevenuelastmonth) / temptotalrevenuelastmonth;
+                    }
+                    catch (Exception e)
+                    {
+                        ViewData["RevenueIncrease"] = 100f;
+                    }
                 }
-                catch (Exception e) {
-                    ViewData["RevenueIncrease"] = 100f;
-                }
-            }
+            
+           
 
             int spdangduocsua = am.tb_warranty_activities.Where(u=>u.startDate.Month == now.Month && u.startDate.Year == now.Year).Count();
             int spdangduocsuatt = am.tb_warranty_activities.Where(u => u.startDate.Month == lastmonth.Month && u.startDate.Year == lastmonth.Year).Count();

@@ -71,7 +71,7 @@ namespace ThienNga2.Controllers
 
             return View("HoaDonDetail");
         }
-        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
+        [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội,Nhân Viên Quản Lý Sửa Chữa")]
         public ActionResult ChangeStatus(int actid, int newstatus)
         {
             tb_warranty_activities act = am.tb_warranty_activities.Find(actid);
@@ -126,6 +126,7 @@ namespace ThienNga2.Controllers
             }
             return RedirectToAction("ActivityDetail", new { id = actid });
         }
+
         [Authorize(Roles = "Admin,Admin Hà Nội,Nhân Viên Quản Lý Sửa Chữa")]
         public ActionResult GiaoViec(int actid, string empId)
         {
