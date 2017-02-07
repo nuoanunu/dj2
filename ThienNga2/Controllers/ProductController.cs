@@ -161,15 +161,13 @@ namespace ThienNga2.Controllers
         {
             try
             {
+                System.Diagnostics.Debug.WriteLine("Code ne : " + code);
                 if (code.Trim().Length > 0)
                 {
                     ViewData["allInvenName"] = am.tb_inventory_name.ToList();
                     if (code == null || code.Equals("")) return View("Inventory");
-                    if (code.IndexOf("StoreSKU") > 0)
-                    {
-                        code = code.Substring(code.IndexOf("StoreSKU") + 10, code.Length - code.IndexOf("StoreSKU") - 10);
-                    }
-                    tb_product_detail t = am.tb_product_detail.Where(u=>u.producFactoryID.Equals(code) || u.productStoreID.Equals(code)) .FirstOrDefault();
+                
+                    tb_product_detail t = am.tb_product_detail.Where(u=>u.producFactoryID.Equals(code) || u.productStoreID.Equals(code) || u.productName.Equals(code)) .FirstOrDefault();
                     if (t == null) {
                         ViewData["allInvenName"] = am.tb_inventory_name.ToList();
                         return View("XemThongTin");
