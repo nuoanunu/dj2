@@ -33,7 +33,7 @@ namespace ThienNga2.Controllers
                 String uid = User.Identity.GetUserId();
                 ViewData["AllWarranty"] = am.tb_warranty_activities.Where(ui => ui.empFixer.Equals(uid) || ui.empFixer == null).ToList();
                 System.Diagnostics.Debug.WriteLine("CC gi vay : " + uid);
-                System.Diagnostics.Debug.WriteLine("CC gi vay : " + am.tb_warranty_activities.Where(ui => ui.empFixer.Equals(uid) || ui.empFixer==null).ToList().Count());
+                System.Diagnostics.Debug.WriteLine("CC gi vay : " + am.tb_warranty_activities.Where(ui => ui.empFixer.Equals(uid) || ui.empFixer == null).ToList().Count());
                 List<SelectListItem> list = new List<SelectListItem>();
                 AspNetRole role = am.AspNetRoles.SqlQuery("SELECT * FROM AspNetRoles where  id='c58194a2-1502-4623-b549-00cea9250711'").FirstOrDefault();
                 List<AspNetUser> nhanviens = role.AspNetUsers.ToList();
@@ -54,13 +54,14 @@ namespace ThienNga2.Controllers
         [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Admin Hà Nội,Nhân Viên Quản Lý Sửa Chữa")]
         public ActionResult HoaDonBaoHanh()
         {
-            if (User.IsInRole("Nhân Viên kỹ thuật")) {
+            if (User.IsInRole("Nhân Viên kỹ thuật"))
+            {
                 String userID = User.Identity.GetUserId();
-                ViewData["AllWarranty"] = am.tb_warranty_activities.Where(u => u.status == 6 && u.empFixer.Equals(userID) ).OrderByDescending(u => u.finishFixingDate).ToList();
+                ViewData["AllWarranty"] = am.tb_warranty_activities.Where(u => u.status == 6 && u.empFixer.Equals(userID)).OrderByDescending(u => u.finishFixingDate).ToList();
 
             }
             else
-            ViewData["AllWarranty"] = am.tb_warranty_activities.Where(u => u.status == 6).OrderByDescending(u => u.finishFixingDate).ToList();
+                ViewData["AllWarranty"] = am.tb_warranty_activities.Where(u => u.status == 6).OrderByDescending(u => u.finishFixingDate).ToList();
 
 
             return View("HoaDonBaoHanh");
@@ -250,7 +251,7 @@ namespace ThienNga2.Controllers
                 allname.Add(t.productStoreID);
             }
         }
- 
+
         [Authorize(Roles = "Admin,Tạo IMEI mới")]
         public ActionResult newImeiHand()
         {
@@ -297,7 +298,7 @@ namespace ThienNga2.Controllers
         [Authorize(Roles = "Admin,Nhân Viên kỹ thuật,Bán hàng,Admin Hà Nội")]
         public ActionResult recentIMEILIST()
         {
-            
+
             ViewData["allwar"] = (from e in am.tb_warranty
                                   orderby e.id descending
                                   select e)
@@ -358,7 +359,8 @@ namespace ThienNga2.Controllers
                     list[i].itemID = item.id;
                     if (list[i].description == null) list[i].description = " ";
                     String tempIMEI = list[i].warrantyID.Trim();
-                    while (tempIMEI.IndexOf(' ') >= 0) {
+                    while (tempIMEI.IndexOf(' ') >= 0)
+                    {
                         tempIMEI = tempIMEI.Replace(" ", "");
                     }
                     list[i].warrantyID = tempIMEI;
@@ -456,7 +458,8 @@ namespace ThienNga2.Controllers
                 else if (searchType == 5) { }
                 ViewData["dsnkh"] = am.CustomerTypes.ToList();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
 
             }
 
@@ -468,7 +471,7 @@ namespace ThienNga2.Controllers
             tb_warranty imei = am.tb_warranty.Find(id);
             imei.Special = 2;
             am.SaveChanges();
-            return RedirectToAction("search", new { code = imei.warrantyID});
+            return RedirectToAction("search", new { code = imei.warrantyID });
         }
         [Authorize(Roles = "Admin,Kích Hoạt bảo Hành")]
         public ActionResult enableIMEI(int id)
@@ -927,6 +930,9 @@ namespace ThienNga2.Controllers
                     {
                         if (!act.AspNetUser1.Email.Equals(User.Identity.GetUserName())) flag = false;
                     }
+                    else {
+                        flag = false;
+                    }
                     if (flag || User.IsInRole("Admin"))
                     {
                         warrantyActivityFixingFee a = new warrantyActivityFixingFee();
@@ -1209,63 +1215,71 @@ namespace ThienNga2.Controllers
         }
         public ActionResult newRequestMuon(int actID, String[] productSKU, int[] quantity, String[] tempName, String[] description)
         {
-            try { }
-            catch (Exception e) { }
-
-            for (int i = 0; i < quantity.Length; i++)
+            AspNetUser user = am.AspNetUsers.Find(User.Identity.GetUserId());
+            tb_warranty_activities act = am.tb_warranty_activities.Find(actID);
+            if (act != null)
             {
-                if (quantity[i] != null && quantity[i] > 0)
+                if (act.empFixer != null)
                 {
-
-                    String productName = "";
-                    try { productName = productSKU[i]; } catch (Exception e) { productName = "999999999999"; }
-                    RequestMuon request = new RequestMuon();
-                    if (am.tb_product_detail.Where(u => u.productStoreID.Equals(productName)).FirstOrDefault() != null)
+                    if (act.empFixer.Equals(user.Id) || !User.IsInRole("Nhân Viên kỹ thuật"))
                     {
-                        request.productID = am.tb_product_detail.Where(u => u.productStoreID.Equals(productName)).FirstOrDefault().id;
-                        request.creator = User.Identity.GetUserId();
-                        request.status = 1;
-                        request.quantity = quantity[i];
-                        request.warrantyID = actID;
-                        request.createdDate = DateTime.Now;
-                        am.RequestMuons.Add(request);
-                        am.SaveChanges();
-                        System.Diagnostics.Debug.WriteLine("daheo : " + productSKU[i]);
-                        log log = new log();
-                        AspNetUser user = am.AspNetUsers.Find(User.Identity.GetUserId());
-                        log.account = User.Identity.GetUserId();
-                        log.date = DateTime.Now;
-                        log.action = user.FullName + " đã gửi yêu cầu mượn " + quantity[i] + " sản phẩm " + productSKU[i];
-                        log.warrantyActivitiesID = actID;
-                        am.logs.Add(log);
-                        am.SaveChanges();
-                    }
-                    else
-                    {
-                        if (tempName != null && tempName[i].Trim().Length >= 2)
+                        for (int i = 0; i < quantity.Length; i++)
                         {
-                            request.TemporaryName = tempName[i];
-                            if (description != null)
-                                request.Description = description[i];
-                            request.creator = User.Identity.GetUserId();
-                            request.status = 1;
-                            request.quantity = quantity[i];
-                            request.warrantyID = actID;
-                            request.createdDate = DateTime.Now;
-                            am.RequestMuons.Add(request);
-                            am.SaveChanges();
-                            log log = new log();
-                            AspNetUser user = am.AspNetUsers.Find(User.Identity.GetUserId());
-                            log.account = User.Identity.GetUserId();
-                            log.date = DateTime.Now;
-                            log.action = user.FullName + " đã gửi yêu cầu mượn " + quantity + " sản phẩm " + tempName;
-                            log.warrantyActivitiesID = actID;
-                            am.logs.Add(log);
-                            am.SaveChanges();
+                            if (quantity[i] != null && quantity[i] > 0)
+                            {
+
+                                String productName = "";
+                                try { productName = productSKU[i]; } catch (Exception e) { productName = "999999999999"; }
+                                RequestMuon request = new RequestMuon();
+                                if (am.tb_product_detail.Where(u => u.productStoreID.Equals(productName)).FirstOrDefault() != null)
+                                {
+                                    request.productID = am.tb_product_detail.Where(u => u.productStoreID.Equals(productName)).FirstOrDefault().id;
+                                    request.creator = User.Identity.GetUserId();
+                                    request.status = 1;
+                                    request.quantity = quantity[i];
+                                    request.warrantyID = actID;
+                                    request.createdDate = DateTime.Now;
+                                    am.RequestMuons.Add(request);
+                                    am.SaveChanges();
+                                    System.Diagnostics.Debug.WriteLine("daheo : " + productSKU[i]);
+                                    log log = new log();
+
+                                    log.account = User.Identity.GetUserId();
+                                    log.date = DateTime.Now;
+                                    log.action = user.FullName + " đã gửi yêu cầu mượn " + quantity[i] + " sản phẩm " + productSKU[i];
+                                    log.warrantyActivitiesID = actID;
+                                    am.logs.Add(log);
+                                    am.SaveChanges();
+                                }
+                                else
+                                {
+                                    if (tempName != null && tempName[i].Trim().Length >= 2)
+                                    {
+                                        request.TemporaryName = tempName[i];
+                                        if (description != null)
+                                            request.Description = description[i];
+                                        request.creator = User.Identity.GetUserId();
+                                        request.status = 1;
+                                        request.quantity = quantity[i];
+                                        request.warrantyID = actID;
+                                        request.createdDate = DateTime.Now;
+                                        am.RequestMuons.Add(request);
+                                        am.SaveChanges();
+                                        log log = new log();
+                                        log.account = User.Identity.GetUserId();
+                                        log.date = DateTime.Now;
+                                        log.action = user.FullName + " đã gửi yêu cầu mượn " + quantity + " sản phẩm " + tempName;
+                                        log.warrantyActivitiesID = actID;
+                                        am.logs.Add(log);
+                                        am.SaveChanges();
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
+
 
 
             return RedirectToAction("ActivityDetail", new { id = actID });
