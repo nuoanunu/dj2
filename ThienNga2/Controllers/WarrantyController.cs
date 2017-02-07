@@ -879,6 +879,9 @@ namespace ThienNga2.Controllers
                         {
                             if (!act.AspNetUser1.Email.Equals(User.Identity.GetUserName())) flag = false;
                         }
+                        else {
+                            flag = false;
+                        }
                         if (flag || User.IsInRole("Admin"))
                         {
                             System.Diagnostics.Debug.WriteLine("dafug");
