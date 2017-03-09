@@ -105,7 +105,11 @@
                                     <td>
                                         <a href="/Warranty/ActivityDetail?id=@(act.id)" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> Chi tiết </a>
 
-                                        <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#MyempList@(act.id)"><i class="fa fa-pencil"></i>Giao cho</button>
+                                        @if (!User.IsInRole("Nhân Viên kỹ thuật"))
+                                        {
+                                            <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#MyempList@(act.id)"><i class="fa fa-pencil"></i>Giao cho</button>
+
+                                        }
                                         <div class="modal fade" id="MyempList@(act.id)" role="dialog">
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
