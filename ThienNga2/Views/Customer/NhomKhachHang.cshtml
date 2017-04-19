@@ -21,7 +21,9 @@
                 <tr>
                     <th>Tên nhóm</th>
                     <th>Màu</th>
-                    <th>Chính sách bảo hành</th>
+                    <th>Quy định với đối tác</th>
+                    <th>Chế đệ bảo hành chính hãng</th>
+                    <th>Dịch vụ sữa chữa</th>
                     <th>Số khách thuộc nhóm này</th>
                     <th>Số sản phẩm thuộc nhóm này</th>
                     <th>Tác vụ</th>
@@ -30,6 +32,7 @@
             <tbody>
                 @foreach (CustomerType wact in (List<CustomerType>)ViewData["typleList"])
                 {
+                    String[] cs = wact.MoTaChinhSach.Split(new[] { "{.}" }, StringSplitOptions.RemoveEmptyEntries);
                     //   String linkEdit = "Customer/Search?code=" + wact.id;
                     String linkEdit = "Customer/deletethisid?id=" + @wact.id;
                     <tr>
@@ -44,8 +47,37 @@
                                 <input value="@wact.Color" name="newcolor" type="color" />
                             </td>
                             <td>
-                               
-                                <textarea name="newchinhsach" >@wact.MoTaChinhSach</textarea>
+                                @if (cs[0] != null)
+                                {
+                                    <textarea name="newchinhsach">@cs[0]</textarea>
+                                }
+                                else
+                                {
+                                    <textarea name="newchinhsach"></textarea>
+                                }
+                                
+                            </td>
+                            <td>
+                                @if (cs[0] != null)
+                                {
+                                    <textarea name="newchinhsach2">@cs[1]</textarea>
+                                }
+                                else
+                                {
+                                    <textarea name="newchinhsach2"></textarea>
+                                }
+
+                            </td>
+                            <td>
+                                @if (cs[0] != null)
+                                {
+                                    <textarea name="newchinhsach3">@cs[2]</textarea>
+                                }
+                                else
+                                {
+                                    <textarea name="newchinhsach3"></textarea>
+                                }
+
                             </td>
                             <td>
                                 @wact.tb_customer.ToList().Count()

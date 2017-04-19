@@ -17,14 +17,14 @@ namespace ThienNga2.Controllers
             ViewData["typleList"] = am.CustomerTypes.ToList();
             return View("NhomKhachHang");
         }
-        public ActionResult EditGroup(int groupID, String newname, String newcolor, String newchinhsach)
+        public ActionResult EditGroup(int groupID, String newname, String newcolor, String newchinhsach, String newchinhsach2, String newchinhsach3)
         {
             CustomerType type = am.CustomerTypes.Find(groupID);
             if (type != null)
             {
                 type.GroupName = newname;
                 type.Color = newcolor;
-                type.MoTaChinhSach = newchinhsach;
+                type.MoTaChinhSach = newchinhsach + "{.}" + newchinhsach2 + "{.}" +newchinhsach3;
                 am.SaveChanges();
             }
             return RedirectToAction("Index");
