@@ -32,8 +32,6 @@ namespace ThienNga2.Controllers
             {
                 String uid = User.Identity.GetUserId();
                 ViewData["AllWarranty"] = am.tb_warranty_activities.Where(ui => ui.empFixer.Equals(uid) || ui.empFixer == null).ToList();
-                System.Diagnostics.Debug.WriteLine("CC gi vay : " + uid);
-                System.Diagnostics.Debug.WriteLine("CC gi vay : " + am.tb_warranty_activities.Where(ui => ui.empFixer.Equals(uid) || ui.empFixer == null).ToList().Count());
                 List<SelectListItem> list = new List<SelectListItem>();
                 AspNetRole role = am.AspNetRoles.SqlQuery("SELECT * FROM AspNetRoles where  id='c58194a2-1502-4623-b549-00cea9250711'").FirstOrDefault();
                 List<AspNetUser> nhanviens = role.AspNetUsers.ToList();

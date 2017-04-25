@@ -96,8 +96,8 @@ namespace ThienNga2.Controllers
             
                 ViewData["chiphisuachua"] = chiphisuachua;
             }
-            List<tb_product_detail> top5fix = am.tb_product_detail.OrderByDescending(u => u.tb_warranty_activities.Where(uu => uu.startDate.Year == now.Year && uu.startDate.Month == now.Month).Count()).Take(5).ToList();
-            List<tb_product_detail> top5sell = am.tb_product_detail.OrderByDescending(u => u.items.Where(uu=>uu.order.date.Year==now.Year && uu.order.date.Month == now.Month).Count()).Take(4).ToList();
+            List<tb_product_detail> top5fix = am.tb_product_detail.OrderByDescending(u => u.tb_warranty_activities.Where(uu => uu.startDate.Year == now.Year && uu.startDate.Month == now.Month).Count()).Take(5).DefaultIfEmpty().ToList();
+            List<tb_product_detail> top5sell = am.tb_product_detail.OrderByDescending(u => u.items.Where(uu=>uu.order.date.Year==now.Year && uu.order.date.Month == now.Month).Count()).Take(4).DefaultIfEmpty().ToList();
             List<topsell> top4sold = new List<topsell>();
             foreach (tb_product_detail tb in top5sell) {
                 topsell ts = new topsell();
@@ -109,9 +109,9 @@ namespace ThienNga2.Controllers
             System.Diagnostics.Debug.WriteLine("ok ngon r mà");
             ViewData["totalsell"] = am.items.Where(uu => uu.order.date.Year == now.Year && uu.order.date.Month == now.Month).Count();
             ViewData["top5fix"] = top5fix;
-            ViewData["allorder"] = am.orders.Where(u => u.date.Year == now.Year).ToList();
-            ViewData["warrantyActivityFee"] = am.warrantyActivityFees.Where(u => u.tb_warranty_activities.startDate.Year == now.Year).ToList();
-            ViewData["warrantyActivityFixingFee"] = am.warrantyActivityFixingFees.Where(u => u.tb_warranty_activities.startDate.Year == now.Year).ToList();
+            ViewData["allorder"] = am.orders.Where(u => u.date.Year == now.Year).DefaultIfEmpty().ToList();
+            ViewData["warrantyActivityFee"] = am.warrantyActivityFees.Where(u => u.tb_warranty_activities.startDate.Year == now.Year).DefaultIfEmpty().DefaultIfEmpty().ToList();
+            ViewData["warrantyActivityFixingFee"] = am.warrantyActivityFixingFees.Where(u => u.tb_warranty_activities.startDate.Year == now.Year).DefaultIfEmpty().ToList();
 
             ViewData["TotalFix"] = am.tb_warranty_activities.Count();
             List<AspNetUser> top5active = am.AspNetUsers.OrderByDescending(u => u.tb_warranty_activities1.Count()).Take(5).ToList();
