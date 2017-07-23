@@ -395,6 +395,7 @@
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Service\RevenueBusiness.cs" />
     <Compile Include="Models\ViewModel\NewItemViewModel.cs" />
     <Compile Include="Models\ViewModel\PosModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
