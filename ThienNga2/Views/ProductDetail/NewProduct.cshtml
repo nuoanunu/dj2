@@ -421,7 +421,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (tb_product_detail dt in (List<tb_product_detail>)ViewData["last50"])
+                                    @foreach (tb_product_detail dt in ((List<tb_product_detail>)ViewData["last50"]).Where(data => data.producFactoryID != "00000000"))
                                     {
                                         <tr>
                                             <td>

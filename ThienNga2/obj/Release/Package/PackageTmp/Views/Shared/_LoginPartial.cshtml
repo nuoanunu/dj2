@@ -1,0 +1,21 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+    @Html.AntiForgeryToken()
+
+        <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id="#empname">
+            <img src="images/img.jpg" alt="">
+        </a>
+    }
+}
+
+<script>
+    $.getJSON("/Warranty/getTen?email=" + "@User.Identity.GetUserName()", function (result) {
+        $.each(result, function (name, value) {
+            if (name == "fullname") { $("#empname").text("Xin chào "+value); }        
+        });
+
+    });
+</script>

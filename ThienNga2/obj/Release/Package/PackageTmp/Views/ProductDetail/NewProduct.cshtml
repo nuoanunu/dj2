@@ -1,0 +1,571 @@
+﻿@using ThienNga2.Models.Entities;
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>NewProduct</title>
+    <style>
+        .dizzy-gillespie {
+            -webkit-filter: saturate(3);
+            filter: saturate(3);
+            width: 0.1px;
+            height: 0.1px;
+            border: 40px solid transparent;
+            border-radius: 5px;
+            -webkit-animation: loader 3s ease-in infinite, spin 1s linear infinite;
+            animation: loader 3s ease-in infinite, spin 1s linear infinite;
+        }
+
+            .dizzy-gillespie::before {
+                -webkit-filter: saturate(0.3);
+                filter: saturate(0.3);
+                display: block;
+                position: absolute;
+                z-index: -1;
+                margin-left: -40px;
+                margin-top: -40px;
+                content: '';
+                height: 0.1;
+                width: 0.1;
+                border: 40px solid transparent;
+                border-radius: 5px;
+                -webkit-animation: loader 2s ease-in infinite reverse, spin 0.8s linear infinite reverse;
+                animation: loader 2s ease-in infinite reverse, spin 0.8s linear infinite reverse;
+            }
+
+            .dizzy-gillespie::after {
+                display: block;
+                position: absolute;
+                z-index: 2;
+                margin-left: -10px;
+                margin-top: -10px;
+                content: '';
+                height: 20px;
+                width: 20px;
+                border-radius: 20px;
+                background-color: white;
+            }
+
+        @@-webkit-keyframes loader {
+            0% {
+                border-bottom-color: transparent;
+                border-top-color: #114357;
+            }
+
+            25% {
+                border-left-color: transparent;
+                border-right-color: #826C75;
+            }
+
+            50% {
+                border-top-color: transparent;
+                border-bottom-color: #F29492;
+            }
+
+            75% {
+                border-right-color: transparent;
+                border-left-color: #826C75;
+            }
+
+            100% {
+                border-bottom-color: transparent;
+                border-top-color: #114357;
+            }
+        }
+
+        @@keyframes loader {
+            0% {
+                border-bottom-color: transparent;
+                border-top-color: #114357;
+            }
+
+            25% {
+                border-left-color: transparent;
+                border-right-color: #826C75;
+            }
+
+            50% {
+                border-top-color: transparent;
+                border-bottom-color: #F29492;
+            }
+
+            75% {
+                border-right-color: transparent;
+                border-left-color: #826C75;
+            }
+
+            100% {
+                border-bottom-color: transparent;
+                border-top-color: #114357;
+            }
+        }
+
+        @@-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(-360deg);
+                transform: rotate(-360deg);
+            }
+        }
+
+        @@keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(-360deg);
+                transform: rotate(-360deg);
+            }
+        }
+    </style>
+    <script src="//code.jquery.com/jquery-1.12.3.js"> </script>
+    <script>
+        var sku = "";
+        var factt = "";
+        var active1 = true;
+        var active2 = true;
+        function checkPD() {
+            var ii = 0;
+
+            if ($("#productStoreID").val() != sku) {
+
+                sku = $("#productStoreID").val();
+                $.getJSON("/ProductDetail/getAllData?sku=" + sku, function (result) {
+                    $.each(result, function (name, value) {
+                        if (name == "productName") {
+                            if (value != "") {
+                                active1 = false;
+                                $('#productStoreID').css("background-color", "red");
+                                $('#productStoreID').css("color", "white");
+                            }
+                            else {
+                                active1 = true;
+                                $('#productStoreID').css("background-color", "white");
+                                $('#productStoreID').css("color", "black");
+                            }
+                        }
+                    });
+
+                });
+
+
+            }
+
+            if ($("#producFactoryID").val() != factt) {
+                var flag2 = true;
+                factt = $("#producFactoryID").val();
+                $.getJSON("/ProductDetail/getAllData?sku=" + factt, function (result) {
+                    $.each(result, function (name, value) {
+                        if (name == "productName") {
+                            if (value != "") {
+                                active2 = false;
+                                $('#producFactoryID').css("background-color", "red");
+                                $('#producFactoryID').css("color", "white");
+                            }
+                            else {
+                                active2 = true;
+                                $('#producFactoryID').css("background-color", "white");
+                                $('#producFactoryID').css("color", "black");
+                            }
+
+                        }
+                    });
+
+                });
+
+            }
+            if (!active2 || !active2) {
+                $('#gui').prop('disabled', true);
+            }
+            else {
+                $('#gui').prop('disabled', false);
+            }
+        }
+
+        setInterval(checkPD, 100);
+
+    </script>
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"> </script>
+    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"> </script>
+    <script>
+        $(document).ready(function () {
+            $('#datatable').dataTable({
+                "aaSorting": [[0, "desc"]]
+            });
+        });
+    </script>
+    <script>
+        function unlock(index) {
+            $("#" + index + "SKU").prop("disabled", "");
+            $("#" + index + "FAC").prop("disabled", "");
+            $("#" + index + "NAME").prop("disabled", "");
+            $("#" + index + "PRICE").prop("disabled", "");
+            $("#" + index + "MIN").prop("disabled", "");
+            $("#" + index + "SKU").show();
+            $("#" + index + "FAC").show();
+            $("#" + index + "NAME").show();
+            $("#" + index + "PRICE").show();
+            $("#" + index + "MIN").show();
+            $("#" + index + "btn2").show();
+            $("#" + index + "btn3").show();
+            $("#" + index + "btn1").hide();
+        };
+        function lock(index) {
+            $("#" + index + "SKU").prop("disabled", "disabled");
+            $("#" + index + "FAC").prop("disabled", "disabled");
+            $("#" + index + "NAME").prop("disabled", "disabled");
+            $("#" + index + "PRICE").prop("disabled", "disabled");
+            $("#" + index + "MIN").prop("disabled", "disabled");
+            $("#" + index + "SKU").hide();
+            $("#" + index + "FAC").hide();
+            $("#" + index + "NAME").hide();
+            $("#" + index + "PRICE").hide();
+            $("#" + index + "MIN").hide();
+            $("#" + index + "btn1").show();
+            $("#" + index + "btn2").hide();
+            $("#" + index + "btn3").hide();
+        };
+        function edit(index) {
+            var newSKU = $("#" + index + "SKU").val();
+            var newFACT = $("#" + index + "FAC").val();
+            var newPrice = $("#" + index + "PRICE").val();
+            var newThres = $("#" + index + "MIN").val();
+            var newName = $("#" + index + "NAME").val();
+            $.getJSON("/ProductDetail/fixxit?id=" + index + "&name=" + newName + "&SKU=" + newSKU + "&factCode=" + newFACT + "&price=" + newPrice + "&mini=" + newThres, function (result) {
+                $.each(result, function (name, value) {
+                    if (name == "name") {
+                        if (value != "") {
+                            alert("Chỉnh sửa thành công");
+                            $("#" + index + "PRICE").val(addCommas($("#" + index + "PRICE").val()));
+                            lock(index);
+                        }
+                    }
+
+                });
+
+            });
+        };
+        function addCommas(nStr)
+        {
+            nStr += '';
+            x = nStr.split('.');
+            x1 = x[0];
+            x2 = x.length > 1 ? '.' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            return x1 + x2;
+        }
+    </script>
+
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Nhập mới sản phẩm</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="#">Settings 1</a>
+                                </li>
+                                <li>
+                                    <a href="#">Settings 2</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <br>
+                    <form action="/ProductDetail/Create" method="post" id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+
+                        @model ThienNga2.Models.Entities.tb_product_detail
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                Tên sản phẩm <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                @Html.TextBoxFor(Model => Model.productName, new { @class = "form-control col-md-7 col-xs-12" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                Mã cửa hàng (SKU) <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                @Html.TextBoxFor(Model => Model.productStoreID, new { @class = "form-control col-md-7 col-xs-12" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                Mã nhà máy
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                @Html.TextBoxFor(Model => Model.producFactoryID, new { @class = "form-control col-md-7 col-xs-12" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                Giá <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                @Html.TextBoxFor(Model => Model.price, new { @class = "form-control col-md-7 col-xs-12", @type = "number" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                Báo khi số lượng thấp hơn
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                @Html.TextBoxFor(Model => Model.minThresHold, new { @class = "form-control col-md-7 col-xs-12", @type = "number" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                <button type="reset" class="btn btn-danger">Clear</button>
+                                <button type="submit" class="btn btn-success">Tạo sản phẩm 2</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12 col-xs-12" style="max-height:428px">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Upload từ file XML</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="#">Settings 1</a>
+                                </li>
+                                <li>
+                                    <a href="#">Settings 2</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                    <p>Download file XML từ trang flycampro và upload vào đây</p>
+                    <form style="max-height:190px" id="xmlform" method="post" action="/ProductDetail/UpdateFromXML2" enctype="multipart/form-data" class="dropzone dz-clickable" style="border: 1px solid #e5e5e5; height: 300px; ">
+                        <div class="dz-default dz-message">
+                            <input type="file" name="file" id="xmlfile" />
+                            <div class="button-section">
+                                <input type="button" class="btn btn-success" onclick="CheckValid()" value="Upload" />
+                            </div>
+                        </div>
+
+                    </form>
+
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Danh sách sản phẩm: <a class="btn btn-primary"> @(((List<tb_product_detail>)ViewData["last50"]).Count()) sản phẩm</a></h2>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div>
+                        @if (ViewData["last50"] != null)
+                        {
+                            <table id="datatable" class="table table-striped" cellspacing="0" width="100%" data-sort-name="ID" data-sort-order="desc">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>SKU</th>
+                                        <th>Mã nhà máy</th>
+                                        <th>Giá</th>
+                                        <th>Tên</th>
+                                        <th>Ngày tạo</th>
+                                        <th>Ngày cập nhật</th>
+                                        <th>Số lượng báo động giới hạn</th>
+                                       
+                                        <th>Chỉnh sửa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (tb_product_detail dt in (List<tb_product_detail>)ViewData["last50"])
+                                    {
+                                        <tr>
+                                            <td>
+                                                @dt.id
+                                                <input type="hidden" id="@(dt.id+"ID")" value="@dt.id" />
+                                            </td>
+                                            <td>
+                                                @dt.productStoreID
+                                                <input type="text" id="@(dt.id+"SKU")" value="@dt.productStoreID" disabled="disabled" hidden/>
+                                            </td>
+                                            <td>@dt.producFactoryID
+                                                <input type="text" id="@(dt.id+"FAC")" value="@dt.producFactoryID" disabled="disabled" hidden/>
+                                            </td>
+                                            <td>
+                                                @(Convert.ToDecimal(dt.price).ToString("#,##0"))
+                                                <input class="pricee" type="text" id="@(dt.id+"PRICE")" hidden value="@(Convert.ToDecimal(dt.price).ToString("#,##0"))" disabled="disabled" />
+                                            </td>
+                                            <td>
+                                                @dt.productName
+                                                <input type="text" id="@(dt.id+"NAME")" value="@dt.productName" hidden disabled="disabled" />
+                                            </td>
+                                            @if (dt.addedDate != null)
+                                            {
+                                                <td>
+                                                    @( ((DateTime)dt.addedDate).ToShortDateString()  )
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td></td>
+                                            }
+                                            @if (dt.lastUpdate != null) {
+                                                <td>
+                                                    @( ((DateTime) dt.lastUpdate).ToShortDateString()  )
+                                                </td>
+                                            }
+                                            else {
+                                                <td>
+                                                   
+                                                </td>
+                                            }
+                                    
+                                            @if (dt.minThresHold == null)
+                                            {
+
+                                                <td>0<input type="number" id="@(dt.id+"MIN")" value="0" hidden disabled="disabled" /></td>
+                                            }
+                                            else
+                                            {
+                                                <td>@dt.minThresHold <input type="number" id="@(dt.id+"MIN")" hidden value="@dt.minThresHold" disabled="disabled" /></td>
+                                            }
+                   
+                                            <td>
+                                                <button id="@(dt.id+"btn1")" class="btn btn-warning" onclick="unlock(@dt.id)">Chỉnh sửa</button>
+                                                <button id="@(dt.id+"btn3")" class="btn btn-danger"  style="display:none" onclick="lock(@dt.id)">Hủy</button>
+                                                <button id="@(dt.id+"btn2")" class="btn btn-primary" style="display:none" onclick="edit(@dt.id)">XÁC NHẬN</button>
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+
+                            </table>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @using (Html.BeginForm("UpdateFromXML2", "ProductDetail", FormMethod.Post, new { enctype = "multipart/form-data", @id = "xmlform" }))
+    {
+        if (ViewData["updateResult"] != null)
+        {
+            String resultttt = (String)ViewData["updateResult"];
+            <h2> @resultttt</h2>
+        }
+
+    }
+    <br />
+    <br />
+    <script>
+
+        function CheckValid() {
+
+            if (document.getElementById("xmlfile").files.length == 0) {
+                alert('Hãy nhập file xml phù hợp');
+            }
+            else {
+                $("#myLoadingModal").modal('toggle');
+                $('#myLoadingModal').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                })
+                $("#xmlform").submit();
+            }
+        }
+    </script>
+
+
+
+    <script>
+        function fixprice() {
+            $(".pricee").each(function () {
+                if ($(this).is(':enabled')) {
+                    while ($(this).val().indexOf(",") > 0) {
+                        $(this).val($(this).val().replace(",", ""));
+                    }
+                }
+            })
+        }
+        setInterval(fixprice, 100);
+    </script>
+
+    <div class="modal fade" id="myLoadingModal" role="dialog">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+
+                <div class="modal-body">
+         
+                        <table width="100%">
+                            <tr>
+                                <td align="left">
+                                    <div class="col-md-1 dizzy-gillespie"></div>
+                                </td>
+                                <td align="center" width="70%">Vui lòng đợi giây lát,đừng ấn bậy, đừng tắt browser</td>
+                                <td align="right"><div class="col-md-1 dizzy-gillespie"></div></td>
+                            </tr>
+                        </table>
+                   
+                      
+                    </div>
+                   
+                </div>
+
+            </div>
+        </div>
+    <script>
+        $(document).ready(function () {
+        
+        })
+      
+    </script>
+ 
+</body>
+</html>

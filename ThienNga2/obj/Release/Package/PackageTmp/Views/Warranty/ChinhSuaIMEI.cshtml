@@ -1,0 +1,384 @@
+﻿@using ThienNga2.Models.Entities
+@using Microsoft.AspNet.Identity
+<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"> </script>
+<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"> </script>
+<script>
+    $("#myTable").DataTable();
+</script>
+<style>
+    .ui-autocomplete {
+        background-color: antiquewhite;
+        max-height: 100px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: hidden;
+    }
+    /* IE 6 doesn't support max-height
+        * we use height instead, but this forces the menu to always be this tall
+        */
+    * html .ui-autocomplete {
+        height: 100px;
+    }
+</style>
+<script src="http://www.google.com/jsapi"></script>
+<script>
+    $(document).ready(function () {
+        $('#search').autocomplete({
+            source: '@Url.Action("Autocomplete2")'
+
+        })
+            .data("ui-autocomplete")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .data("ui-autocomplete-item", item)
+
+                .append('<a style="color:black">' + item.label + "</a>")
+                .appendTo(ul);
+            };
+
+
+    });
+</script>
+<div class="x_panel">
+    <div class="x_title">
+        <h2>Tìm thông tin IMEI</h2>
+
+        <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+
+        <form class="form-horizontal form-label-left" action="/Warranty/search">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Tìm kiếm</label>
+                <div class="col-sm-9">
+                    <div class="input-group">
+                        <input style="width:60%" name="code" type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Nhập IMEI">
+
+                        <div style="width:10%" class="input-group-btn">
+                            <button type="submit" class="btn btn-primary">Tìm</button>
+                        </div>
+                        <!-- /btn-group -->
+                    </div>
+                    <div class="input-group">
+
+
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+@if (ViewData["item"] != null)
+{
+    item thisitem = (item)ViewData["item"];
+    <div class="page-title">
+        <div class="title_left">
+            <h3>
+                Thông tin chi tiết của mã bảo hành
+                @if (User.IsInRole("Admin") || User.IsInRole("Kích Hoạt bảo Hành"))
+                {
+                    if (!(bool)thisitem.Verified)
+                    {
+                        <small style="color:red">Các imei này chưa được xác nhận</small>
+                    }
+                    else
+                    {
+                        <small style="color:green">Các imei này đã được xác nhận</small>
+                    }
+                }
+            </h3>
+
+        </div>
+
+        <div class="title_right">
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                <div class="input-group">
+                    @if (!(bool)thisitem.Verified)
+                    {
+                        <a href="/Warranty/ApproveIMEI?id=@thisitem.id" class="btn btn-success">Xác nhận thông tin các IMEI</a>
+                    }
+                    <a href="/Warranty/DisapproveIMEI?id=@thisitem.id" class="btn btn-danger">Kết thúc bảo hành sản phẩm này</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Thông tin sản phẩm <small></small></h2>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <br>
+                    <form id="demo-form2" action="/Warranty/Fixitem" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+                        <input type="hidden" value="@thisitem.id" name="itemid" />
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                Tên Sản Phẩm
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" name="itemname" value="@thisitem.tb_product_detail.productName" id="Tên sản phẩm" disabled required="required" class="form-control col-md-7 col-xs-12" data-parsley-id="6165" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                SKU <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" id="search" value="@thisitem.tb_product_detail.productStoreID" name="sku" required="required" class="form-control col-md-7 col-xs-12" data-parsley-id="9964" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                Ngày mua
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" id="sku" value="@thisitem.DateOfSold.ToString("dd/MM/yyyy")" name="dos" required="required" class="form-control col-md-7 col-xs-12" data-parsley-id="9964" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                Nhóm khách <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <select name="grroup">
+                                    @foreach (CustomerType type in (List<CustomerType>)ViewData["dsnkh"])
+                                    {
+                                        if (type.id == thisitem.CustomerType)
+                                        {
+                                            <option style="background:@(type.Color)" value="@type.id" selected> @type.GroupName </option>
+                                        }
+                                        else
+                                        {
+                                            <option style="background:@(type.Color)" value="@type.id"> @type.GroupName </option>
+                                        }
+
+
+
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="ln_solid"></div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                @if (User.IsInRole("Admin") || User.IsInRole("Kích Hoạt bảo Hành"))
+                                {  <button type="submit" class="btn btn-success">Chỉnh sữa</button> }
+
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Thông tin khách hàng <small></small></h2>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <br>
+                    <form id="demo-form2" data-parsley-validate="" action="/Warranty/FixKhach" class="form-horizontal form-label-left" novalidate="">
+                        <input type="hidden" value="@thisitem.id" name="itemid" />
+                        <input type="hidden" value="@thisitem.tb_customer.id" name="cusID" />
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                Họ tên khách
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" name="cusname" id="cusname" value="@thisitem.tb_customer.customerName" required="required" class="form-control col-md-7 col-xs-12" data-parsley-id="6165" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                Số điện thoại(ko có dấu "." và khoảng trắng) <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="text" id="sdt" name="sdt" value="@thisitem.tb_customer.phonenumber" required="required" class="form-control col-md-7 col-xs-12" data-parsley-id="9964" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                Nhóm khách <span class="required">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <select name="nhomkhach">
+                                    @foreach (CustomerType type in (List<CustomerType>)ViewData["dsnkh"])
+                                    {
+                                        if (type.id == thisitem.tb_customer.Type)
+                                        {
+                                            <option style="background:@(type.Color)" value="@type.id" selected> @type.GroupName </option>
+                                        }
+                                        else
+                                        {
+                                            <option style="background:@(type.Color)" value="@type.id"> @type.GroupName </option>
+                                        }
+
+
+
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                <br />
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+
+                            </div>
+                        </div>
+                        <br />
+                        <div class="ln_solid"></div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                @if (User.IsInRole("Admin") || User.IsInRole("Kích Hoạt bảo Hành"))
+                                {
+                                    <button type="submit" class="btn btn-success">Chỉnh sữa</button>
+                                }
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Danh sách IMEI</h2>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+
+                <div class="x_content">
+
+
+                    <!-- start project list -->
+                    <table class="table table-striped projects">
+                        <thead>
+                            <tr>
+
+                                <th style="width: 20%">IMEI</th>
+                                <th>Thời hạn bảo hành (tháng)</th>
+                                <th>Thông tin mô tả</th>
+
+                                <th style="width: 20%">Loại IMEI</th>
+                                <th>Tác vụ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (tb_warranty war in thisitem.tb_warranty.OrderBy(u => u.id))
+                            {
+                                <tr>
+                                    <form action="/Warranty/EditIMEI" method="post">
+                                      
+                                        <input type="hidden" value="@war.id" name="warrantyID" />
+                                        <td><input disabled id="@(war.id + "imei")" type="text" name="IMEI" value="@war.warrantyID" /> </td>
+                                        <td><input disabled id="@(war.id + "duration")" type="text" name="duration" value="@war.duration" /> </td>
+                                        <td><input disabled id="@(war.id + "des")" type="text" name="description" value="@war.description" /> </td>
+                                        <td>
+                                            @if (war.MaChinh)
+                                            {
+                                                <input style="display:none" id="@(war.id + "checkbox")" value="true" type="checkbox" name="machinh" checked />
+                                                <a id="labelchinhphu@(war.id)" class="btn btn-success btn-xs">Mã chính</a>
+                                            }
+                                            else
+                                            {  <input id="@(war.id + "checkbox")" style="display:none" value="true" type="checkbox" name="machinh" />
+                                            <a id="labelchinhphu@(war.id)" class="btn btn-warning btn-xs">Mã phụ</a>
+                                            }
+
+                                        </td>
+                                        <td>
+                                            @if (User.IsInRole("Admin") || User.IsInRole("Kích Hoạt bảo Hành"))
+                                            {
+                                                <button id="@(war.id + "cbtn")" style="display:none" class="btn btn-success btn-xs"><i class="fa fa-hand-o-right"></i> Xác nhận </button>
+                                                <a onclick="edit(@(war.id))" id="edit@(war.id)" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                                                <a onclick="unedit(@(war.id))" id="unedit@(war.id)" style="display:none" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i> Cancel </a>
+                                                <a href="/Warranty/DeleteIMEI?id=@war.id" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+                                                if (war.Special != 2)
+                                                {
+                                                    <a href="/Warranty/disableIMEI?id=@war.id" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Ngưng sử dụng IMEI này </a>
+
+                                                }
+                                                else
+                                                {
+                                                    <a href="/Warranty/enableIMEI?id=@war.id" class="btn btn-success btn-xs"><i class="fa fa-cog"></i> Tái sử dụng IMEI này </a>
+
+                                                }
+
+                                            }
+                                        </td>
+                                    </form>
+
+                                </tr>
+                            }@if (User.IsInRole("Admin") || User.IsInRole("Kích Hoạt bảo Hành"))
+                            {
+                                <tr>
+                                    <form action="/Warranty/AddMoreImei">
+                                        <input type="hidden" value="@thisitem.tb_warranty.First().itemID" name="itemID" />
+                                        <td>
+                                            <input name="IMEI" type="text" placeholder="Mã IMEI" />
+                                        </td>
+                                        <td>
+                                            <input name="duration" type="text" placeholder="Thời hạn(tháng)" />
+                                        </td>
+                                        <td>
+                                            <input name="des" type="text" placeholder="Mô tả" />
+                                        </td>
+                                        <td>
+                                            <input name="machinh" type="checkbox" value="true" />
+                                        </td>
+                                        <td>
+                                            <button type="submit" class="btn btn-success">Thêm</button>
+                                        </td>
+                                    </form>
+                                </tr>
+                                <script>
+                                    function edit(id) {
+                                        $("#" + id + "imei").prop('disabled', false);
+                                        $("#" + id + "duration").prop('disabled', false);
+                                        $("#" + id + "des").prop('disabled', false);
+                                        $("#labelchinhphu" + id).css("display", "none");
+                                        $("#" + id + "checkbox").css("display", "");
+                                        $("#" + id + "cbtn").css("display", "");
+                                        $("#unedit" + id).css("display", "");
+                                        $("#edit" + id).css("display", "none");
+                                    }
+                                    function unedit(id) {
+                                        $("#" + id + "imei").prop('disabled', true);
+                                        $("#" + id + "duration").prop('disabled', true);
+                                        $("#" + id + "des").prop('disabled', true);
+                                        $("#labelchinhphu" + id).css("display", "");
+                                        $("#" + id + "checkbox").css("display", "none");
+                                        $("#" + id + "cbtn").css("display", "none");
+                                        $("#unedit" + id).css("display", "none");
+                                        $("#edit" + id).css("display", "");
+                                    }
+                                </script>
+                            }
+                        </tbody>
+                    </table>
+                    <!-- end project list -->
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+}

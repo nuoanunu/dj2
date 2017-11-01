@@ -1,0 +1,849 @@
+﻿@using ThienNga2.Models;
+@using ThienNga2.Models.Entities;
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>NewProductItem</title>
+    <link href="~/Content/css/select/select2.min.css" rel="stylesheet" />
+    <script src="~/Content/js/select/select2.full.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js">
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(".select2_single").select2({
+                placeholder: "Chọn SKU",
+                allowClear: true
+            });
+        });
+    </script>
+    <script>
+        var useUpTo = 1;
+        var temp = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
+        function checkppricelientuc() {
+            for (var i = 1 ; i < 20 ; i++) {
+                if (temp[i - 1] != $('#items_' + (i - 1) + '__SKU').val()) {
+                    temp[i - 1] = $('#items_' + (i - 1) + '__SKU').val();
+                    if ($('#items_' + (i - 1) + '__SKU').val().length > 0) {
+                        checkPrice($('#items_' + (i - 1) + '__SKU').val(), i);
+                        updatePrice(i);
+                    }
+                }
+                if ($('#items_' + (i - 1) + '__newSKU').val().length > 0) {
+                    updatePrice22(i);
+                    $('#items_' + (i - 1) + '__DonGiaS2').show();
+                }
+            }
+
+
+        }
+        setInterval(checkppricelientuc, 50);
+        function checkHidden() {
+            for (var i = 1 ; i < 20; i++) {
+
+                if ($('#items_' + (i - 1) + '__SKU').val() != "") {
+                    $('#items_' + (i - 1) + '__newSKU').prop('disabled', true);
+                    $('#items_' + (i - 1) + '__DonGiaS2').css('display', "none");
+
+                    $('#items_' + (i - 1) + '__newSKU').css("background-color", "gray");
+                }
+                else {
+                    $('#items_' + (i - 1) + '__newSKU').prop('disabled', false);
+
+
+
+                    $('#items_' + (i - 1) + '__newSKU').css("color", "black");
+
+                    $('#items_' + (i - 1) + '__newSKU').css("background-color", "");
+
+
+                }
+                if ($('#items_' + (i - 1) + '__newSKU').val() != "") {
+                    $('#items_' + (i - 1) + '__SKU').prop('disabled', true);
+                    $('#items_' + (i - 1) + '__SKU').css("background-color", "gray");
+                }
+                else {
+                    $('#items_' + (i - 1) + '__SKU').prop('disabled', false);
+                    if ($('#items_' + (i - 1) + '__SKU').css("background-color").toString().indexOf("138") > 1) {
+                        $('#items_' + (i - 1) + '__SKU').css("color", "black");
+                        $('#items_' + (i - 1) + '__SKU').css("background-color", "");
+                    }
+                }
+                if ($('#items_' + (i - 1) + '__SKU').val() == "" && $('#items_' + (i - 1) + '__newSKU').val() == "") {
+                    $('#items_' + (i - 1) + '__thanhTienS').val("");
+
+                    $('#items_' + (i - 1) + '__chietKhauTrucTiep').val("0");
+                    $('#items_' + (i - 1) + '__chietKhauPhanTram').val("0");
+                    $('#items_' + (i - 1) + '__quantity').val("1");
+                    $('#items_' + (i - 1) ).val("");
+                    $('#lid' + (i - 1)).text("");
+                    $('#pid' + (i - 1)).text("");
+                    $('#items_' + (i - 1) + '__SKU').css("background-color", "white");
+                    if (i > useUpTo) {
+                        $('#divid' + i).hide();
+                        $('#items_' + (i - 1) + '__DonGiaS2').hide();
+                    }
+
+
+
+                }
+                else {
+                    if ($('#items_' + (i - 1) + '__SKU').val() != temp[i - 1] && $('#items_' + (i - 1) + '__SKU').val().length > 0) {
+                        temp[i - 1] = $('#items_' + (i - 1) + '__SKU').val();
+
+                        checkPrice($('#items_' + (i - 1) + '__SKU').val(), i);
+                    }
+                    if ($('#items_' + (i - 1) + '__SKU').val().length > 0) {
+                        updatePrice(i);
+                    }
+                    if ($('#items_' + (i - 1) + '__newSKU').val().length > 0) {
+                        updatePrice22(i);
+                        $('#items_' + (i - 1) + '__DonGiaS2').show();
+                    }
+
+
+                    $('#divid' + i).show();
+                    useUpTo = useUpTo + 1;
+                }
+            }
+
+        };
+        setInterval(checkHidden, 100);
+        setInterval(tinhtotal, 100);
+        function tinhtotal() {
+            if ($("#VAT").is(':checked')) {
+
+                $("#trTT").show();
+                $("#trVAT").show();
+            }
+            else {
+                $("#trVAT").hide();
+                $("#trTT").hide();
+            }
+            var vat = 0;
+            var totalb4vat = 0;
+            var totalatervat = 0;
+            for (var i = 0 ; i < 20 ; i++) {
+                var tempstr = $('#items_' + (i ) + '__thanhTienS').val();
+                while (tempstr.indexOf(',') != -1) tempstr = tempstr.replace(',', '');
+                var temp = parseFloat(tempstr);
+                // alert(temp);
+                if (temp > 0) {
+                    totalb4vat =Math.floor(  totalb4vat + temp);
+                    totalatervat = Math.floor( totalb4vat * 1.1);
+                    vat = Math.floor( totalb4vat * 0.1);
+                }
+
+            }
+            $("#Totalb4VAT").text(numberWithCommas(totalb4vat));
+            $("#TotalAterVAT").text(numberWithCommas(totalatervat));
+            $("#TotalVAT").text(numberWithCommas(vat));
+
+        }
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        function updatePrice(index) {
+            var tempstr = $('#items_' + (index - 1) + '__DonGiaS').val();
+            while(tempstr.indexOf(',')!=-1)tempstr= tempstr.replace(',','');
+            var temp = parseFloat(tempstr);
+            var quantity = $('#items_' + (index - 1) + '__quantity').val();
+            var CKTT = $('#items_' + (index - 1) + '__chietKhauTrucTiep').val();
+            var CKPT = $('#items_' + (index - 1) + '__chietKhauPhanTram').val();
+            var temp3 = (temp * quantity - CKTT) * (100 - CKPT) / 100 ;
+            temp3 = Math.floor(temp3);
+            $('#items_' + (index - 1) + '__thanhTienS').val(numberWithCommas(temp3));
+            $('#items_' + (index - 1) + '__thanhTien').val(temp3);
+        }
+        function updatePrice22(index) {
+            var tempstr = $('#items_' + (index - 1) + '__DonGiaS2').val();
+            while (tempstr.indexOf(',') != -1) tempstr = tempstr.replace(',', '');
+            var temp = parseFloat(tempstr);
+            var quantity = $('#items_' + (index - 1) + '__quantity').val();
+            var CKTT = $('#items_' + (index - 1) + '__chietKhauTrucTiep').val();
+            var CKPT = $('#items_' + (index - 1) + '__chietKhauPhanTram').val();
+            var temp3 = temp * quantity * (100 - CKPT) / 100 - CKTT;
+            temp3 = Math.floor(temp3);
+            $('#items_' + (index - 1) + '__thanhTienS').val(numberWithCommas(temp3));
+            $('#items_' + (index - 1) + '__thanhTien').val(temp3);
+
+            $('#items_' + (index - 1) + '__DonGiaS2').val(numberWithCommas(tempstr));
+
+        }
+        var currentsdt = "";
+        function checkCus() {
+
+            var sdt = $("#phoneNumber").val();
+            if (currentsdt != sdt) {
+                currentsdt = sdt;
+                $.getJSON("/ProductItem/getdataKhachHang?sdt=" + sdt, function (result) {
+                    $.each(result, function (name, value) {
+                        if (name == "cusname") { $("#cusName").val(value); }
+
+                        if (name == "cusadd") { $("#Adress").val(value); }
+                        if (name == "cusadd2") { $("#Adress2").val(value); }
+                    });
+
+                });
+            }
+        }
+        setInterval(checkCus, 100);
+        function checkPrice(name, index) {
+            var flag = false;
+
+            $.getJSON("/ProductItem/getAllData?name="+name, function (result) {
+
+                $.each(result, function (name, value) {
+                    if (name == "name") {
+                        flag = true;
+
+                        if (value != null) {
+                            $('#items_' + (index - 1) + '__SKU').css("background-color", "green");
+
+                            $('#items_' + (index - 1) + '__SKU').css("color", "white");
+                            $("#lid" + (index - 1)).empty();
+                            $("#lid" + (index - 1)).append(value);
+                        }
+
+
+                    }
+                    if (name == "price") {
+                        if (flag && value != null) {
+                            var tempstr = value;
+
+                            if (tempstr.indexOf(".") > 0) {
+                                tempstr = tempstr.substring(0, tempstr.indexOf("."));
+                            }
+                            var temp = parseFloat(tempstr);
+
+
+                            $("#pid" + (index - 1)).text(numberWithCommas(temp));
+                            $('#items_' + (index - 1) + '__DonGiaS').val(numberWithCommas(temp));
+                        }
+                    }
+                })
+            });
+            if (!flag && $('#items_' + (index - 1) + '__SKU').val() != null) {
+                $('#items_' + (index - 1) + '__SKU').css("background-color", "orange");
+
+
+                $('#items_' + (index - 1) + '__SKU').css("color", "white");
+            }
+        };
+        function removeselect(i) {
+            for (var index = i; index < 20 ; index++) {
+                if ($('#items_' + (index + 1) + '__SKU').val() != "" || $('#items_' + (index + 1) + '__newSKU').val() != "") {
+                    $('#items_' + (index) + '__SKU').val($('#items_' + (index + 1) + '__SKU').val());
+                    $('#items_' + (index) + '__newSKU').val($('#items_' + (index + 1) + '__newSKU').val());
+                    $('#items_' + (index) + '__quantity').val($('#items_' + (index + 1) + '__quantity').val());
+                    $('#items_' + (index) + '__chietKhauPhanTram').val($('#items_' + (index + 1) + '__chietKhauPhanTram').val());
+                    $('#items_' + (index) + '__chietKhauTrucTiep').val($('#items_' + (index + 1) + '__chietKhauTrucTiep').val());
+                    $('#items_' + (index) + '__thanhTien').val($('#items_' + (index + 1) + '__thanhTien').val());
+                    $('#items_' + (index) + '__dongia').val($('#items_' + (index + 1) + '__dongia').val());
+                    $('#items_' + (index) + '__productID').val($('#items_' + (index + 1) + '__productID').val());
+                    $('#items_' + (index) + '__productName').val($('#items_' + (index + 1) + '__productName').val());
+                    $('#items_' + (index) + '__thanhTienS').val($('#items_' + (index + 1) + '__thanhTienS').val());
+                    $('#items_' + (index) + '__chietKhauTrucTiepS').val($('#items_' + (index + 1) + '__chietKhauTrucTiepS').val());
+                    $('#items_' + (index) + '__DonGiaS').val($('#items_' + (index + 1) + '__DonGiaS').val());
+                    $('#items_' + (index) + '__DonGiaS2').val($('#items_' + (index + 1) + '__DonGiaS2').val());
+                    $('#pid' + index).val($('#pid' + (index + 1)).val());
+                    $('#lid' + index).val($('#lid' + (index + 1)).val());
+                }
+                else {
+                    $('#items_' + (index) + '__SKU').val(null);
+                    $('#items_' + (index) + '__newSKU').val(null);
+                    $('#items_' + (index) + '__quantity').val(null);
+                    $('#items_' + (index) + '__chietKhauPhanTram').val(null);
+                    $('#items_' + (index) + '__chietKhauTrucTiep').val(null);
+                    $('#items_' + (index) + '__thanhTien').val(null);
+                    $('#items_' + (index) + '__dongia').val(null);
+                    $('#items_' + (index) + '__productID').val(null);
+                    $('#items_' + (index) + '__productName').val(null);
+                    $('#items_' + (index) + '__thanhTienS').val(null);
+                    $('#items_' + (index) + '__chietKhauTrucTiepS').val(null);
+                    $('#items_' + (index) + '__DonGiaS').val(null);
+                    $('#items_' + (index) + '__DonGiaS2').val(null);
+                    $('#pid' + index).val(null);
+                    $('#lid' + index).val(null);
+                }
+
+            }
+        }
+        $(document).ready(function () {
+
+            var productname =@Html.Raw(ViewData["namelist"]);
+
+            $(".skuselector").each(function () {
+
+                for (var i = 0; i < productname.length ; i++) {
+                    $(this).append(new Option(productname[i],productname[i]));
+                }
+            });
+
+
+
+            @*for (i = 0; i < 20 ; i++) {
+                $('#items_' + (i ) + '__SKU').autocomplete({
+
+                    source: '@Url.Action("Autocomplete")'
+
+                })
+                    .data("ui-autocomplete")._renderItem = function (ul, item) {
+                        return $("<li>")
+                          .data("ui-autocomplete-item", item)
+
+                          .append('<a style="color:black">' + item.label + "</a>")
+                          .appendTo(ul);
+                    };
+            }*@
+
+        });
+        function preventEnterSubmit(e) {
+            if (e.which == 13) {
+                var $targ = $(e.target);
+                alert("A");
+                alert($targ.id);
+                if (!$targ.is("textarea") && !$targ.is(":button,:submit")) {
+                    var focusNext = false;
+                    $(this).find(":input:visible:not([disabled],[readonly]), a").each(function () {
+                        if (this === e.target) {
+                            focusNext = true;
+                        }
+                        else if (focusNext) {
+                            $(this).focus();
+                            return false;
+                        }
+                    });
+
+                    return false;
+                }
+            }
+        }
+    </script>
+    <style>
+        
+        .ui-autocomplete {
+            border:thin;
+            background-color:lightgray;
+            max-height: 300px;
+            max-width:400px;
+            overflow-y: auto;
+            /* prevent horizontal scrollbar */
+            overflow-x: hidden;
+        }
+        /* IE 6 doesn't support max-height
+        * we use height instead, but this forces the menu to always be this tall
+        */
+        * html .ui-autocomplete {
+            height: 100px;
+        }
+
+      
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            $('#searchbox').autocomplete({
+                source: '@Url.Action("Autocomplete")'
+
+            })
+                .data("ui-autocomplete")._renderItem = function (ul, item) {
+                    return $('<li class="">')
+                      .data("ui-autocomplete-item", item)
+
+                      .append('<a>' + item.label + "</a>")
+                      .appendTo(ul);
+                };
+
+
+        });
+    </script>
+</head>
+<body>
+
+    @model ThienNga2.Models.ViewModel.NewItemViewModel
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Tạo báo giá</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li>
+                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="#">Settings 1</a>
+                        </li>
+                        <li>
+                            <a href="#">Settings 2</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <br>
+            @using (Html.BeginForm("CreateWhenSale", "ProductItem", FormMethod.Post, new { id = "guiform", @class = "form-horizontal form-label-left" }))
+            {
+                List<SelectListItem> ls2 = new List<SelectListItem>();
+                String date = (DateTime.Now.ToString("M'/'dd'/'yyyy"));
+                ls2.Add(new SelectListItem { Text = "Kho sài gòn", Value = "1" });
+                ls2.Add(new SelectListItem { Text = "Kho Hà nội", Value = "2" });
+                ls2.Add(new SelectListItem { Text = "Kho Tổng", Value = "3" });
+                List<SelectListItem> ls3 = new List<SelectListItem>();
+                if (ViewData["sdct"] != null)
+                {
+                    List<CustomerType> llst = (List<CustomerType>)ViewData["sdct"];
+                    foreach (CustomerType ls in llst)
+                    {
+                        ls3.Add(new SelectListItem { Text = ls.GroupName, Value = ls.id + "" });
+                    }
+                }
+
+
+                <div class="form-style-10">
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <form class="form-horizontal form-label-left">
+
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2>Tra cứu sản phẩm </h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li>
+                                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                            </li>
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li>
+                                                        <a href="#">Settings 1</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Settings 2</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <a class="close-link"><i class="fa fa-close"></i></a>
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <br>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                Tên sản phẩm
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" id="searchbox" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        @if (ViewData["productdetail"] != null)
+                                        {
+                                            tb_product_detail detail = (tb_product_detail)ViewData["productdetail"];
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                    SKU
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" id="resultSKU" name="searchbox" class="form-control" value="@detail.productStoreID" />
+                                                </div>
+                                            </div>
+                                        }
+                                        @if (ViewData["dsspdt"] != null)
+                                        {
+                                            foreach (var item in (List<inventory>)ViewData["dsspdt"])
+                                            {
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                        @item.tb_inventory_name.InventoryName
+                                                    </label>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <input type="text" class="form-control" disabled value="@item.quantity" />
+                                                    </div>
+                                                </div>
+                                            }
+
+                                        }
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                <div class="x_panel">
+                                    <div class="x_title">
+                                        <h2>Thông Tin Khách Hàng </h2><label>Ngày <input name="date" id="date" value="@DateTime.Today.Day" /> Tháng <input name="month" id="month" value="@DateTime.Today.Month" /> Năm <input name="year" id="year" value="@DateTime.Today.Year" /> </label>
+
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li>
+                                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                            </li>
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li>
+                                                        <a href="#">Settings 1</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Settings 2</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <a class="close-link"><i class="fa fa-close"></i></a>
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <br>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                Nhóm khách <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.DropDownListFor(Model => Model.custype, ls3, new { @class = "form-control col-md-7 col-xs-12" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                Họ tên khách hàng
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.TextBoxFor(Model => Model.cusName, new { @class = "form-control col-md-7 col-xs-12" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                SDT
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.TextBoxFor(Model => Model.phoneNumber, new { @class = "form-control col-md-7 col-xs-12" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                Email
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.TextBoxFor(Model => Model.Email, new { @class = "form-control col-md-7 col-xs-12" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                Địa chỉ
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.TextBoxFor(Model => Model.Adress, new { @class = "form-control col-md-7 col-xs-12" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                                                Ghi chú
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                @Html.TextBoxFor(Model => Model.Adress2, new { @class = "form-control col-md-7 col-xs-12" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="section"><span></span><h4>Chọn kho</h4></div>
+                        <label> @Html.DropDownListFor(Model => Model.inventoryID, ls2)</label>
+                        <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="neworder">
+                            <tr hidden="hidden"> <td colspan="4"> Tên Khách </td><td id="cusNAMEE" colspan="3"> </td></tr>
+                            <tr hidden="hidden"> <td colspan="4">SĐT</td><td id="cusSDT" colspan="3">  </td></tr>
+                            <tr hidden="hidden"> <td colspan="4">Địa chỉ</td><td id="cusDC" colspan="3"> </td></tr>
+                            <tr hidden="hidden"> <td colspan="4">Ghi chú thêm </td><td id="cuGHICHU" colspan="3"></td></tr>
+                            @for (var i = 0; i < Model.items.Count; i++)
+                            {
+                                string idd = "divid" + i;
+                                string idp = "pid" + i;
+                                string idl = "lid" + i;
+                                string thanhtienID = "thanhtien" + idd;
+                                @*<div class="inner-wrap" id="@idd">*@
+
+                                <tr id="@idd">
+                                    <td width="10%" id="skuu@(i)">
+                                        <label>
+                                            Nhập SKU  <br />
+                                            <span style="width:140px !important" role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+
+                                            <select style="width:140px !important" id="items_@(i)__SKU" name="items[@i].SKU" class="skuselector select2_single form-control" tabindex="-1">
+                                                <option selected value=""></option>
+                                            </select>
+                                        </label>
+                                    </td>
+                                    <td id="@("matamm"+i)">
+
+                                        <label>Hoặc nhập Mã tạm @Html.TextBoxFor(Model => Model.items[i].newSKU, new { @class = "form-control" })</label>
+                                    </td>
+                                    <td id="@("namee"+i)">
+
+                                        <label>Tên Sản phẩm  </label>
+                                        <br />
+                                        <p id="@idl"></p>
+                                    </td>
+                                    <td id="@("dongiaa"+i)">
+                                        @Html.HiddenFor(Model => Model.items[i].DonGiaS, new { @class = "form-control", value = "0" })
+                                        <label>Đơn giá </label>
+                                        <br />
+                                        <p id="@idp"></p>
+                                        @Html.TextBoxFor(Model => Model.items[i].DonGiaS2, new { @class = "form-control", style = "display: none;" })
+                                    </td>
+
+
+                                    <td width="8%" id="@("soluongg"+i)">
+
+                                        <label>Số lượng @Html.TextBoxFor(Model => Model.items[i].quantity, new { @Value = "1", @class = "form-control", @type = "number" })</label>
+                                    </td>
+                                    <td width="4%" id="@("quicachh"+i)">
+
+                                        <label>Qui cách @Html.TextBoxFor(Model => Model.items[i].quicach, new { @Value = "Cái", @class = "form-control" })</label>
+                                    </td>
+                                    <td width="4%" id="@("ckptt"+i)">
+
+                                        <label>CK % @Html.TextBoxFor(Model => Model.items[i].chietKhauPhanTram, new { @class = "form-control", value = "0" })</label>
+                                    </td>
+                                    <td id="@("cktmm"+i)">
+
+                                        <label>CK tiền mặt @Html.TextBoxFor(Model => Model.items[i].chietKhauTrucTiep, new { @class = "form-control", value = "0" })</label>
+                                    </td>
+                                    <td id="@("thanhtienn"+i)">
+
+                                        <label>Thành tiền @Html.TextBoxFor(Model => Model.items[i].thanhTienS, new { @class = "form-control", value = "0", disabled = "true" })</label>
+                                    </td>
+                                    <td>
+
+                                        <label>Có bảo hành @Html.CheckBoxFor(Model => Model.items[i].warrantyAvailable)</label>
+                                    </td>
+                                    @Html.HiddenFor(Model => Model.items[i].thanhTien, new { @class = "form-control", value = "0" })
+                                    @*<td align="center">
+                                            <img src="~/Content/images/red-delete-button-icon-62906.png" onclick="removeselect(@i)"/>
+
+                                        </td>*@
+
+                                </tr>
+
+
+                                @*</div>*@
+                            }
+                            <tr id="trVAT" style="display:none">
+                                <td colspan="8" align="right">VAT 10%</td>
+                                <td colspan="2" id="TotalVAT">  </td>
+                            </tr>
+                            <tr>
+                                <td colspan="8" align="right">Tổng</td>
+                                <td colspan="2" id="Totalb4VAT">  </td>
+                            </tr>
+                            <tr id="trTT" style="display:none">
+                                <td colspan="8" align="right">Thành tiền</td>
+                                <td colspan="2" id="TotalAterVAT">  </td>
+                            </tr>
+                            <tr> <td align="right" colspan="10"> <button onclick="removeAll()">Xóa hết</button></td></tr>
+                        </table>
+
+
+                        <div class="button-section">
+                            Có VAT @Html.CheckBoxFor(m => m.VAT)
+                            <input type="button" onclick="guidi()" name="Hoàn tất" value="Hoàn tất" />
+
+                        </div>
+                    </form>
+                </div>
+
+
+            }
+        </div>
+    </div>
+
+    <br />
+    <br />
+    <div class="inner-wrap">
+        @using (Html.BeginForm("Confirm", "ProductItem/BaoGia", FormMethod.Post, new { id = "baogiaform" }))
+        {
+            <input type="hidden" id="dataString" name="dataString" value="" />
+            <input type="hidden" id="datavat" name="covat" value="" />
+            <button type="button" name="Edit" value="Hoàn tất" onclick="inbill()">Xuất báo giá</button>
+        }
+    </div>
+
+    <script>
+        function removeAll() {
+            for(var i = 0 ; i < 20 ; i ++) {
+                $("#items_" + i + "__SKU").val("");
+                $("#items_" + i + "__newSKU").val("");
+            }
+        }
+        $(document).ready(function () {
+            $('input').on("keypress", function (e) {
+                /* ENTER PRESSED*/
+                var t = e.keyCode;
+
+                var idd = parseInt((this.id).substr(this.id.indexOf("__") - 1, 1));
+                idd = idd + 1;
+
+                if (t == 13) {
+                    /* FOCUS ELEMENT */
+                    var inputs = $(this).parents("form").eq(0).find(":input");
+                    var idx = inputs.index(this);
+
+                    if (idx == inputs.length - 1) {
+                        inputs[0].select()
+                    } else {
+
+                        if ((idx + 1 - 10) % 7 == 0 || (idx + 1 - 15) % 7 ==0) {
+                            $("#items_"+idd+"__SKU").focus();
+                        }
+                        else
+                            $("#items_" + idd + "__SKU").focus();
+
+
+                    }
+                    return false;
+                }
+            });
+
+        })
+
+    </script>
+    <script>
+
+        function guidi() {
+            var txt;
+            var r = confirm("Kiểm tra thật kỹ dữ liệu trước khi bấm hoàn tất. Một khi đã bấm hoàn tất, dữ liệu kho sẽ bị thay đổi");
+            if (r == true) {
+                $("#guiform").submit();
+            } else {
+
+            }
+
+        }
+
+        function inbill() {
+            if ($("#VAT").is(':checked')) {
+                $("#datavat").val("true");
+            }
+            else {
+                $("#datavat").val("false");
+            }
+            $("#cusNAMEE").text($("#cusName").val());
+
+            $("#cusSDT").text($("#phoneNumber").val());
+            $("#cusDC").text($("#Adress").val());
+            $("#cuGHICHU").text($("#Adress2").val());
+            var all = "";
+            all = all + "a :split" + $("#cusNAMEE").text() + ":eachrow";
+            all = all + "a :split" + $("#cusSDT").text() + ":eachrow";
+            all = all + "a :split" + $("#cusDC").text() + ":eachrow";
+            all = all + "a :split" + $("#cuGHICHU").text() + ":eachrow";
+
+            //gets table
+            var oTable = document.getElementById('neworder');
+
+            //gets rows of table
+            var rowLength = oTable.rows.length;
+
+            //loops through rows
+            for (i = 0; i < 20; i++) {
+                if ($("#items_" + i + "__SKU").val().trim() != "" || $("#items_" + i + "__newSKU").val().trim()) {
+                    var temp = "";
+                    if ($("#items_" + i + "__SKU").val().trim() != "")
+                        temp = temp + $("#items_" + i + "__SKU").val().trim() + ":split";
+                    else {
+                        temp = temp + "-" + ":split";
+                    }
+                    if ($("#items_" + i + "__newSKU").val().trim() != "") {
+                        temp = temp + $("#items_" + i + "__newSKU").val().trim() + ":split";
+                    }
+                    else {
+                        temp = temp + "-"+ ":split";
+                    }
+                    if ($("#lid" + i).text().trim() != "") {
+                        temp = temp + $("#lid" + i).text().trim() + ":split";
+                    }
+                    else {
+                        temp = temp + "-"+ ":split";
+                    }
+
+                    if ($("#items_"+i+"__DonGiaS2").val() != "") {
+                        temp = temp + $("#items_"+i+"__DonGiaS2").val().trim() + ":split";
+                    }
+                    else {
+                        temp = temp + $("#pid" + i).text().trim() + ":split";
+                    }
+
+                    temp = temp + $("#items_" + i + "__quantity").val().trim() + ":split";
+                    temp = temp + $("#items_" + i + "__quicach").val().trim() + ":split";
+                    temp = temp + $("#items_" + i + "__chietKhauPhanTram").val().trim() + ":split";
+                    temp = temp + $("#items_" + i + "__chietKhauTrucTiep").val().trim() + ":split";
+                    temp = temp + $("#items_" + i + "__thanhTienS").val().trim() + ":split";
+
+                    if ($("#items_" + i + "__warrantyAvailable").is(':checked')) {
+                        temp = temp + "Có";
+                    }
+                    else {
+                        temp = temp + "Ko";
+                    }
+                    all = all + ":eachrow" + temp.trim();
+                }
+            }
+            $("#dataString").val(all);
+
+            $("#baogiaform").submit();
+        }
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#mysearchForm').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url : "/ProductItem/Search",
+                    type: "GET",
+                    data: $(this).serialize(),
+                    success: function (data) {
+                        alert("lay");
+                    },
+                    error: function (jXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <form action="/ProductItem/Search" id="mysearchForm" hidden>
+        <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                Họ tên khách hàng
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" id="searchbox2" name="code" class="form-control" />
+                <button class="btn btn-success">Tìm</button>
+            </div>
+        </div>
+    </form>
+
+
+
+</body>
+</html>

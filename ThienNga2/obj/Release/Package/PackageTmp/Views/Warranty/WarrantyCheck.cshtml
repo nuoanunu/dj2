@@ -1,0 +1,208 @@
+﻿
+@using ThienNga2.Models.Entities;
+
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+    <title>Inventory</title>
+
+    <link href="~/Content/js/datatables/fixedHeader.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/js/datatables/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Content/js/pace/pace.min.js"></script>
+    <script src="~/Content/js/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/js/datatables/dataTables.bootstrap.js"></script>
+    <script src="~/Content/js/datatables/dataTables.buttons.min.js"></script>
+    <script src="~/Content/js/datatables/buttons.bootstrap.min.js"></script>
+    <script src="~/Content/js/datatables/jszip.min.js"></script>
+    <script src="~/Content/js/datatables/pdfmake.min.js"></script>
+    <script src="~/Content/js/datatables/vfs_fonts.js"></script>
+    <script src="~/Content/js/datatables/buttons.html5.min.js"></script>
+    <script src="~/Content/js/datatables/buttons.print.min.js"></script>
+    <script src="~/Content/js/datatables/dataTables.fixedHeader.min.js"></script>
+    <script src="~/Content/js/datatables/dataTables.keyTable.min.js"></script>
+    <script src="~/Content/js/datatables/dataTables.responsive.min.js"></script>
+    <script src="~/Content/js/datatables/responsive.bootstrap.min.js"></script>
+    <script src="~/Content/jsdatatables/dataTables.scroller.min.js"></script>
+</head>
+<div class="">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>Bảo hành và sữa chữa</h3>
+        </div>
+
+       
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Danh sách thiết bị</h2>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                    <p>Danh sách các thiệt bị đã / đang được sữa chữa tại của hàng</p>
+
+                    <!-- start project list -->
+                    <table id="myacttable" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Ngày nhận</th>
+                                <th>Tên khách</th>
+                                <th>SKU</th>
+                                <th>Mã hóa đơn bảo hành</th>
+                                <th>Người chịu trách nhiệm sữa chữa</th>
+                                <th style="width: 20%">Tiến trình</thstyle="width:>
+                                <th>Status</th>
+                                <th>#Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (tb_warranty_activities act in (List<tb_warranty_activities>)ViewData["AllWarranty"])
+                            {
+                                <tr id="@("trid"+act.id)">
+                                    <td>@act.startDate.ToShortDateString() </td>
+                                    <td>
+                                        <a>@act.TenKhach</a>
+                                        <br>
+                                        <small>@act.SDT</small>
+                                    </td>
+                                    @if (act.tb_warranty != null)
+                                    {
+                                        <td>
+                                            @act.tb_warranty.item.tb_product_detail.productStoreID
+                                        </td>}
+                                    else
+                                    {
+                                        <td>
+                                            @act.itemID
+                                        </td>
+                                    }
+
+
+                                    <td>
+                                        @act.CodeBaoHanh
+                                    </td>
+                                    <td>
+                                        @if (act.AspNetUser1 != null)
+                                        {
+                                            @act.AspNetUser1.FullName
+                                        }
+
+                                    </td>
+                                    <td class="project_progress">
+                                        <div class="progress progress_sm">
+                                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="57" aria-valuenow="54" style="width: @(Math.Floor((double)act.status*100/7))%;"></div>
+                                        </div>
+                                        <small>@(Math.Floor((double)act.status * 100 / 7)) Complete</small>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-success btn-xs">@act.tb_warrnaty_status.statusName</button>
+                                    </td>
+                                    <td>
+                                        <a href="/Warranty/ActivityDetail?id=@(act.id)" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> Chi tiết </a>
+
+                                        @if (User.IsInRole("Admin") || User.IsInRole("Nhân Viên Quản Lý Sửa Chữa"))
+                                        {
+                                            <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#MyempList@(act.id)"><i class="fa fa-pencil"></i>Giao cho</button>
+
+                                        }
+                                        <div class="modal fade" id="MyempList@(act.id)" role="dialog">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">Modal Header</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="Warranty/GiaoViec" method="post">
+                                                            Chọn nhân viện
+                                                            <input type="hidden" value="@act.id" name="actid" />
+                                                            <select name="empId">
+                                                                @foreach (AspNetUser user in (List<AspNetUser>)ViewData["NhanVienKyThuat"])
+                                                                {
+                                                                    <option value="@user.Id"> @user.FullName</option>
+                                                                }
+                                                            </select>
+                                                            <button type="submit"> Giao </button>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button" onclick="DeleteAct(@act.id)" class="btn btn-danger btn-xs"><i class="fa fa-folder"></i> Delete </button>
+                                    </td>
+                                </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+                    <!-- end project list -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function DeleteAct(actid) {
+        var r = confirm("Bạn chắc chắn muốn xóa ko?");
+        if (r == true) {
+            $.getJSON("/Warranty/DeleteAct?id=" + actid, function (result) {
+                $.each(result, function (name, value) {
+                    if (name == "done") {
+                        $("#trid" + actid).css("display", "none");
+                        alert("Đã xóa");
+                    }
+                })
+            });
+        } else {
+          
+        }
+   
+    }
+</script>
+<script>
+          var handleDataTableButtons = function() {
+              "use strict";
+              0 !== $("#myacttable").length && $("#myacttable").DataTable({
+                dom: "Bfrtip",
+                buttons: [{
+                  extend: "copy",
+                  className: "btn-sm"
+                }, {
+                  extend: "csv",
+                  className: "btn-sm"
+                }, {
+                  extend: "excel",
+                  className: "btn-sm"
+                }, {
+                  extend: "pdf",
+                  className: "btn-sm"
+                }, {
+                  extend: "print",
+                  className: "btn-sm"
+                }],
+                responsive: !0
+              })
+            },
+            TableManageButtons = function() {
+              "use strict";
+              return {
+                init: function() {
+                  handleDataTableButtons()
+                }
+              }
+            }();
+</script>
+<script type="text/javascript">
+      
+          TableManageButtons.init();
+</script>

@@ -1,0 +1,111 @@
+﻿@using ThienNga2.Models.Entities
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ConfirmCreate</title>
+    <link rel="stylesheet" type="text/css" href="~/Content/SearchBar.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/Table.css">
+    <script src="http://www.google.com/jsapi"></script>
+    <link rel="stylesheet" href="~/Content/jquery-ui.css" type="text/css">
+</head>
+<body>
+    @if (ViewData["newwarranty"] != null)
+    {
+        tb_warranty_activities act = (tb_warranty_activities)ViewData["newwarranty"];
+
+
+        <div>
+            <h1> Biên nhận bảo hành : @act.CodeBaoHanh </h1>
+            <table class="responstable">
+                <tr>
+                    <td>
+                        SDT khách hàng
+                    </td>
+                    <td>
+                        @act.SDT
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Tên
+                    </td>
+                    <td>
+                        @act.TenKhach
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Tình trạng
+                    </td>
+                    <td>
+                        @act.Description
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Ngày tiếp nhận
+                    </td>
+                    <td>
+                        @act.startDate
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Mã sản phẩm
+                    </td>
+
+                    @if (act.tb_warranty == null)
+                    {
+                        <td> @act.itemID  </td>
+                    }
+                    else
+                    {
+                        <td> @act.tb_warranty.warrantyID  </td>
+
+                    }
+
+                </tr>
+                <tr>
+                    <td>
+                        Nhân viên tiếp nhận
+                    </td>
+                    <td>
+                        @act.AspNetUser.FullName
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @using (Html.BeginForm("EditAct", "CreateWarranty"))
+                        {
+                            <input type="hidden" value="@act.id" name="actid" />
+                                @*<button type="submit" name="Edit" value="Sửa">Sửa</button>*@
+                        }
+                    </td>
+                    <td>
+                        @using (Html.BeginForm("GenerateInvoiceBill", "CreateWarranty"))
+                        {
+                            <input type="hidden" value="@act.id" name="actid" />
+                                <button type="submit" name="Edit" value="Hoàn tất"> In phiếu bảo hành</button>
+                        }
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <a href="/CreateWarranty" class="btn btn-success">Tạo mới</a>
+                    </td>
+                    <td>
+                        <a href="/Warranty/ActivityDetail?id=@(act.id)" class="btn btn-primary">Tới trang chi tiết bảo hành</a>
+                    </td>
+                </tr>
+
+
+            </table>
+        </div>
+    }
+
+</body>
+</html>

@@ -1,0 +1,183 @@
+﻿@using ThienNga2.Models.Entities
+@{
+    Layout = null;
+}
+
+@if (ViewData["ChitietHoadon"] != null)
+{
+    tb_warranty_activities act = (tb_warranty_activities)ViewData["ChitietHoadon"];
+    <!DOCTYPE html>
+
+    <html>
+    <head>
+        <head>
+            <meta charset="utf-8" />
+
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+            <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+            <title>DJI Care</title>
+
+            <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+            <link href="~/Content/fonts/css/font-awesome.min.css" rel="stylesheet" />
+            <!-- Custom styling plus plugins -->
+            <link href="~/Content/css/animate.min.css" rel="stylesheet" />
+            <link href="~/Content/css/custom.css" rel="stylesheet" />
+            <link href="~/Content/css/icheck/flat/green.css" rel="stylesheet" />
+            <script src="~/Content/js/datatables/jquery.dataTables.min.js"></script>
+            <link href="~/Content/js/datatables/jquery.dataTables.min.css" rel="stylesheet" />
+            <script>
+                $(document).ready(function () {
+                    $(".productname").each(function () {
+                        var id = "fn" + $(this).attr("id").replace("ff", "");
+                        $.getJSON("/Warranty/getAllData?name=" + $(this).val(), function (result) {
+
+                            $.each(result, function (name, value) {
+                                if (name == "name") {
+                                    flag = true;
+
+                                    if (value != null) {
+                                        $("#" + id).html(value);
+                                    }
+                                }
+                            })
+                        });
+                    })
+                })
+            </script>
+            <script src="~/Content/js/bootstrap.min.js"></script>
+
+            <!-- bootstrap progress js -->
+            <script src="~/Content/js/progressbar/bootstrap-progressbar.min.js"></script>
+            <script src="~/Content/js/nicescroll/jquery.nicescroll.min.js"></script>
+            <!-- icheck -->
+            <script src="~/Content/js/icheck/icheck.min.js"></script>
+            <script src="~/Content/js/custom.js"></script>
+            <!-- echart -->
+            <script src="~/Content/js/echart/echarts-all.js"></script>
+            <script src="~/Content/js/echart/green.js"></script>
+            <!-- pace -->
+            <script src="~/Content/js/pace/pace.min.js"></script>
+            <script type="text/javascript" src="~/Content/js/moment/moment.min.js"></script>
+            <script type="text/javascript" src="~/Content/js/datepicker/daterangepicker.js"></script>
+            <!-- chart js -->
+            <script src="~/Content/js/chartjs/chart.min.js"></script>
+            <script type="text/javascript" src="~/Content/js/flot/jquery.flot.js"></script>
+            <script type="text/javascript" src="~/Content/js/flot/jquery.flot.pie.js"></script>
+            <script type="text/javascript" src="~/Content/js/flot/jquery.flot.orderBars.js"></script>
+            <script type="text/javascript" src="~/Content/js/flot/jquery.flot.time.min.js"></script>
+            <script type="text/javascript" src="~/Content/js/flot/date.js"></script>
+            <script type="text/javascript" src="~/Content/js/flot/jquery.flot.spline.js"></script>
+            <script type="text/javascript" src="~/Content/js/flot/jquery.flot.stack.js"></script>
+            <script type="text/javascript" src="~/Content/js/flot/curvedLines.js"></script>
+            <script type="text/javascript" src="~/Content/js/flot/jquery.flot.resize.js"></script>
+            <style>
+                body * {
+                    background: white !important;
+                    color: black;
+                    visibility: hidden;
+                }
+
+                table {
+                    border-collapse: collapse;
+                }
+
+                table, th {
+                    border: 1px solid black;
+                }
+
+                #toPrintArea, #toPrintArea * {
+                    visibility: visible;
+                }
+
+                #toPrintArea {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                }
+
+                @@media print {
+                    .no-print, .no-print * {
+                        display: none !important;
+                    }
+                }
+            </style>
+        </head>
+    </head>
+    <body>
+        <div id="toPrintArea">
+            <h1>Hóa đơn bảo hành</h1>
+            <table border="0">
+                <tr>
+                    <td>
+                        Mã bảo hành: @act.CodeBaoHanh
+                        <br />
+                        Ngay: @DateTime.Today.ToShortDateString()
+                    </td>
+                    <td>
+                        Tên khách: @act.TenKhach
+                        <br />
+                        SDT: @act.SDT
+                        <br />
+
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Loại chi phí
+                        </th>
+                        <th>
+                            Số lượng
+                        </th>
+                        <th>
+                            Thành tiền
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (warrantyActivityFee fee in act.warrantyActivityFees)
+                    {
+                        <tr>
+                            <input class="productname" type="hidden" value="@fee.productSKU" id="@("ff"+fee.id)" />
+                            <td colspan="3" id="@("fn"+fee.id)"></td>
+                        </tr>
+                        <tr>
+                            <td align="right">
+                                @fee.quantity
+                            </td>
+                            <td align="right" colspan="2">
+                                @(Math.Floor(fee.fixingfee).ToString("N"))
+                            </td>
+                        </tr>
+                    }
+                    @foreach (warrantyActivityFixingFee fee in act.warrantyActivityFixingFees)
+                    {
+                        <tr>
+
+                            <td colspan="3">@fee.FixDetail</td>
+                        </tr>
+                        <tr>
+                            <td align="right" colspan="3">
+                                @(Math.Floor(fee.fee).ToString("N"))
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button class="btn btn-default no-print" onclick="window.print();"><i class="fa fa-print"></i> In </button>
+          <form action="/Warranty/ChangeStatus">
+              <input type="hidden" name="actid" value="@act.id" />
+              <input type="hidden" name="newstatus" value="7" />
+              <button class="btn btn-default no-print"> Hoàn tất hóa đơn </button>
+
+          </form>
+        </div>
+
+    </body>
+</html>
+
+}
