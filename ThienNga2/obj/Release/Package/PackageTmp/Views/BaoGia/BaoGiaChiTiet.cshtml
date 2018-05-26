@@ -1,0 +1,192 @@
+﻿@using ThienNga2.Models.ViewModel;
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Confrim hóa đơn </title>
+    <link rel="stylesheet" type="text/css" href="~/Content/SearchBar.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/Table.css">
+    <script src="http://www.google.com/jsapi"></script>
+ 
+</head>
+<body>
+    <h1>Phiếu báo giá</h1>
+    @if ((NewItemViewModel)TempData["tuple"] != null)
+    {
+        NewItemViewModel a = (NewItemViewModel)TempData["tuple"];
+
+
+
+        <table class="responstable" id="myTable">
+
+
+            <tr> <td> Tên Khách </td><td>  @a.cusName </td></tr>
+            <tr> <td>Sdt</td><td> @a.phoneNumber </td></tr>
+            <tr> <td>Địa chỉa</td><td> @a.Adress </td></tr>
+            <tr> <td>Ghi chú thêm</td><td> @a.Adress2 </td></tr>
+            <tr>
+                <th>
+                    Mã unit
+                </th>
+                <th>
+                    Tên sản phẩm
+                </th>
+                <th>
+                    Số lượng
+                </th>
+                <th>
+                   Qui cách
+                </th>
+                <th>
+                    Đơn giá trên 1 sản phẩm
+                </th>
+
+                <th>
+                    Chiết Khấu phần trăm
+                </th>
+                <th>
+                    Chiết Khấu trực tiếp
+                </th>
+                <th>
+                    Thành tiền
+                </th>
+                <th>
+                    Bảo hành
+                </th>
+            </tr>
+            @for (int i = 0; i < a.items.Count; i++)
+            {
+                AnOrderDetail ao = a.items[i];
+                if (ao.quantity > 0)
+                {
+
+                    float thanhtien = (ao.thanhTien);
+                    Convert.ToDecimal(thanhtien).ToString("#,##0.00");
+                    float dongia = (ao.thanhTien / ao.quantity);
+                    Convert.ToDecimal(dongia).ToString("#,##0.00");
+                    float chietkhautt = ((ao.chietKhauTrucTiep));
+                    Convert.ToDecimal(chietkhautt).ToString("#,##0.00");
+
+                    <tr>
+                        <td> @ao.productID</td>
+                        <td> @ao.productName</td>
+                        <td> @ao.quantity</td>
+                        <td> @ao.quicach</td>
+                        <td> @ao.DonGiaS </td>
+                        <td> @(ao.chietKhauPhanTram + "")</td>
+                        <td>  @ao.chietKhauTrucTiepS</td>
+                        <td>  @ao.thanhTienS</td>
+                
+                        @if (ao.warrantyAvailable)
+                        {
+                            <td> Có </td>
+                        }
+                        else
+                        {
+                            <td> Không </td>
+                        }
+                    </tr>
+                }
+            }
+            <tr>
+                <td colspan="7">Tổng cộng</td>
+                <td> @TempData["total"]  </td>
+            </tr>
+            @if (TempData["VAT"].Equals("true"))
+            {
+                <tr>
+                    <td colspan="7">VAT</td>
+                    <td> @TempData["totalVAT"]  </td>
+                </tr>
+                <tr>
+                    <td colspan="7">Thành tiền</td>
+                    <td> @TempData["TotalAfterVAT"]  </td>
+                </tr>
+            }
+
+        </table>
+        <table class="responstable">
+            <tr>
+                @if (TempData["VAT"].Equals("true"))
+                {
+                    <td>
+                        @using (Html.BeginForm("Confirm", "ProductItem/GenerateInvoicePDF2"))
+                        {
+                            <input type="hidden" id="dataString" name="dataString" value="" />
+                            <button type="submit" name="Edit" value="Hoàn tất">Xuất ra PDF</button>
+                        }
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @using (Html.BeginForm("Confirm", "ProductItem/GenerateInvoicePDF"))
+                        {
+                            <input type="hidden" id="dataString" name="dataString" value="" />
+                            <button type="submit" name="Edit" value="Hoàn tất">Xuất ra PDF</button>
+                        }
+                    </td>
+                }
+
+                @if (TempData["VAT"].Equals("true"))
+                {
+                    <td>
+                        @using (Html.BeginForm("Confirm", "ProductItem/GenerateInvoiceBill2"))
+                    {
+                            <input type="hidden" id="dataString3" name="dataString" value="" />
+                            <button type="submit" name="Edit" value="Hoàn tất">Xuất Bill</button>
+                        }
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @using (Html.BeginForm("Confirm", "ProductItem/GenerateInvoiceBill"))
+                    {
+                            <input type="hidden" id="dataString3" name="dataString" value="" />
+                            <button type="submit" name="Edit" value="Hoàn tất">Xuất Bill</button>
+                        }
+                    </td>
+                }
+
+
+
+            </tr>
+
+        </table>
+
+    }
+    <script>
+        var all = "";
+    //gets table
+    var oTable = document.getElementById('myTable');
+
+    //gets rows of table
+    var rowLength = oTable.rows.length;
+
+    //loops through rows
+    for (i = 0; i < rowLength; i++){
+
+      //gets cells of current row
+       var oCells = oTable.rows.item(i).cells;
+
+       //gets amount of cells of current row
+       var cellLength = oCells.length;
+       var temp = "";
+       //loops through each cell in current row
+       for(var j = 0; j < cellLength; j++){
+
+              // get your cell info here
+
+              var cellVal = oCells.item(j).innerHTML;
+              temp = temp + ":split" + cellVal.trim();
+       }
+       all = all + ":eachrow" + temp.trim();
+    }
+    $("#dataString").val(all);
+    $("#dataString3").val(all);
+    </script>
+
+</body>
+</html>

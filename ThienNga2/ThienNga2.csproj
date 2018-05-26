@@ -727,6 +727,8 @@
     <Content Include="Content\js\datatables\json\scroller-demo.json" />
     <Content Include="Content\js\maps\us-unemployment.json" />
     <Content Include="Content\scss\stylelogin.scss" />
+    <None Include="Properties\PublishProfiles\djicare2 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\djicare2 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

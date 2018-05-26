@@ -1,0 +1,313 @@
+﻿@using ThienNga2.Models;
+@using ThienNga2.Models.Entities;
+@using ThienNga2.Models.ViewModel;
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+    <title>Inventory</title>
+    <link rel="stylesheet" type="text/css" href="~/Content/SearchBar.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/Table.css">
+    <script src="http://www.google.com/jsapi"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myModal').modal('toggle');
+            $("#increasequantity").click(function () {
+                $("#quantityInput").val() = $("#quantityInput").val() + 1;
+            });
+            $("#decreasequantity").click(function () {
+
+            });
+            $(".suggestionsinput").click(function () {
+                if ($(".suggestionsinput").val() == "Search") {
+                    $(".suggestionsinput").val("");
+                }
+            });
+            $(".suggestionsinput").keyup(function (event) {
+                if ($(".suggestionsinput").val() != "") {
+                    // make suggestions visible
+                    $("#suggestions").css('visibility', 'visible');
+                    $("#suggestions").hide();
+                    $("#suggestions").fadeIn('slow');
+                    $(".searchterm").text($(".suggestionsinput").val());
+                    $("#suggestions").load('/Product/getAll');
+
+                } else {
+                    // hide suggestions
+                    $("#suggestions").fadeOut('slow', function () {
+                        $("#suggestions").css('visibility', 'hidden');
+                    });
+
+                }
+            });
+
+
+
+        })
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#search').autocomplete({
+                source: '@Url.Action("Autocomplete")'
+
+            })
+                .data("ui-autocomplete")._renderItem = function (ul, item) {
+                    return $("<li>")
+                      .data("ui-autocomplete-item", item)
+
+                      .append('<a style="color:black">' + item.label + "</a>")
+                      .appendTo(ul);
+                };
+
+
+        });
+        function checkHidden() {
+
+            $(".ui-helper-hidden-accessible").hide();
+        }
+
+        setInterval(checkHidden, 100);
+
+    </script>
+   
+
+
+    <style>
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .ui-autocomplete {
+            max-height: 100px;
+            overflow-y: auto;
+            /* prevent horizontal scrollbar */
+            overflow-x: hidden;
+        }
+        /* IE 6 doesn't support max-height
+        * we use height instead, but this forces the menu to always be this tall
+        */
+        * html .ui-autocomplete {
+            height: 100px;
+        }
+
+        tr.border_bottom td {
+            border-bottom: 0.5pt solid gray;
+        }
+
+        .blue {
+            background-color: #55acee;
+            box-shadow: 0px 5px 0px 0px #3C93D5;
+            width: 100%;
+        }
+
+        .green {
+            background-color: #2ecc71;
+            box-shadow: 0px 5px 0px 0px #15B358;
+            width: 100%;
+        }
+
+        .yellow {
+            background-color: #f1c40f;
+            box-shadow: 0px 5px 0px 0px #D8AB00;
+            width: 100%;
+        }
+
+        .red {
+            background-color: #e74c3c;
+            box-shadow: 0px 5px 0px 0px #CE3323;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div>
+
+        @using (Html.BeginForm("Search", "Product"))
+        {
+
+
+
+            <div id="form" class="form-wrapper">
+                <input id="search" class="suggestionsinput" name="code" type="text" placeholder="Nhập mã sản phẩm" required />
+
+                <button type="submit" value="Search" id="submit">Tìm  </button>
+            </div>
+
+
+
+
+        }
+
+
+    </div>
+    <div>
+        @if (ViewData["allInven"] != null &&
+                         ((List<ThienNga_getkho_Result2>)ViewData["allInven"]).Count() > 0)
+        {
+            String name = (String)ViewData["invename"];
+            <h1> Thông tin kho @name</h1>
+            <table class="responstable">
+                <tr>
+                    <th>tên</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+
+                </tr>
+                @foreach (ThienNga_getkho_Result2 i in (List<ThienNga_getkho_Result2>)ViewData["allInven"])
+                {
+                    String color = "#FFffff";
+
+                    if (i.quantity < 5) { color = "#ff8000"; }
+                    if (i.quantity <= 0) { color = "FF0000"; }
+                    <tr>
+                        <td> @i.productName </td>
+                        <td> @i.price </td>
+                        <td bgcolor="@color"> @i.quantity </td>
+
+                    </tr>
+                }
+
+            </table>
+
+        }
+
+        @if (ViewData["productdetail"] != null)
+
+        {
+            tb_product_detail t = (tb_product_detail)ViewData["productdetail"];
+            //String srcImage = t.description.Substring(t.description.IndexOf("<img>") + 4, t.description.IndexOf("</img>"));
+
+            <table align="center" class="responstable">
+                <tr class="border_bottom">
+
+
+                    <td colspan="2" align="left">
+                        <h6> @t.productName</h6>
+
+                    </td>
+
+                    <td rowspan="5">
+                        <div id="content">
+
+                        </div>
+
+                    </td>
+                </tr>
+                <tr class="border_bottom">
+                    <td align="left">
+                        Mã nhà máy
+
+                    </td>
+                    <td align="right">
+                        @t.producFactoryID
+
+
+                    </td>
+
+                </tr>
+                <tr class="border_bottom">
+                    <td align="left">
+
+                        SKU
+
+                    </td>
+                    <td align="right">
+                        @t.productStoreID
+                    </td>
+
+                </tr>
+                <tr class="border_bottom">
+                    <td align="left">
+
+                        Giá bán
+                    </td>
+                    <td align="right">
+                        @t.price VND
+                    </td>
+
+                </tr>
+
+            </table>
+
+
+        }
+
+
+
+        @if ((List<inventory>)ViewData["dsspdt"] != null
+                               && ((List<inventory>)ViewData["dsspdt"]).Count() > 0)
+        {
+            List<SelectListItem> ls = new List<SelectListItem>
+            {
+            };
+            foreach (var item in (List
+                    <inventory>
+                        )ViewData["dsspdt"])
+            {
+                ls.Add(new SelectListItem { Text = item.tb_inventory_name.InventoryName + "", Value = item.id + "" });
+            }
+            <h1> Số lượng tại các kho:</h1>
+            <table class="responstable" border="1">
+                <tr>
+                    <th> Tên Kho </th>
+                    <th>  Số lượng hiện có </th>
+                    <th>  Hàng đang về</th>
+                    <th>  Chỉnh sửa </th>
+                </tr>
+
+                @foreach (var item in (List
+                <inventory>
+                    )ViewData["dsspdt"])
+                {
+
+                    // using (Html.BeginForm("Update", "Warranty"))
+                    //  {
+
+                    <tr>
+                        <td>@item.tb_inventory_name.InventoryName</td>
+
+                        <td>
+                            @item.quantity
+                        </td>
+                        <td>
+                            <div> Số lượng hàng đang về @item.Incoming </div>
+                            <div> Dự kiến @item.DateOrdered</div>
+                        </td>
+                        <td>
+                        </td>
+         
+                    
+
+                    </tr>
+
+                    // }
+
+                }
+            </table>
+
+
+        }
+        @if (ViewData["productdetail"] != null
+                                        )
+        {
+            <h1> Thông tin mô tả sản phẩm</h1>
+            tb_product_detail t = (tb_product_detail)ViewData["productdetail"];
+
+            <div id="myDescription">
+
+                @Html.Raw(t.description)
+
+            </div>
+
+
+        }
+    </div>
+
+</body>
+</html>

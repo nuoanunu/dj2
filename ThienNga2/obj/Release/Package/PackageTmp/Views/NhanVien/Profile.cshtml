@@ -1,0 +1,511 @@
+﻿@using ThienNga2.Models.Entities
+@model ThienNga2.Models.Entities.AspNetUser
+<style>
+    <style > body {
+        background: white;
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+        .switch input {
+            display: none;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    input:checked + .slider {
+        background-color: #4ef84e;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #4ef84e;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+        .switch input {
+            display: none;
+        }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    input:checked + .slider {
+        background-color: #4ef84e;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #4ef84e;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+</style>
+</style>
+@if (ViewData["thisaccount"] != null)
+{
+    AspNetUser thisuser = (AspNetUser)ViewData["thisaccount"];
+
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Thông tin nhân viên</h3>
+            </div>
+            <div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        @if (thisuser.UserName.Contains("removedAccount"))
+                        {
+                            <button onclick="ReactiveAccount()" class="btn btn-success confirmaction">Mở lại account này</button>
+                            <form id="Reactive" action="/NhanVien/ReactiveAccount">
+                                <input type="hidden" name="id" value="@thisuser.Id"/>
+                            </form>
+                        }
+                        else
+                        {
+                            <button onclick="DeactiveAccount()" class="btn btn-danger confirmaction">Xóa account này</button>
+                            <form id="Deactive" action="/NhanVien/DeactiveAccount">
+                                <input type="hidden" name="id" value="@thisuser.Id" />
+                            </form>
+                        }
+                
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function DeactiveAccount (){
+                $("#Deactive").submit();
+            }
+            function ReactiveAccount() {
+                $("#Reactive").submit();
+            }
+        </script>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>User Report <small>Activity report</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li>
+                                <a href="#"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="#">Settings 1</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Settings 2</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+                            <div class="profile_img">
+                                <!-- end of image cropping -->
+                                <div id="crop-avatar">
+                                    <!-- Current avatar -->
+                                    <div class="avatar-view" title="Change the avatar">
+                                        <img src="images/picture.jpg" alt="Avatar">
+                                    </div>
+                                    <!-- Cropping modal -->
+                                    <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <form class="avatar-form" action="crop.php" enctype="multipart/form-data" method="post">
+                                                    <div class="modal-header">
+                                                        <button class="close" data-dismiss="modal" type="button">&times;</button>
+                                                        <h4 class="modal-title" id="avatar-modal-label">Change Avatar</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="avatar-body">
+                                                            <!-- Upload image and data -->
+                                                            <div class="avatar-upload">
+                                                                <input class="avatar-src" name="avatar_src" type="hidden">
+                                                                <input class="avatar-data" name="avatar_data" type="hidden">
+                                                                <label for="avatarInput">Local upload</label>
+                                                                <input class="avatar-input" id="avatarInput" name="avatar_file" type="file">
+                                                            </div>
+                                                            <!-- Crop and preview -->
+                                                            <div class="row">
+                                                                <div class="col-md-9">
+                                                                    <div class="avatar-wrapper"></div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="avatar-preview preview-lg"></div>
+                                                                    <div class="avatar-preview preview-md"></div>
+                                                                    <div class="avatar-preview preview-sm"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row avatar-btns">
+                                                                <div class="col-md-9">
+                                                                    <div class="btn-group">
+                                                                        <button class="btn btn-primary" data-method="rotate" data-option="-90" type="button" title="Rotate -90 degrees">Rotate Left</button>
+                                                                        <button class="btn btn-primary" data-method="rotate" data-option="-15" type="button">-15deg</button>
+                                                                        <button class="btn btn-primary" data-method="rotate" data-option="-30" type="button">-30deg</button>
+                                                                        <button class="btn btn-primary" data-method="rotate" data-option="-45" type="button">-45deg</button>
+                                                                    </div>
+                                                                    <div class="btn-group">
+                                                                        <button class="btn btn-primary" data-method="rotate" data-option="90" type="button" title="Rotate 90 degrees">Rotate Right</button>
+                                                                        <button class="btn btn-primary" data-method="rotate" data-option="15" type="button">15deg</button>
+                                                                        <button class="btn btn-primary" data-method="rotate" data-option="30" type="button">30deg</button>
+                                                                        <button class="btn btn-primary" data-method="rotate" data-option="45" type="button">45deg</button>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <button class="btn btn-primary btn-block avatar-save" type="submit">Done</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="modal-footer">
+                                                                      <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                                                                    </div> -->
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal -->
+                                    <!-- Loading state -->
+                                    <div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
+                                </div>
+                                <!-- end of image cropping -->
+                            </div>
+                            <h3>@thisuser.FullName</h3>
+                            <ul class="list-unstyled user_data">
+                                <li>
+                                    <i class="fa fa-map-marker user-profile-icon"></i> @thisuser.PhoneNumber
+                                </li>
+                                <li>
+                                    <i class="fa fa-briefcase user-profile-icon"></i> @thisuser.Email
+                                </li>
+                                <form action="/Account/ChangePassword" method="post">
+                                    @if (ViewData["error"] != null)
+                                    {
+                                        <li>
+                                            @ViewData["error"]
+                                        </li>
+                                    }
+
+                                    <input type="hidden" value="@thisuser.Id" name="uid" />
+                                    
+                                    <li>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-2 control-label">New password</label>
+                                                <div class="col-md-8">
+                                                    <input type="password" class="form-control" name="newpassword" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-2 control-label">Confirm </label>
+                                                <div class="col-md-8">
+                                                    <input type="password" class="form-control" name="confirm" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-2 control-label">Quy Định </label>
+                                                <div class="col-md-8">
+                                                Password phải có ít nhất 6 ký tự và 1 ký tự đặc biệt ( @@,!,^), 1 chữ thường, 1 chữ hoa, 1 số
+                                                 
+                                                 </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-10">
+                                                <button type="submit" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Edit Profile</button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </form>
+                            </ul>
+
+                            <br />
+                            <!-- start skills -->
+                            <!-- end of skills -->
+                        </div>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                            <div class="profile_title">
+                                <div class="col-md-6">
+                                    <h2>Số máy đã sửa gần đây(dành cho nhân viên kỹ thuật)</h2>
+                                </div>
+
+                            </div>
+                            <!-- start of user-activity-graph -->
+                            @if (thisuser.UserName.Contains("removedAccount"))
+                            {
+                                <div style="width:100%; height:280px;">
+                                    <h1 style="font-size:100px"> Người dùng đã bị xóa</h1>
+                                </div>
+                            }
+                            else
+                            {
+                                <div id="graph_bar" style="width:100%; height:280px;">
+
+                                </div>
+                            }
+  
+                            <!-- end of user-activity-graph -->
+                            <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                    <li role="presentation" class="active">
+                                        <a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Hoạt động gần đây</a>
+                                    </li>
+                                    <li role="presentation" class="">
+                                        <a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Quyền hạn trong hệ thống</a>
+                                    </li>
+
+                                </ul>
+                                <div id="myTabContent" class="tab-content">
+                                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+                                        <!-- start recent activity -->
+                                        <ul class="messages">
+                                            @foreach (log log in thisuser.logs)
+                                            {
+                                                <li>
+                                                    <img src="~/Content/images/img.jpg" class="avatar" alt="Avatar">
+                                                    <div class="message_date">
+                                                        <h3 class="date text-info">@log.date.Day</h3>
+                                                        <p class="month">@log.date.Month</p>
+                                                    </div>
+                                                    <div class="message_wrapper">
+                                                        <h4 class="heading">@log.AspNetUser.FullName  </h4>
+                                                        <blockquote class="message">@log.action</blockquote>
+                                                        <br>
+
+                                                    </div>
+                                                </li>
+                                            }
+
+                                        </ul>
+                                        <!-- end recent activity -->
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                                        <!-- start user projects -->
+                                        <table class="data table table-striped no-margin">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Quyền / Chức năng</th>
+                                                    <th>Có/Không</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (AspNetRole role in (List<AspNetRole>)ViewData["Roles"])
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            #
+                                                        </td>
+                                                        <td>
+                                                            @role.Name
+                                                        </td>
+                                                        <td>
+                                                            @if (role.AspNetUsers.Where(u => u.UserName.Equals(thisuser.UserName)).FirstOrDefault() != null)
+                                                            {
+                                                                <label class="switch">
+                                                                    <input id="@("oper" + role.Id)" type="checkbox" checked>
+                                                                    <div onclick='updateRole("@(role.Id)" ,"@(thisuser.Id)")' class="slider round"></div>
+                                                                </label>
+                                                            }
+                                                            else
+                                                            {
+                                                                <label class="switch">
+                                                                    <input id="@("oper" + role.Id)" type="checkbox">
+                                                                    <div onclick='updateRole("@(role.Id)" ,"@(thisuser.Id)")' class="slider round"></div>
+                                                                </label>
+                                                            }
+
+                                                        </td>
+                                                    </tr>
+                                                }
+
+
+                                            </tbody>
+                                        </table>
+                                        <!-- end user projects -->
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                                        <p>
+                                            xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui
+                                            photo booth letterpress, commodo enim craft beer mlkshk
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+   
+    <!-- chart js -->
+    <script src="~/Content/js/chartjs/chart.min.js"></script>
+    <!-- moris js -->
+    <script src="~/Content/js/moris/raphael-min.js"></script>
+    <script src="~/Content/js/moris/morris.min.js"></script>
+    <!-- pace -->
+    <script src="~/Content/js/pace/pace.min.js"></script>
+    <script>
+        $(function () {
+            var day_data = [{
+                "period": "Jan",
+                "Point":  @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 1).Sum(u => u.Point)) +0
+            }, {
+                "period": "Feb",
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 2).Sum(u => u.Point)) +0
+            }, {
+                "period": "Mar",
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 3).Sum(u => u.Point)) +0
+            }, {
+                "period": "Apr",
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month ==4).Sum(u => u.Point)) +0
+            }, {
+                "period": "May",
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 5).Sum(u => u.Point)) +0
+            }, {
+                "period": "Jun",
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 6).Sum(u => u.Point)) +0
+            }, {
+                "period": "Jul",
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 7).Sum(u => u.Point)) +0
+            }, {
+                "period": "Aug",
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 8).Sum(u => u.Point)) +0
+            }, {
+                "period": "Sep",
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 9).Sum(u => u.Point)) +0
+            }, {
+                "period": "Oct",
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 10).Sum(u => u.Point)) +0
+            }, {
+                "period": "Nov",
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 11).Sum(u => u.Point)) +0
+            }, {
+                "period": "Dec",
+                "Point": @(Model.DiemKyThuats.Where(u=>u.CreatedDate.Year == DateTime.Now.Year && u.CreatedDate.Month == 12).Sum(u => u.Point)) +0
+            }
+            ];
+            Morris.Bar({
+                element: 'graph_bar',
+                data: day_data,
+                xkey: 'period',
+                hideHover: 'auto',
+                barColors: ['#26B99A', '#34495E', '#ACADAC', '#3498DB'],
+                ykeys: ['Point', 'sorned'],
+                labels: ['Point', 'SORN'],
+                xLabelAngle: 60
+            });
+        });
+    </script>
+    <script>
+        function updateRole(roleid, userid) {
+
+
+            $.getJSON("/Warranty/updateRole?updateRole=" + roleid + "&userid=" + userid, function (result) {
+                $.each(result, function (name, value) {
+                    if (name == "result") {
+                        alert(value);
+                    }
+                });
+
+            });
+        }
+    </script>
+}

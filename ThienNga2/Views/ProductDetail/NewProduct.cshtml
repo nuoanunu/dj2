@@ -342,7 +342,7 @@
                         <div class="form-group">
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                                 <button type="reset" class="btn btn-danger">Clear</button>
-                                <button data-toggle="modal" data-target="#myLoadingModal" type="submit" class="btn btn-success">Tạo sản phẩm</button>
+                                <button type="submit" class="btn btn-success">Tạo sản phẩm 2</button>
                             </div>
                         </div>
                     </form>
@@ -421,7 +421,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (tb_product_detail dt in (List<tb_product_detail>)ViewData["last50"])
+                                    @foreach (tb_product_detail dt in ((List<tb_product_detail>)ViewData["last50"]).Where(data => data.producFactoryID != "00000000"))
                                     {
                                         <tr>
                                             <td>

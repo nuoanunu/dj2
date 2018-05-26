@@ -1,0 +1,1040 @@
+﻿
+@using ThienNga2.Models.Entities
+
+<script src="~/Content/js/select/select2.full.js"></script>
+<link href="~/Content/css/select/select2.min.css" rel="stylesheet" />
+<link href="~/Content/js/datatables/fixedHeader.bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/js/datatables/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
+<script src="~/Content/js/pace/pace.min.js"></script>
+<script src="~/Content/js/datatables/jquery.dataTables.min.js"></script>
+<script src="~/Content/js/datatables/dataTables.bootstrap.js"></script>
+<script src="~/Content/js/datatables/dataTables.buttons.min.js"></script>
+<script src="~/Content/js/datatables/buttons.bootstrap.min.js"></script>
+<script src="~/Content/js/datatables/jszip.min.js"></script>
+<script src="~/Content/js/datatables/pdfmake.min.js"></script>
+<script src="~/Content/js/datatables/vfs_fonts.js"></script>
+<script src="~/Content/js/datatables/buttons.html5.min.js"></script>
+<script src="~/Content/js/datatables/buttons.print.min.js"></script>
+<script src="~/Content/js/datatables/dataTables.fixedHeader.min.js"></script>
+<script src="~/Content/js/datatables/dataTables.keyTable.min.js"></script>
+<script src="~/Content/js/datatables/dataTables.responsive.min.js"></script>
+<script src="~/Content/js/datatables/responsive.bootstrap.min.js"></script>
+<script src="~/Content/jsdatatables/dataTables.scroller.min.js"></script>
+<script>
+    setInterval(function () { loadprice($('#searchID').val(), $('#quantitySKU').val()); }, 100);
+    var skupicked = $('#searchID').val();
+    var quanitypicked = $('#quantitySKU').val();
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    function loadprice(val1, val2) {
+
+        if (val1 != '' && val2 != '' && (val1 != skupicked || val2 != quanitypicked) && val2) {
+            skupicked = val1;
+            quanitypicked = val2;
+            $.get('@(Url.Action("loadPrice", "Warranty",null, Request.Url.Scheme))?code=' + encodeURIComponent(val1) + '&quantity=' + encodeURIComponent(quanitypicked), function (result) {
+                if (result != 0) {
+                    $('#skuprice').val(numberWithCommas(result));
+                    $('#skuprice').prop('readonly', true);
+                    $("#searchID").css("background-color", "green");
+                    $("#searchID").css("color", "white");
+                }
+                else {
+                    $("#searchID").css("background-color", "red");
+                    $("#searchID").css("color", "white");
+                }
+
+            });
+        }
+
+    }
+    setInterval(loadprice, 100);
+</script>
+<script>
+    $(document).ready(function(){
+
+        $(".tdproductSKU").each(function(){
+            var id = $(this).attr('id').replace("sku","");
+            $.getJSON("/Warranty/getAllData?name="+$(this).html(), function (result) {
+
+                $.each(result, function (name, value) {
+                    if (name == "name") {
+
+                        if (value != null) {
+
+                            $("#"+id+"name").html(value);
+
+                        }
+                    }
+                })
+            });
+        })
+    })
+    var currentKUS= "";
+    function checkKSU(){
+        if(currentKUS != $("#searchID").val()) {
+            currentKUS = $("#searchID").val();
+            $.getJSON("/Warranty/getAllData?name="+currentKUS, function (result) {
+
+                $.each(result, function (name, value) {
+                    if (name == "name") {
+
+                        if (value != null) {
+
+                            $("#newLinhKienName").html(value);
+
+                        }
+                    }
+                })
+            });
+        }
+    }
+    function checkKSU2(){
+        $(".skuselector").each(function(){
+            if($(this).val()!= "") {
+                var nexttd = $(this).closest('td').next('td');
+                $.getJSON("/Warranty/getAllData?name="+$(this).val(), function (result) {
+
+                    $.each(result, function (name, value) {
+                        if (name == "name") {
+
+                            if (value != null) {
+
+                                nexttd.html(value);
+
+                            }
+                        }
+                    })
+                });
+            }
+        })
+
+    }
+    setInterval(checkKSU2,200);
+    setInterval(checkKSU,100);
+</script>
+@if (ViewData["HoaDonBaoHanh"] != null)
+{
+    tb_warranty_activities act = (tb_warranty_activities)ViewData["HoaDonBaoHanh"];
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Bảo hành <small> Thông tin chi tiết của mã bảo hành @act.CodeBaoHanh</small></h3>
+            </div>
+
+            <div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        @if (act.AspNetUser1 != null)
+                        {
+                            <h2>Tổng quan <small style="color:lightgreen"> Người sửa: @act.AspNetUser1.FullName</small> </h2>
+                        }
+                        else
+                        {
+                            <h2>Tổng quan <small style="color:red"> Người sửa: Chưa có</small> </h2>
+                        }
+
+
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="x_content">
+
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+
+                            <ul class="stats-overview">
+                                <li>
+                                    <span class="name"> Chi phí dự kiến (VNĐ) </span>
+                                    <span class="value text-success"> @(((double)ViewData["Total"]).ToString("N"))  </span>
+                                </li>
+                                <li>
+                                    <span class="name"> Số ngày đã sữa </span>
+                                    <span class="value text-success"> @( ((DateTime.Today - act.startDate)).TotalDays) </span>
+                                </li>
+                                <li class="hidden-phone">
+                                    <span id="ttht" class="name"> Trạng thái hiện tại </span>
+                                    <span id="statusname" class="value text-success"> @act.tb_warrnaty_status.statusName</span>
+                                    <span><button id="btnthaydoi" onclick="StartChange()" class="btn btn-warning">Thay đổi</button></span>
+                                    <form action="/Warranty/ChangeStatus" id="myWarrantyForm" style="display:none">
+                                        <input type="hidden" name="actid" value="@act.id" />
+                                        <select name="newstatus" id="statuslist">
+                                            <option value="1">Chờ tiếp nhận</option>
+                                            <option value="2">Đang kiểm tra</option>
+                                            <option value="3">Báo lỗi, chi phí</option>
+                                            <option value="4">Đang sửa</option>
+                                            <option value="5">Đã sửa xong</option>
+                                            <option value="6">Đã báo khách lấy</option>
+                                            <option value="7">Đã giao thiết bị</option>
+                                        </select>
+                                        <button class="btn btn-success">Xác nhận</button>
+                                        <button onclick="Cancelchange()" class="btn btn-danger">Cancel</button>
+                                    </form>
+                                    <script>
+                                        function StartChange() {
+                                            $("#myWarrantyForm").show();
+                                            $("#btnthaydoi").hide();
+                                            $("#ttht").hide();
+                                            $("#statusname").hide();
+                                        }
+                                        function Cancelchange() {
+                                            $("#myWarrantyForm").hide();
+                                            $("#btnthaydoi").show();
+                                            $("#ttht").show();
+                                            $("#statusname").show();
+                                        }
+
+                                    </script>
+
+                                </li>
+                            </ul>
+                            <br>
+
+                            <div class="col-md-12 col-sm-9 col-xs-12">
+                                <div class="x_title">
+                                    <h2>Linh kiện<small>Các linh kiện cần thay thế</small></h2>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+
+                                    <table width="90%" id="" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th width="20%">SKU</th>
+                                                <th width="20%">Tên</th>
+                                                <th width="10%">Số lượng</th>
+                                                <th width="40%">Chi phí(VNĐ)</th>
+
+                                                <th width="10%">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (warrantyActivityFee fee in act.warrantyActivityFees)
+                                            {
+                                                if ((Boolean)fee.active)
+                                                {
+                                                    String color = "#ffffff";
+                                                    <tr>
+                                                        <td class="tdproductSKU" id="@(fee.id + "sku")">@fee.productSKU.Trim()</td>
+                                                        <td id="@(fee.id + "name")"></td>
+                                                        <td>
+                                                            @fee.quantity
+                                                        </td>
+                                                        <td>
+                                                            @fee.fixingfee.ToString("N")
+                                                        </td>
+                                                        @if (fee.active != null)
+                                                        {
+                                                            if ((Boolean)fee.active)
+                                                            {
+
+                                                                <td align="left">
+                                                                    @using (Html.BeginForm("XoaFee", "Warranty"))
+                                                                    {
+                                                                        <input type="hidden" name="feeID" value="@fee.id" />
+                                                                        <input type="hidden" name="activitiesID" value="@act.id" />
+                                                                        <input type="submit" name="Xóa" value="Xóa" />
+                                                                    }
+                                                                </td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td bgcolor="@color"> Đã xóa</td>
+                                                            }
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <td class="text-left">
+                                                                @using (Html.BeginForm("XoaFee", "Warranty"))
+                                                                {
+                                                                    <input type="hidden" name="feeID" value="@fee.id" />
+                                                                    <input type="hidden" name="activitiesID" value="@fee.tb_warranty_activities.id" />
+                                                                    <input type="submit" name="Xóa" value="Xóa" />
+                                                                }
+                                                            </td>
+                                                        }
+                                                    </tr>
+                                                }
+                                            }
+
+                                            <tr>
+                                                <form action="/Warranty/AddFee" method="post">
+                                                    <td>
+                                                        <input type="hidden" name="activitiesID" value="@act.id" />
+                                                        <select id="searchID" name="ksu" class="skuselector select2_single form-control" tabindex="-1">
+                                                            <option selected value=""></option>
+                                                        </select>
+
+                                                    </td>
+                                                    <td id="newLinhKienName"></td>
+                                                    <td>
+                                                        <input style="width:100%" id="quantitySKU" type="text" name="quantity" />
+                                                    </td>
+                                                    <td>
+                                                        <input style="width:100%" id="skuprice" type="text" name="fixPrice" readonly />
+                                                    </td>
+                                                    <td>
+                                                        <input type="submit" name="ThêmS" value="Thêm" />
+                                                    </td>
+                                                </form>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-sm-9 col-xs-12">
+                                <div class="x_title">
+                                    <h2>Chi phí <small>Các chi phí sữa chữa khac ngoài linh kiện</small></h2>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Mô tả
+                                                </th>
+                                                <th>
+                                                    Chi phí(VNĐ)
+                                                </th>
+                                                <th>
+                                                    Action
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (warrantyActivityFixingFee fee in act.warrantyActivityFixingFees)
+                                            {
+                                                if ((bool)fee.active)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @fee.FixDetail
+                                                        </td>
+                                                        <td>
+                                                            @fee.fee.ToString("N")
+                                                        </td>
+                                                        @if ((bool)fee.active)
+                                                        {
+                                                            <td>
+
+                                                                @using (Html.BeginForm("XoaFixingFee", "Warranty"))
+                                                                {
+                                                                    <input type="hidden" name="feeID" value="@fee.id" />
+                                                                    <input type="hidden" name="activitiesID" value="@fee.tb_warranty_activities.id" />
+                                                                    <input type="submit" name="Xóa" value="Xóa" />
+                                                                }
+                                                            </td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>
+                                                                Đã Xóa
+                                                            </td>
+                                                        }
+                                                    </tr>
+                                                }
+                                            }
+                                            @using (Html.BeginForm("AddFixingFee", "Warranty"))
+                                            {
+                                                <tr>
+                                                    <td>
+
+                                                        <input type="text" name="fixDetail" />
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" name="price" />
+                                                    </td>
+                                                    <input type="hidden" name="activitiesID" value="@act.id" />
+                                                    <td>
+                                                        <input type="submit" name="ThêmS" value="Thêm" />
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-9 col-xs-12">
+                                    <div class="x_title">
+                                        <h2>Các sản phẩm đang mượn  <button data-toggle="modal" data-target="#newRequest" class="btn btn-success">Tạo Mới</button></h2>
+                                        <div class="modal fade" id="newRequest" role="dialog">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">
+                                                            <span aria-hidden="true">×</span>
+                                                        </button>
+                                                        <h4 class="modal-title" id="myModalLabel">Yêu cầu mượn sản phẩm</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+
+                                                        <h1>Sản phẩm có trong hệ thống</h1><form action="/Warranty/newRequestMuon" method="post">
+
+                                                            <table width="100%" id="tableMuon" class="table table-striped table-bordered">
+                                                                <input type="hidden" name="actID" value="@act.id" />
+                                                                <tr>
+                                                                    <td width="30%">
+                                                                        Nhập SKU
+                                                                    </td>
+                                                                    <td width="30%">
+                                                                        Tên
+                                                                    </td>
+                                                                    <td>
+                                                                        Số lượng
+                                                                    </td>
+                                                                    <td>
+                                                                        Tạo yêu cầu
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+
+                                                                        <select style="width:100%" id="searchID2" name="productSKU[]" class="skuselector select2_single form-control" tabindex="-1">
+                                                                            <option selected value=""></option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                    </td>
+                                                                    <input type="hidden" name="tempName[]" value="asd" />
+                                                                    <input type="hidden" name="description[]" value="asd" />
+                                                                    <td></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+
+                                                                        <select style="width:100%" id="searchID2" name="productSKU[]" class="skuselector select2_single form-control" tabindex="-1">
+                                                                            <option selected value=""></option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                    </td>
+                                                                    <input type="hidden" name="tempName[]" value="asd" />
+                                                                    <input type="hidden" name="description[]" value="asd" />
+                                                                    <td></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+
+                                                                        <select style="width:100%" id="searchID2" name="productSKU[]" class="skuselector select2_single form-control" tabindex="-1">
+                                                                            <option selected value=""></option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                    </td>
+                                                                    <input type="hidden" name="tempName[]" value="asd" />
+                                                                    <input type="hidden" name="description[]" value="asd" />
+                                                                    <td></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+
+                                                                        <select style="width:100%" id="searchID2" name="productSKU[]" class="skuselector select2_single form-control" tabindex="-1">
+                                                                            <option selected value=""></option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                    </td>
+                                                                    <input type="hidden" name="tempName[]" value="asd" />
+                                                                    <input type="hidden" name="description[]" value="asd" />
+                                                                    <td></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+
+                                                                        <select style="width:100%" id="searchID2" name="productSKU[]" class="skuselector select2_single form-control" tabindex="-1">
+                                                                            <option selected value=""></option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                    </td>
+                                                                    <input type="hidden" name="tempName[]" value="asd" />
+                                                                    <input type="hidden" name="description[]" value="asd" />
+                                                                    <td></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                    <td>
+                                                                        <button type="submit">Tạo yêu cầu</button>
+                                                                    </td>
+                                                                    </td>
+                                                                </tr>
+
+                                                            </table>
+                                                        </form>
+                                                        <h1>Sản phẩm KHÔNG có trong hệ thống</h1>
+                                                        <form action="/Warranty/newRequestMuon" method="post">
+                                                            <table width="100%" class="table table-striped">
+
+                                                                <tr>
+                                                                    <td width="50%">
+                                                                        Nhập tên
+                                                                    </td>
+                                                                    <td>
+                                                                        Mô tả
+                                                                    </td>
+                                                                    <td>
+                                                                        Số lượng
+                                                                    </td>
+                                                                    <td>
+                                                                        Tạo yêu cầu
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+
+                                                                    <input type="hidden" name="actID" value="@act.id" />
+                                                                    <td>
+                                                                        <input style="width:100%" type="text" name="tempName[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" name="description[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                    </td>
+                                                                    <td></td>
+
+
+
+                                                                </tr>
+                                                                <tr>
+
+                                                                    <input type="hidden" name="actID" value="@act.id" />
+                                                                    <td>
+                                                                        <input style="width:100%" type="text" name="tempName[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" name="description[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                    </td>
+                                                                    <td></td>
+
+
+
+                                                                </tr>
+                                                                <tr>
+
+                                                                    <input type="hidden" name="actID" value="@act.id" />
+                                                                    <td>
+                                                                        <input style="width:100%" type="text" name="tempName[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" name="description[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                    </td>
+                                                                    <td></td>
+
+
+
+                                                                </tr>
+                                                                <tr>
+
+                                                                    <input type="hidden" name="actID" value="@act.id" />
+                                                                    <td>
+                                                                        <input style="width:100%" type="text" name="tempName[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" name="description[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                    </td>
+                                                                    <td></td>
+
+
+
+                                                                </tr>
+                                                                <tr>
+
+                                                                    <input type="hidden" name="actID" value="@act.id" />
+                                                                    <td>
+                                                                        <input style="width:100%" type="text" name="tempName[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" name="description[]" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <input style="width:100%" id="quantity" type="text" name="quantity[]" />
+                                                                    </td>
+                                                                    <td></td>
+
+
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        <input type="submit" name="ThêmS" value="Tạo yêu cầu" />
+                                                                    </td>
+                                                                </tr>
+
+                                                            </table>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+                                        <table id="myacttable" class="table table-striped projects">
+                                            <thead>
+                                                <tr>
+                                                    <th>Ngày gửi yêu cầu</th>
+                                                    <th>Người Mượn</th>
+                                                    <th>Tên sản phẩm</th>
+                                                    <th>Số lượng</th>
+                                                    <th>Hóa đơn bảo hành</th>
+                                                    <th>Trạng thái</th>
+                                                    <th>Ngày Nhận</th>
+                                                    <th>Ngày trả</th>
+                                                    <th>#Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (RequestMuon request in act.RequestMuons.ToList())
+                                                {
+                                                    <tr>
+                                                        <td>@request.createdDate </td>
+                                                        <td>
+                                                            @request.AspNetUser.FullName
+                                                        </td>
+                                                        @if (request.productID != null)
+                                                        {
+                                                            <td>
+                                                                @request.tb_product_detail.productStoreID
+                                                            </td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>
+                                                                @request.TemporaryName
+                                                            </td>
+                                                        }
+
+
+                                                        <td>
+                                                            @request.quantity
+                                                        </td>
+                                                        <td>
+                                                            <a href="/Warranty/ActivityDetail?id=@request.warrantyID"> @request.tb_warranty_activities.CodeBaoHanh</a>
+                                                        </td>
+                                                        <td>
+                                                            @request.RequestStatu.name
+                                                        </td>
+                                                        <td>
+                                                            @request.recieveDate
+                                                        </td>
+                                                        <td>
+                                                            @request.returnDate
+                                                        </td>
+                                                        @if (request.status == 3)
+                                                        {
+                                                            <td>
+                                                                <button class="btn btn-warning">Đang giữ</button>
+                                                            </td>
+                                                        }
+                                                        else
+                                                        if (request.status == 1)
+                                                        {
+                                                            <td>
+                                                                <a class="btn btn-warning">Đang chờ sự đồng ý từ quản lý</a>
+                                                            </td>
+                                                        }
+                                                        else if (request.status == 5)
+                                                        {
+                                                            <td>
+                                                                <a class="btn btn-warning">Đã trả</a>
+                                                            </td>
+                                                        }
+                                                    </tr>
+                                                }
+
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <br />
+                            <div class="row">
+                                <h4>Hoat Động gần đây</h4>
+                            </div>
+
+
+                            <!-- end of user messages -->
+                            <ul class="messages">
+                                @foreach (log log in act.logs)
+                                {
+                                    <li>
+                                        <img src="~/Content/images/img.jpg" class="avatar" alt="Avatar">
+                                        <div class="message_date">
+                                            <h3 class="date text-info">Ngày @log.date.Day</h3>
+                                            <p class="month">Tháng @log.date.Month.ToString()</p>
+                                        </div>
+                                        <div class="message_wrapper">
+                                            <h4 class="heading">@log.AspNetUser.FullName  </h4>
+                                            <blockquote class="message">@log.action</blockquote>
+                                            <br>
+
+                                        </div>
+                                    </li>
+                                }
+
+                            </ul>
+                            <!-- end of user messages -->
+                            <div class="row">
+                                <div class="col-md-12 col-sm-9 col-xs-12">
+                                    <div class="x_title">
+                                        <h2>Lịch sử bảo hành<small> </small></h2>
+
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="x_content">
+
+                                        <table id="table1" class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Ngày bắt đầu
+                                                    </th>
+                                                    <th>
+                                                        Ngày trả
+                                                    </th>
+                                                    <th>
+                                                        Người sữa
+                                                    </th>
+                                                    <th>
+                                                        Linh kiện
+                                                    </th>
+                                                    <th>
+                                                        Sữa chữa khác
+                                                    </th>
+                                                    <th>
+                                                        Tình trạng lúc nhận
+                                                    </th>
+                                                    <th>
+                                                        Chi tiết
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (act.tb_warranty != null)
+                                                {
+
+
+                                                    foreach (tb_warranty_activities oldact in act.tb_warranty.tb_warranty_activities.Where(u => u.status == 6 || u.status == 7).ToList())
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                @oldact.startDate
+                                                            </td>
+                                                            <td>
+                                                                @oldact.realeaseDATE
+                                                            </td>
+                                                            @if (oldact.AspNetUser1 != null)
+                                                            {
+                                                                <td>@oldact.AspNetUser1.FullName</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td></td>
+                                                            }
+                                                            <td>
+                                                                @foreach (warrantyActivityFee fee in oldact.warrantyActivityFees)
+                                                                {<ul>
+                                                                    <li>@fee.productSKU : @fee.quantity cái</li>
+                                                                </ul>
+
+                                                                }
+                                                            </td>
+                                                            <td>
+                                                                @foreach (warrantyActivityFixingFee fee in oldact.warrantyActivityFixingFees)
+                                                                {
+                                                                    <ul>
+                                                                        <li>@fee.FixDetail</li>
+                                                                    </ul>
+                                                                }
+                                                            </td>
+                                                            <td>
+                                                                @oldact.Description
+                                                            </td>
+                                                            <td>
+                                                                <a href="/Warranty/ActivityDetail?id=@oldact.id">Detail</a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-12">
+
+                            <section class="panel">
+
+                                <div class="x_title">
+                                    <h2>Thông tin sản phẩm</h2>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="panel-body">
+                                    @if (act.tb_warranty != null)
+                                    { <h3 class="green"><i class="fa fa-paint-brush"></i>@act.tb_warranty.item.tb_product_detail.productStoreID</h3>
+
+                                        if (act.tb_warranty.item.tb_customer.CustomerType != null)
+                                        {
+                                            <div class="project_detail" style="background-color:@act.tb_warranty.item.tb_customer.CustomerType.Color">
+
+                                                <p class="title">Nhóm khách</p>
+                                                <p>@act.tb_warranty.item.tb_customer.CustomerType.GroupName</p>
+
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <h3 class="green"><i class="fa fa-paint-brush"></i>@act.itemID</h3>
+
+                                    }
+                                    <div class="project_detail">
+
+                                        <p class="title">Tên Khách</p>
+                                        <p>@act.TenKhach</p>
+                                        <p class="title">SDT</p>
+                                        <p>@act.SDT</p>
+                                    </div>
+
+                                    <br>
+                                    <h5>Thông tin bảo hành sản phẩm</h5>
+                                    <ul class="list-unstyled project_files">
+                                        @if (act.tb_warranty != null)
+                                        {
+                                            <li>
+                                                <a href=""><i class="fa fa-file-word-o"></i>Ngày kích hoạt @act.tb_warranty.startdate.ToShortDateString()</a>
+                                            </li>
+                                            <li>
+                                                <a href=""><i class="fa fa-file-pdf-o"></i>Thời hạn @act.tb_warranty.duration</a>
+                                            </li>
+                                            <li>
+                                                <a href=""><i class="fa fa-mail-forward"></i>IMEI @act.tb_warranty.item.tb_warranty.FirstOrDefault().warrantyID</a>
+                                            </li>
+
+                                        }
+                                        else
+                                        {
+                                            <li>
+                                                <a href=""><i class="fa fa-file-word-o"></i>Ko phải sản phẩm được phân phối tại của hàng</a>
+                                            </li>
+                                        }
+
+                                    </ul>
+                                    <br>
+
+                                    <div class="text-center mtop20">
+                                        @if (User.IsInRole("Admin") || User.IsInRole("Quản lý sữa chữa"))
+                                        {<button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#MyempList@(act.id)"><i class="fa fa-pencil"></i>Đổi KT sửa</button>
+                                        <div class="modal fade" id="MyempList@(act.id)" role="dialog">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">Modal Header</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="/Warranty/GiaoViec" method="post">
+                                                            Chọn nhân viên
+                                                            <input type="hidden" value="@act.id" name="actid" />
+                                                            <select name="empId">
+                                                                @foreach (AspNetUser user in (List<AspNetUser>)ViewData["NhanVienKyThuat"])
+                                                                {
+                                                                    <option value="@user.Id"> @user.FullName</option>
+                                                                }
+                                                            </select>
+                                                            <button type="submit"> Giao </button>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        }
+
+                                    </div>
+                                    <h5>Tình trạng lúc nhận</h5>
+                                    <p>@act.Description</p>
+                                    <br>
+                                    <table id="table2" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Bộ phận
+                                                </th>
+                                                <th>
+                                                    Số lượng
+                                                </th>
+                                                <th>
+                                                    Ghi chú
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (HangBaoHanh hbh in act.HangBaoHanhs.ToList())
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @hbh.Name
+                                                    </td>
+                                                    <td>
+                                                        @hbh.Quantity
+                                                    </td>
+                                                    <td>
+                                                        @hbh.Note
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </section>
+
+                        </div>
+
+                    </div>
+
+                    <!-- start project-detail sidebar -->
+                    <!-- end project-detail sidebar -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $(document).ready(function () {
+                $(".select2_single").select2({
+                    placeholder: "Chọn SKU",
+                    allowClear: true
+                });
+            });
+            var productname =@Html.Raw(ViewData["namelist"]);
+
+            $(".skuselector").each(function () {
+
+                for (var i = 0; i < productname.length ; i++) {
+                    $(this).append(new Option(productname[i],productname[i]));
+                }
+            });
+        })
+    </script>
+    <script>
+        var handleDataTableButtons = function() {
+            "use strict";
+            0 !== $("#TableLinhKien").length && $("#TableLinhKien").DataTable({
+                dom: "Bfrtip",
+                buttons: [],
+                responsive: !0
+            })
+        },
+          TableManageButtons = function() {
+              "use strict";
+              return {
+                  init: function() {
+                      handleDataTableButtons()
+                  }
+              }
+          }();
+        var handleDataTableButtons2 = function() {
+            "use strict";
+            0 !== $("#tableMuon").length && $("#tableMuon").DataTable({
+                dom: "Bfrtip",
+                buttons: [{
+                    extend: "copy",
+                    className: "btn-sm"
+                }, {
+                    extend: "csv",
+                    className: "btn-sm"
+                }, {
+                    extend: "excel",
+                    className: "btn-sm"
+                }, {
+                    extend: "pdf",
+                    className: "btn-sm"
+                }, {
+                    extend: "print",
+                    className: "btn-sm"
+                }],
+                responsive: !0
+            })
+        },
+        TableManageButtons2 = function() {
+            "use strict";
+            return {
+                init: function() {
+                    handleDataTableButtons2()
+                }
+            }
+        }();
+    </script>
+    <script type="text/javascript">
+
+        TableManageButtons.init();
+        TableManageButtons2.init();
+    </script>
+
+}
